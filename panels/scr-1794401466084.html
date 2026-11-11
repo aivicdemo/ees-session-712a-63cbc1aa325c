@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新EES - 顧客ポータル・ベンダー評価システム</title>
+  <style>
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --border: #e2e8f0;
+  --border-width: 1px;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --top-bar-bg: #1e293b;
+  --top-bar-border: #0f172a;
+  --top-bar-text: #f1f5f9;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --space-unit: 8px;
+  --control-height: 36px;
+  --radius-card: 6px;
+  --radius-control: 4px;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --motion-duration: 200ms;
+  --surface-texture: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(226, 232, 240, 0) 100%);
+  --surface-texture-size: 100% 100%;
+  --surface-texture-position: 0 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+  color: var(--text);
+  background-color: var(--bg-main);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-aivic-shell-pattern="sidebar"] {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.shell-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: var(--top-bar-bg);
+  border-bottom: var(--border-width) solid var(--top-bar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--space-unit) * 2);
+  z-index: 100;
+  box-shadow: var(--shadow-card);
+}
+
+.shell-logo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--top-bar-text);
+}
+
+.shell-logo-icon {
+  width: 28px;
+  height: 28px;
+  background-color: var(--primary);
+  border-radius: var(--radius-control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.shell-user-area {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+}
+
+.shell-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.shell-user-name {
+  font-size: 13px;
+  color: var(--top-bar-text);
+}
+
+.shell-logout {
+  font-size: 12px;
+  color: var(--top-bar-text);
+  text-decoration: none;
+  transition: color var(--motion-duration);
+}
+
+.shell-logout:hover {
+  color: var(--primary);
+}
+
+.shell-sidebar {
+  position: fixed;
+  left: 0;
+  top: 56px;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  border-right: var(--border-width) solid var(--border);
+  overflow-y: auto;
+  padding: calc(var(--space-unit) * 2) 0;
+  z-index: 99;
+}
+
+.shell-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.shell-nav-item {
+  display: block;
+  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-duration), color var(--motion-duration);
+  border-left: 3px solid transparent;
+}
+
+.shell-nav-item:hover {
+  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--primary);
+}
+
+.shell-nav-item.aivic-active {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+.content-area {
+  margin-left: 240px;
+  margin-top: 56px;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--bg-main);
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+  background-position: var(--surface-texture-position);
+}
+
+[data-aivic-panel] {
+  width: 100%;
+  min-height: 100%;
+}
+
+.shell-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.3) transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 3px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.5);
+}
+  </style>
+  
+<script>
+window.AIVIC_API_URL = "https://772uyvnqfxpzjoed4k3cnncqgu0zkwuc.lambda-url.us-east-1.on.aws/";
+window.AIVIC_APP_ID = "session-712a4470-1165-48cd-ab84-8bbcf0e8bb22";
+window.AIVIC_APPLICATION_NAME = "新EES";
+window.AIVIC_SYSTEM_NAME = "顧客ポータル・ベンダー評価システム";
+window.AIVIC_TABLES = [{"tableName":"ベンダー","purpose":"顧客ポータルにおけるベンダー情報の一元管理と評価スコア、ステータス追跡を行うマスタテーブル","columns":[{"name":"ベンダーID","type":"uuid","required":true,"description":"ベンダーを一意に識別するプライマリキー"},{"name":"ベンダー名","type":"varchar(100)","required":true,"description":"ベンダーの正式名称"},{"name":"説明","type":"text","required":false,"description":"ベンダーの事業内容や特徴に関する詳細説明"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"ベンダーの現在のステータス(有効/無効/審査中等)"},{"name":"評価スコア","type":"integer","required":false,"description":"顧客による総合評価スコア(0-100等)"},{"name":"評価件数","type":"integer","required":false,"description":"受けた評価の総件数"},{"name":"連絡先メールアドレス","type":"varchar(100)","required":false,"description":"ベンダーの公式連絡先メールアドレス"},{"name":"連絡先電話番号","type":"varchar(100)","required":false,"description":"ベンダーの公式連絡先電話番号"},{"name":"ウェブサイトURL","type":"varchar(100)","required":false,"description":"ベンダーの公式ウェブサイトURL"},{"name":"作成日時","type":"timestamp","required":true,"description":"ベンダー情報がシステムに登録された日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ベンダー情報が最後に更新された日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"ベンダー情報を登録したユーザーまたはシステムの識別子"}]}];
+window.AIVIC_PRESET_SEED = {"ベンダー":[{"ベンダーID":"rec-001","ベンダー名":"株式会社デジタルソリューション","説明":"エンタープライズシステム構築・運用保守を専門とする大手SIer。クラウド移行やDX推進支援の実績多数。","ステータス":"有効","評価スコア":92,"評価件数":47,"連絡先メールアドレス":"contact@digital-solution.co.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.digital-solution.co.jp","作成日時":"2023-06-15T10:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"クラウドテック・ジャパン株式会社","説明":"AWS・Azure・GCP等のクラウドインフラ構築・運用・最適化サービスを提供。中堅企業向けのコスト削減とセキュリティ強化を専門とする。","ステータス":"審査中","評価スコア":0,"評価件数":0,"連絡先メールアドレス":"inquiry@cloudtech-japan.co.jp","連絡先電話番号":"03-xxxx-xxxx","ウェブサイトURL":"https://www.cloudtech-japan.co.jp","作成日時":"2025-01-15T10:30:00Z","更新日時":"2025-01-15T10:30:00Z","作成者":"鈴木花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社グローバルロジスティクス","説明":"国内外の物流・配送サービスを提供。近年サービス品質低下により顧客満足度が減少傾向。","ステータス":"契約更新検討中","評価スコア":42,"評価件数":87,"連絡先メールアドレス":"contact@global-logistics.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.global-logistics.jp","作成日時":"2023-06-15T10:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"セキュアテック保守サービス株式会社","説明":"ISO27001認証取得、24時間対応のシステム保守・運用管理専門業者。金融機関向けインフラ保守実績15年以上。","ステータス":"有効","評価スコア":94,"評価件数":287,"連絡先メールアドレス":"support@securetech-maint.co.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.securetech-maint.co.jp","作成日時":"2023-11-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社イノベーティブソリューション","説明":"クラウドベースのSaaS型業務効率化ツールを提供する新興企業。中小企業向けの導入支援も実施。","ステータス":"有効","評価スコア":78,"評価件数":12,"連絡先メールアドレス":"contact@innovative-solution.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.innovative-solution.jp","作成日時":"2024-08-15T10:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社テックサポート東京","説明":"システム保守・技術サポート業務を提供していましたが、対応品質低下により契約解除に至りました。","ステータス":"無効","評価スコア":32,"評価件数":47,"連絡先メールアドレス":"support@techsupport-tokyo.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.techsupport-tokyo.jp","作成日時":"2023-06-15 10:30:00","更新日時":"2024-11-22 14:15:00","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社テクノロジーソリューション","説明":"企業向けクラウドシステムの開発・導入・保守を専門とする大手IT企業。複数業界での豊富な実績を持つ。","ステータス":"有効","評価スコア":92,"評価件数":47,"連絡先メールアドレス":"contact@techsol.co.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.techsol.co.jp","作成日時":"2023-11-15T09:30:00Z","更新日時":"2025-01-20T14:22:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社地域サポート関西","説明":"大阪・兵庫・京都を中心とした地域密着型の施設管理・清掃サービス提供企業","ステータス":"有効","評価スコア":78,"評価件数":24,"連絡先メールアドレス":"contact@chikisupport-kansai.jp","連絡先電話番号":"06-XXXX-5678","ウェブサイトURL":"https://www.chikisupport-kansai.jp","作成日時":"2024-03-15T10:30:00Z","更新日時":"2025-01-08T14:22:00Z","作成者":"佐藤花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社テックソリューション","説明":"旧システムで登録された重複ベンダー。現在の正規ベンダー『テックソリューション・ジャパン』に統合予定。","ステータス":"無効","評価スコア":72,"評価件数":24,"連絡先メールアドレス":"info@tech-solution-old.jp","連絡先電話番号":"03-1234-5678","ウェブサイトURL":"https://www.tech-solution-old.jp","作成日時":"2022-06-15T10:30:00Z","更新日時":"2024-11-20T14:45:00Z","作成者":"佐藤花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社デジタルソリューション東京","説明":"2024年度システム統合プロジェクト終了に伴い一時休止中。クラウドインフラ構築およびデータ移行サービスを提供していた。","ステータス":"休止中","評価スコア":82,"評価件数":24,"連絡先メールアドレス":"contact@digital-solution-tokyo.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.digital-solution-tokyo.jp","作成日時":"2024-02-15T10:30:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者":"山田花子"}]};
+window.AIVIC_PAGE_SCREEN_ID = "scr-1794401466084";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  const vendorRows = container.querySelectorAll('.vendor-row');\n  const detailPanel = container.querySelector('#detailContent');\n  const detailTitle = container.querySelector('#detailTitle');\n  const historyList = container.querySelector('#historyList');\n  const searchInput = container.querySelector('#searchInput');\n  const searchButton = container.querySelector('#searchButton');\n  const compareButton = container.querySelector('#compareButton');\n  const historyTabs = container.querySelectorAll('.history-tab');\n  const alertItems = container.querySelectorAll('.alert-item');\n\n  const vendorData = {\n    v001: {\n      name: 'Tech Supplies Ltd',\n      description: '精密機器・電子部品の専門供給業者。高品質と納期厳守で定評がある。',\n      contact: 'contact@techsupplies.com',\n      phone: '+81-90-1234-5678',\n      website: 'https://www.techsupplies.com',\n      evaluationCount: 48,\n      history: [\n        { date: '2026-11-10', score: 92, evaluator: '山田太郎', comment: '全項目で優秀。継続推奨。' },\n        { date: '2026-10-15', score: 91, evaluator: '田中花子', comment: '納期達成率が95%と優良。' },\n        { date: '2026-09-20', score: 90, evaluator: '田中花子', comment: '安定した品質を維持。' }\n      ]\n    },\n    v002: {\n      name: 'Global Parts Inc',\n      description: '汎用部品・消耗品の大手流通業者。品揃えが豊富。',\n      contact: 'sales@globalparts.com',\n      phone: '+81-90-2345-6789',\n      website: 'https://www.globalparts.com',\n      evaluationCount: 35,\n      history: [\n        { date: '2026-11-09', score: 78, evaluator: '山田太郎', comment: '品質低下の傾向。改善要請中。' },\n        { date: '2026-10-14', score: 80, evaluator: '鈴木次郎', comment: '対応スピード改善が課題。' },\n        { date: '2026-09-18', score: 77, evaluator: '田中花子', comment: '不良率が上昇傾向。' }\n      ]\n    },\n    v003: {\n      name: 'Premium Equipment Co',\n      description: 'プレミアム機器・設備の専門業者。カスタマイズ対応が可能。',\n      contact: 'info@premiumequip.com',\n      phone: '+81-90-3456-7890',\n      website: 'https://www.premiumequip.com',\n      evaluationCount: 28,\n      history: [\n        { date: '2026-11-08', score: 88, evaluator: '山田太郎', comment: '安定した高品質。推奨ベンダー。' },\n        { date: '2026-10-12', score: 87, evaluator: '鈴木次郎', comment: '対応が丁寧で信頼できる。' },\n        { date: '2026-09-15', score: 85, evaluator: '田中花子', comment: '価格帯は高いが品質が良い。' }\n      ]\n    },\n    v004: {\n      name: 'Standard Distributor',\n      description: '標準的な部品・消耗品を供給。コスト削減重視。',\n      contact: 'support@standarddist.com',\n      phone: '+81-90-4567-8901',\n      website: 'https://www.standarddist.com',\n      evaluationCount: 42,\n      history: [\n        { date: '2026-11-07', score: 65, evaluator: '山田太郎', comment: '納期遅延が頻発。改善計画の提出要求。' },\n        { date: '2026-10-10', score: 68, evaluator: '鈴木次郎', comment: '応答が遅い。追跡困難。' },\n        { date: '2026-09-12', score: 63, evaluator: '田中花子', comment: '品質問題が多発。警告レベル。' }\n      ]\n    },\n    v005: {\n      name: 'Express Logistics Ltd',\n      description: '高速配送・物流に特化。緊急対応が得意。',\n      contact: 'orders@expresslog.com',\n      phone: '+81-90-5678-9012',\n      website: 'https://www.expresslog.com',\n      evaluationCount: 31,\n      history: [\n        { date: '2026-11-06', score: 85, evaluator: '山田太郎', comment: 'スピード配送で実績あり。' },\n        { date: '2026-10-11', score: 84, evaluator: '鈴木次郎', comment: '緊急案件への対応が優秀。' },\n        { date: '2026-09-14', score: 83, evaluator: '田中花子', comment: '価格は中程度。納期は確実。' }\n      ]\n    }\n  };\n\n  let currentVendorId = null;\n  let currentMonth = 11;\n\n  vendorRows.forEach(row => {\n    row.addEventListener('click', function() {\n      vendorRows.forEach(r => r.classList.remove('active'));\n      this.classList.add('active');\n      currentVendorId = this.getAttribute('data-vendor-id');\n      updateDetailPanel(currentVendorId);\n      updateHistoryList(currentVendorId, currentMonth);\n    });\n  });\n\n  function updateDetailPanel(vendorId) {\n    const vendor = vendorData[vendorId];\n    if (!vendor) return;\n    \n    detailTitle.textContent = vendor.name;\n    detailContent.innerHTML = `\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">説明</div>\n        <div class=\"detail-value\">${vendor.description}</div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">メールアドレス</div>\n        <div class=\"detail-value\"><a href=\"mailto:${vendor.contact}\" class=\"detail-link\">${vendor.contact}</a></div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">電話番号</div>\n        <div class=\"detail-value\"><a href=\"tel:${vendor.phone}\" class=\"detail-link\">${vendor.phone}</a></div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">ウェブサイト</div>\n        <div class=\"detail-value\"><a href=\"${vendor.website}\" class=\"detail-link\" target=\"_blank\">${vendor.website}</a></div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">評価件数</div>\n        <div class=\"detail-value\">${vendor.evaluationCount}件</div>\n      </div>\n    `;\n  }\n\n  function updateHistoryList(vendorId, month) {\n    const vendor = vendorData[vendorId];\n    if (!vendor) return;\n    \n    const filtered = vendor.history.filter(h => {\n      const hMonth = new Date(h.date).getMonth() + 1;\n      return hMonth === month;\n    });\n\n    if (filtered.length === 0) {\n      historyList.innerHTML = `<div class=\"empty-state\">${month}月の評価履歴はありません</div>`;\n      return;\n    }\n\n    historyList.innerHTML = filtered.map(h => `\n      <div class=\"history-item\">\n        <div class=\"history-date\">${h.date}</div>\n        <div class=\"history-score\">スコア: ${h.score}</div>\n        <div class=\"history-comment\">評価者: ${h.evaluator}</div>\n        <div class=\"history-comment\">コメント: ${h.comment}</div>\n      </div>\n    `).join('');\n  }\n\n  historyTabs.forEach(tab => {\n    tab.addEventListener('click', function() {\n      historyTabs.forEach(t => t.classList.remove('active'));\n      this.classList.add('active');\n      currentMonth = parseInt(this.getAttribute('data-month'));\n      if (currentVendorId) {\n        updateHistoryList(currentVendorId, currentMonth);\n      }\n    });\n  });\n\n  searchButton.addEventListener('click', function() {\n    const keyword = searchInput.value.trim();\n    if (keyword) {\n      alert(`「${keyword}」の検索を実行: フルシステムでは検索結果一覧を表示します`);\n    }\n  });\n\n  compareButton.addEventListener('click', function() {\n    alert('複数ベンダー比較: フルシステムではモーダルで比較表を表示します');\n  });\n\n  alertItems.forEach(alert => {\n    alert.addEventListener('click', function() {\n      alert('アラート詳細: フルシステムではツールチップまたは詳細ペインを表示します');\n    });\n  });\n}";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav data-aivic-system-switcher style="position:sticky;top:0;z-index:2147483000;display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg);color:var(--top-bar-text);border-bottom:1px solid var(--top-bar-border,var(--border));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--top-bar-text);white-space:nowrap;">新EES</span><a href="./scr-1794401382374.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">顧客取引履歴・見積管理システム</a><a href="./scr-1794401466084.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:1;border-bottom:2px solid currentColor;font-weight:600;">顧客ポータル・ベンダー評価システム</a><a href="./scr-1794401278547.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">販売・仕入統合管理システム</a></nav>
+  <div data-aivic-shell-pattern="sidebar" data-aivic-nav-position="left" data-aivic-density="compact">
+    <header class="shell-top-bar">
+      <div class="shell-logo">
+        <div class="shell-logo-icon">E</div>
+        <span>新EES</span>
+      </div>
+      <div class="shell-user-area">
+        <div class="shell-user-avatar">U</div>
+        <div class="shell-user-name">ユーザー</div>
+        <a href="./login.html" class="shell-logout">ログアウト</a>
+      </div>
+    </header>
+
+    <aside class="shell-sidebar shell-scrollbar">
+      <nav class="shell-nav">
+        <a class="shell-nav-item aivic-active" data-aivic-nav="scr-1794401466084" href="./scr-1794401466084.html">ベンダー評価ダッシュボード</a>
+      </nav>
+    </aside>
+
+    <main class="content-area shell-scrollbar">
+      <div data-aivic-panel="scr-1794401466084" style="display:block">
+    <!-- Left Pane: Vendor List -->
+    <div class="pane-left">
+      <div class="vendor-list-title">ベンダー評価スコア一覧</div>
+      <div class="vendor-list-container">
+        <table class="vendor-list-table">
+          <thead>
+            <tr>
+              <th style="width: 40%">ベンダー名</th>
+              <th style="width: 15%">総合スコア</th>
+              <th style="width: 15%">納期達成率</th>
+              <th style="width: 15%">対応スピード</th>
+              <th style="width: 15%">品質</th>
+            </tr>
+          </thead>
+          <tbody id="vendorList">
+            <tr class="vendor-row" data-vendor-id="v001">
+              <td class="vendor-name">Tech Supplies Ltd</td>
+              <td><span class="score-good">92</span></td>
+              <td><span class="score-good">95%</span></td>
+              <td><span class="score-good">88</span></td>
+              <td><span class="score-good">91</span></td>
+            </tr>
+            <tr class="vendor-row" data-vendor-id="v002">
+              <td class="vendor-name">Global Parts Inc</td>
+              <td><span class="score-medium">78</span></td>
+              <td><span class="score-medium">82%</span></td>
+              <td><span class="score-medium">75</span></td>
+              <td><span class="score-medium">76</span></td>
+            </tr>
+            <tr class="vendor-row" data-vendor-id="v003">
+              <td class="vendor-name">Premium Equipment Co</td>
+              <td><span class="score-good">88</span></td>
+              <td><span class="score-good">90%</span></td>
+              <td><span class="score-medium">85</span></td>
+              <td><span class="score-good">87</span></td>
+            </tr>
+            <tr class="vendor-row" data-vendor-id="v004">
+              <td class="vendor-name">Standard Distributor</td>
+              <td><span class="score-poor">65</span></td>
+              <td><span class="score-poor">68%</span></td>
+              <td><span class="score-poor">62</span></td>
+              <td><span class="score-poor">65</span></td>
+            </tr>
+            <tr class="vendor-row" data-vendor-id="v005">
+              <td class="vendor-name">Express Logistics Ltd</td>
+              <td><span class="score-good">85</span></td>
+              <td><span class="score-good">88%</span></td>
+              <td><span class="score-good">82</span></td>
+              <td><span class="score-medium">80</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Center Pane: Metrics and Alerts -->
+    <div class="pane-center">
+      <!-- Metrics Row -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">月次納期達成率</div>
+          <div class="metric-value" id="monthlyDeliveryScore">92%</div>
+          <div class="metric-subtitle">最新月平均</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">対応スピード</div>
+          <div class="metric-value" id="responseSpeedScore">84</div>
+          <div class="metric-subtitle">平均応答時間: 2.5h</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">品質スコア</div>
+          <div class="metric-value" id="qualityScore">87</div>
+          <div class="metric-subtitle">不良率: 1.2%</div>
+        </div>
+      </div>
+
+      <!-- Graph Container -->
+      <div class="graph-container">
+        <div class="graph-title">直近3ヶ月の納期達成率トレンド</div>
+        <div class="bar-chart">
+          <div class="bar-item">
+            <div class="bar-value" style="height: 140px;">
+              <div class="bar-percentage">88%</div>
+            </div>
+            <div class="bar-label">9月</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-value" style="height: 158px;">
+              <div class="bar-percentage">95%</div>
+            </div>
+            <div class="bar-label">10月</div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-value" style="height: 154px;">
+              <div class="bar-percentage">92%</div>
+            </div>
+            <div class="bar-label">11月</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerts Container -->
+      <div class="alerts-container">
+        <div class="alerts-title">通知・アラート（最新5件）</div>
+        <div id="alertsList">
+          <div class="alert-item error">
+            <div class="alert-type">⚠ 納期遅延警告</div>
+            <div class="alert-message">Standard Distributor: 納期が2日遅延する見通し</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-type">ℹ 品質低下アラート</div>
+            <div class="alert-message">Global Parts Inc: 不良率が3.5%に上昇（閾値超過）</div>
+          </div>
+          <div class="alert-item error">
+            <div class="alert-type">⚠ 対応遅延通知</div>
+            <div class="alert-message">Standard Distributor: 平均応答時間が6.2時間（目標: 4h以下）</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-type">ℹ 良好パフォーマンス</div>
+            <div class="alert-message">Tech Supplies Ltd: 全指標で目標達成、表彰対象候補</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-type">ℹ システム更新</div>
+            <div class="alert-message">11月スコアの自動集計が完了しました</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Pane: Details and History -->
+    <div class="pane-right">
+      <!-- Detail Panel -->
+      <div class="detail-panel">
+        <div class="detail-title" id="detailTitle">ベンダー詳細情報</div>
+        <div id="detailContent">
+          <div class="empty-state">一覧からベンダーを選択してください</div>
+        </div>
+      </div>
+
+      <!-- Search Section -->
+      <div class="search-section">
+        <div class="search-title">代替仕入先検索</div>
+        <div class="search-input-group">
+          <input type="text" class="search-input" id="searchInput" placeholder="キーワードで検索">
+          <button class="search-button" id="searchButton">検索</button>
+        </div>
+        <button class="compare-button" id="compareButton">複数ベンダー比較</button>
+      </div>
+
+      <!-- History Section -->
+      <div class="detail-panel" style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+        <div class="detail-title">評価履歴</div>
+        <div class="history-tabs">
+          <button class="history-tab active" data-month="11">11月</button>
+          <button class="history-tab" data-month="10">10月</button>
+          <button class="history-tab" data-month="9">9月</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="empty-state">ベンダーを選択すると評価履歴が表示されます</div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </main>
+  </div>
+
+  
+<script>
+(function() {
+  var TABLE_DEFS = window.AIVIC_TABLES || [];
+  var PRESET_SEED = window.AIVIC_PRESET_SEED || {};
+  var SYSTEM_NAME = window.AIVIC_SYSTEM_NAME || "";
+  var APP_ID = window.AIVIC_APP_ID || "";
+  var API_URL = (window.AIVIC_API_URL && window.AIVIC_API_URL !== "REPLACE_WITH_API_URL")
+    ? window.AIVIC_API_URL : window.location.origin;
+
+  // 通知 helper ( SPA 版と同じ )
+  window.aivicNotify = (function() {
+    function ensureContainer() {
+      var c = document.getElementById("aivic-toast-container");
+      if (c) return c;
+      c = document.createElement("div");
+      c.id = "aivic-toast-container";
+      c.style.cssText = "position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:360px;";
+      document.body.appendChild(c);
+      return c;
+    }
+    function show(msg, type) {
+      var c = ensureContainer();
+      var el = document.createElement("div");
+      el.textContent = msg;
+      el.style.cssText = "padding:10px 16px;border-radius:8px;font-size:13px;line-height:1.4;pointer-events:auto;color:#fff;background:" + (type === "error" ? "#dc2626" : "#d97706");
+      c.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = "opacity .3s";
+        el.style.opacity = "0";
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+      }, type === "error" ? 6000 : 4500);
+    }
+    return {
+      error: function(msg) { show("❌ " + msg, "error"); },
+      warn:  function(msg) { show("⚠️ " + msg, "warn"); },
+    };
+  })();
+
+  // CRUD API ( SPA 版と同じ )
+  window.aivicApi = (function() {
+    function dbErr(op) { window.aivicNotify.error("データベースエラー ( " + op + " ): APIサーバーに接続できません。"); }
+    function newId() { return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2); }
+    function q(i) {
+      var t = TABLE_DEFS[i];
+      var dbP = (window.AIVIC_DB_TYPE && window.AIVIC_DB_TYPE !== "dynamodb") ? "&db=" + encodeURIComponent(window.AIVIC_DB_TYPE) : "";
+      return "?app=" + encodeURIComponent(APP_ID) + "&system=" + encodeURIComponent(SYSTEM_NAME) + "&table=" + encodeURIComponent(t ? t.tableName : "table" + i) + dbP;
+    }
+    return {
+      list: async function(tableIndex) {
+        if (!API_URL) return [];
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex)); var d = await r.json(); return Array.isArray(d) ? d : (d.items || []); }
+        catch(e) { dbErr("データ取得"); return []; }
+      },
+      save: async function(tableIndex, item) {
+        if (!API_URL) { dbErr("保存"); return null; }
+        var now = new Date().toISOString();
+        var rec = Object.assign({}, item, { id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now });
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex), { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(rec) }); return await r.json(); }
+        catch(e) { dbErr("保存"); return null; }
+      },
+      update: async function(tableIndex, id, changes) {
+        if (!API_URL) { dbErr("更新"); return null; }
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.assign({}, changes, {updatedAt: new Date().toISOString()})) }); return await r.json(); }
+        catch(e) { dbErr("更新"); return null; }
+      },
+      delete: async function(tableIndex, id) {
+        if (!API_URL) { dbErr("削除"); return {deleted:false}; }
+        try { await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), {method:"DELETE"}); return {deleted:true}; }
+        catch(e) { dbErr("削除"); return {deleted:false}; }
+      },
+    };
+  })();
+
+  // showScreen はマルチページ構成ではページ遷移として動く。
+  var _aivicNavLastTime = 0;
+  var _aivicNavLastTarget = "";
+  var _aivicReady = false;
+  window.showScreen = function(screenId) {
+    if (!screenId) return;
+    if (screenId === window.AIVIC_PAGE_SCREEN_ID) return;
+    var targetPath = './' + encodeURIComponent(screenId) + '.html';
+    var currentName = (window.location.pathname.split('/').pop() || '');
+    if (currentName === (encodeURIComponent(screenId) + '.html') ||
+        currentName === (screenId + '.html')) {
+      return;
+    }
+    var now = Date.now();
+    if (_aivicNavLastTarget === targetPath && (now - _aivicNavLastTime) < 100) {
+      console.warn('[aivic] showScreen 連続呼び出し検知。 無限ループ防止のため抑制:', screenId);
+      return;
+    }
+    if (!_aivicReady) {
+      console.warn('[aivic] DOMContentLoaded 前の showScreen 呼び出し。 抑制:', screenId);
+      return;
+    }
+    _aivicNavLastTime = now;
+    _aivicNavLastTarget = targetPath;
+    window.location.href = targetPath;
+  };
+
+  function seedAllIfEmpty() {
+    if (!API_URL) return Promise.resolve();
+    return Promise.all(TABLE_DEFS.map(function(t, i) {
+      var preset = PRESET_SEED[t.tableName];
+      if (!Array.isArray(preset) || preset.length === 0) return Promise.resolve();
+      return window.aivicApi.list(i).then(function(existing) {
+        if (existing && existing.length > 0) return;
+        return Promise.all(preset.map(function(row) { return window.aivicApi.save(i, row); }));
+      }).catch(function() {});
+    }));
+  }
+
+  // ── 初期表示: このページ専用の panel に initFn を実行 ──
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() { _aivicReady = true; }, 1500);
+    var pageScreenId = window.AIVIC_PAGE_SCREEN_ID;
+    if (!pageScreenId) return;
+
+    // AI シェルが SPA 用の初期表示処理を持っていても、マルチページでは
+    // このファイルに割り当てられた画面だけを表示する。
+    document.querySelectorAll('[data-aivic-panel]').forEach(function(panel) {
+      var isCurrent = panel.getAttribute('data-aivic-panel') === pageScreenId;
+      panel.style.display = isCurrent ? 'block' : 'none';
+    });
+
+    document.querySelectorAll('[data-aivic-nav]').forEach(function(btn) {
+      var isActive = btn.getAttribute("data-aivic-nav") === pageScreenId;
+      btn.classList.toggle("aivic-active", isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    var container = document.querySelector('[data-aivic-panel="' + pageScreenId + '"]');
+    if (!container) return;
+
+    // content 要素の hidden 強制除去 ( 2026-05-24 Playwright 大量 fail 対応 )
+    var isModalLike = function(el) {
+      if (!el || !el.classList) return false;
+      var cn = String(el.className || "");
+      if (/\bmodal\b|\bdialog\b|\boverlay\b|\bpopup\b|\bdropdown\b|\btooltip\b/i.test(cn)) return true;
+      var role = el.getAttribute && el.getAttribute("role");
+      if (role === "dialog" || role === "alertdialog" || role === "tooltip" || role === "menu") return true;
+      if (el.hasAttribute && (el.hasAttribute("data-modal") || el.hasAttribute("data-dropdown") || el.hasAttribute("data-popup") || el.hasAttribute("data-aivic-overlay"))) return true;
+      // 【2026-06-25】 class/role が無くても inline で画面を覆う overlay ( position:fixed ) は modal 扱いにして、
+      //  content 強制可視化が誤ってダイアログをロード時に表示してしまわないようにする。
+      if (el.style && el.style.position === "fixed") return true;
+      return false;
+    };
+    var unhideContentElements = function(root) {
+      var all = root.querySelectorAll('.hidden, [hidden], [style*="display:none"], [style*="display: none"]');
+      for (var k = 0; k < all.length; k++) {
+        var el = all[k];
+        if (isModalLike(el)) continue;
+        var p = el.parentElement;
+        var insideModal = false;
+        while (p && p !== root) {
+          if (isModalLike(p)) { insideModal = true; break; }
+          p = p.parentElement;
+        }
+        if (insideModal) continue;
+        el.classList.remove('hidden');
+        el.removeAttribute('hidden');
+        if (el.style && el.style.display === 'none') el.style.display = '';
+      }
+    };
+    try { unhideContentElements(container); } catch (e) { console.warn('[aivic] unhideContent failed:', e); }
+
+    var initJsSource = window.AIVIC_PAGE_INIT_JS;
+    if (!initJsSource) {
+      seedAllIfEmpty();
+      return;
+    }
+    var initFn = null;
+    try {
+      initFn = (new Function("return (" + initJsSource + ")"))();
+    } catch (e) {
+      console.error("[aivic] initJs compile error:", pageScreenId, e);
+      return;
+    }
+    if (typeof initFn !== "function") return;
+
+    seedAllIfEmpty().then(function() {
+      return Promise.all(TABLE_DEFS.map(function(t, i) {
+        return window.aivicApi.list(i)
+          .then(function(records) { return Object.assign({}, t, { records: records }); })
+          .catch(function() { return Object.assign({}, t, { records: [] }); });
+      }));
+    }).then(function(tables) {
+      try { initFn(container, API_URL, tables); } catch (e) { console.error("[aivic] initFn error:", pageScreenId, e); }
+      _aivicReady = true;
+    });
+  });
+
+  // 【2026-06-27 強化・必ず閉じられる保証】 モーダル/ダイアログを確実に閉じる安全網。
+  //  旧版は Esc のみ + セレクタ .overlay が class="modal-overlay" にマッチせず ( クラストークンが別 )
+  //  閉じられなかった ( ユーザー報告 2026-06-27: ダイアログが閉じない ) 。 ① Esc ② オーバーレイ背景クリック
+  //  ③ 閉じる系ボタン の 3 経路で閉じる。 セレクタは複合クラスも拾うよう [class*="overlay"] を含む。
+  //  閉じ方は「開クラス ( active/open/show 等 ) があれば外す ( 再オープン可 ) 、 無ければ inline display:none」。
+  //  modal-header 等の sub-part を誤って隠さないため [class*="modal"] は使わない。
+  var AIVIC_OVERLAY_SELECTOR = '[class*="overlay"],[data-aivic-overlay],[data-modal],[role="dialog"],[role="alertdialog"]';
+  var aivicCloseOverlay = function(el) {
+    if (!el || !el.classList) return;
+    var openClasses = ["active", "open", "show", "visible", "is-open", "is-active", "show-modal"];
+    var removed = false;
+    for (var c = 0; c < openClasses.length; c++) {
+      if (el.classList.contains(openClasses[c])) { el.classList.remove(openClasses[c]); removed = true; }
+    }
+    if (!removed && el.style) el.style.display = "none";
+  };
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape" && e.keyCode !== 27) return;
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  });
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.closest) {
+      var closer = t.closest('.modal-close,[data-modal-close],[data-close],[data-dismiss]');
+      if (closer) {
+        var oc = closer.closest(AIVIC_OVERLAY_SELECTOR);
+        if (oc) { aivicCloseOverlay(oc); return; }
+      }
+    }
+    // 背景 ( オーバーレイ要素そのもの ) を直接クリックした時のみ閉じる ( モーダル本体クリックでは閉じない ) 。
+    if (t.matches && t.matches(AIVIC_OVERLAY_SELECTOR) && t === e.target) {
+      aivicCloseOverlay(t);
+    }
+  });
+  // 【2026-06-28 強化・ロード時に必ず閉じる】 生成 AI が overlay を初期 display:none にし忘れた場合でも、
+  //  ロード直後にダイアログが画面を覆って操作不能になる事故 ( ユーザー報告 2026-06-28: ダイアログが常に表示され
+  //  閉じられない ) を防ぐ。 認識可能な overlay/dialog セレクタに該当する要素はロード時に必ず閉じる
+  //  ( 開クラス除去 or display:none ) 。 真にロード時表示すべき業務コンテンツは overlay セレクタに該当しないため
+  //  影響しない ( パネルコンテナは data-aivic-panel で別管理 ) 。
+  var aivicHideOverlaysOnLoad = function() {
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aivicHideOverlaysOnLoad);
+  } else {
+    aivicHideOverlaysOnLoad();
+  }
+})();
+
+</script>
+</body>
+</html>

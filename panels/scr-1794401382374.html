@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新EES - 顧客取引履歴・見積管理システム</title>
+  <style>
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --border: #e2e8f0;
+  --border-width: 1px;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --top-bar-bg: #1e293b;
+  --top-bar-border: #0f172a;
+  --top-bar-text: #f1f5f9;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --space-unit: 8px;
+  --control-height: 36px;
+  --radius-card: 6px;
+  --radius-control: 4px;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --motion-duration: 200ms;
+  --surface-texture: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(226, 232, 240, 0) 100%);
+  --surface-texture-size: 100% 100%;
+  --surface-texture-position: 0 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+  color: var(--text);
+  background-color: var(--bg-main);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-aivic-shell-pattern="sidebar"] {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.shell-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: var(--top-bar-bg);
+  border-bottom: var(--border-width) solid var(--top-bar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--space-unit) * 2);
+  z-index: 100;
+  box-shadow: var(--shadow-card);
+}
+
+.shell-logo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--top-bar-text);
+}
+
+.shell-logo-icon {
+  width: 28px;
+  height: 28px;
+  background-color: var(--primary);
+  border-radius: var(--radius-control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.shell-user-area {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+}
+
+.shell-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.shell-user-name {
+  font-size: 13px;
+  color: var(--top-bar-text);
+}
+
+.shell-logout {
+  font-size: 12px;
+  color: var(--top-bar-text);
+  text-decoration: none;
+  transition: color var(--motion-duration);
+}
+
+.shell-logout:hover {
+  color: var(--primary);
+}
+
+.shell-sidebar {
+  position: fixed;
+  left: 0;
+  top: 56px;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  border-right: var(--border-width) solid var(--border);
+  overflow-y: auto;
+  padding: calc(var(--space-unit) * 2) 0;
+  z-index: 99;
+}
+
+.shell-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.shell-nav-item {
+  display: block;
+  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-duration), color var(--motion-duration);
+  border-left: 3px solid transparent;
+}
+
+.shell-nav-item:hover {
+  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--primary);
+}
+
+.shell-nav-item.aivic-active {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+.content-area {
+  margin-left: 240px;
+  margin-top: 56px;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--bg-main);
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+  background-position: var(--surface-texture-position);
+}
+
+[data-aivic-panel] {
+  width: 100%;
+  min-height: 100%;
+}
+
+.shell-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.3) transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 3px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.5);
+}
+  </style>
+  
+<script>
+window.AIVIC_API_URL = "https://772uyvnqfxpzjoed4k3cnncqgu0zkwuc.lambda-url.us-east-1.on.aws/";
+window.AIVIC_APP_ID = "session-712a4470-1165-48cd-ab84-8bbcf0e8bb22";
+window.AIVIC_APPLICATION_NAME = "新EES";
+window.AIVIC_SYSTEM_NAME = "顧客取引履歴・見積管理システム";
+window.AIVIC_TABLES = [{"tableName":"顧客マスタ","purpose":"顧客情報を一元管理し、販売・仕入取引の相手先として機能する基本マスタテーブル","columns":[{"name":"顧客ID","type":"uuid","required":true,"description":"顧客を一意に識別するプライマリキー"},{"name":"顧客コード","type":"varchar(100)","required":true,"description":"顧客の業務用識別コード、ユーザーが参照・検索する際に使用"},{"name":"顧客名","type":"varchar(100)","required":true,"description":"顧客の正式名称"},{"name":"顧客名カナ","type":"varchar(100)","required":false,"description":"顧客名のカナ表記、検索・ソート用"},{"name":"顧客区分","type":"varchar(100)","required":true,"description":"顧客の分類（得意先/仕入先/両方等）、フィルタリング・集計に使用"},{"name":"郵便番号","type":"varchar(100)","required":false,"description":"顧客の郵便番号"},{"name":"住所","type":"text","required":false,"description":"顧客の住所"},{"name":"電話番号","type":"varchar(100)","required":false,"description":"顧客の電話番号"},{"name":"メールアドレス","type":"varchar(100)","required":false,"description":"顧客のメールアドレス"},{"name":"担当者名","type":"varchar(100)","required":false,"description":"顧客の担当者名"},{"name":"支払条件","type":"varchar(100)","required":false,"description":"売上時の支払条件（現金/月末締め等）"},{"name":"納期","type":"varchar(100)","required":false,"description":"仕入時の納期条件"},{"name":"与信限度額","type":"integer","required":false,"description":"顧客に対する与信限度額"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"顧客の状態（有効/休止/廃止等）、取引可否の判定に使用"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":false,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"商品マスタ","purpose":"商品の基本情報を一元管理し、受注・仕入・在庫・請求などの各業務で参照される商品の定義情報を保持する","columns":[{"name":"商品ID","type":"uuid","required":true,"description":"商品を一意に識別するプライマリキー"},{"name":"商品コード","type":"varchar(100)","required":true,"description":"業務で使用する商品の一意なコード、受注・仕入・在庫管理で検索・フィルタリングに使用"},{"name":"商品名","type":"varchar(100)","required":true,"description":"商品の名称、受注票・請求書などの帳票に表示"},{"name":"商品説明","type":"text","required":false,"description":"商品の詳細説明"},{"name":"カテゴリ","type":"varchar(100)","required":false,"description":"商品の分類、フィルタリングや集計に使用"},{"name":"単位","type":"varchar(100)","required":true,"description":"商品の数量単位（個、箱、kg等）、受注・仕入・在庫で使用"},{"name":"標準売価","type":"integer","required":true,"description":"商品の標準的な売価、受注時の初期値として使用"},{"name":"標準仕入価","type":"integer","required":true,"description":"商品の標準的な仕入価、発注時の初期値として使用"},{"name":"在庫管理対象","type":"boolean","required":true,"description":"在庫管理の対象とするかどうか、在庫テーブルへの登録判定に使用"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"商品の状態（有効、廃止等）、受注・仕入時のフィルタリングに使用"},{"name":"作成日時","type":"timestamp","required":true,"description":"商品マスタレコードの作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"商品マスタレコードの最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"商品マスタレコードを作成したユーザー"},{"name":"更新者","type":"varchar(100)","required":false,"description":"商品マスタレコードを最後に更新したユーザー"}]},{"tableName":"取引履歴","purpose":"顧客との取引内容を記録し、見積から受注・納品・請求までの一連のプロセスを管理するトランザクションテーブル","columns":[{"name":"取引ID","type":"uuid","required":true,"description":"取引履歴の一意識別子"},{"name":"顧客ID","type":"uuid","required":true,"description":"顧客マスタへの外部キー参照"},{"name":"取引日","type":"timestamp","required":true,"description":"取引が発生した日時"},{"name":"取引種別","type":"varchar(100)","required":true,"description":"見積/受注/納品/請求などの取引タイプ"},{"name":"取引金額","type":"integer","required":true,"description":"取引の合計金額（税抜き）"},{"name":"税額","type":"integer","required":false,"description":"取引に対する消費税額"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"取引の現在ステータス（未処理/処理中/完了/キャンセル等）"},{"name":"備考","type":"text","required":false,"description":"取引に関する補足情報やコメント"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"}]}];
+window.AIVIC_PRESET_SEED = {"顧客マスタ":[{"顧客ID":"rec-001","顧客コード":"C-20240015","顧客名":"株式会社トヨタ自動車工業","顧客名カナ":"トヨタジドウシャコウギョウ","顧客区分":"得意先","郵便番号":"471-8571","住所":"愛知県豊田市トヨタ町1番地","電話番号":"0565-28-2121","メールアドレス":"procurement@toyota.co.jp","担当者名":"佐藤次郎","支払条件":"月末締め翌月末払い","納期":"該当なし","与信限度額":500000000,"ステータス":"有効","作成日時":"2024-04-15T09:30:00","更新日時":"2025-01-20T14:45:00","作成者":"user-0001","更新者":"user-0003"},{"顧客ID":"rec-001","顧客コード":"SUP-0847","顧客名":"株式会社東海物流センター","顧客名カナ":"トウカイブツリュウセンター","顧客区分":"仕入先","郵便番号":"460-0008","住所":"愛知県名古屋市中区栄2丁目3番1号","電話番号":"052-201-5847","メールアドレス":"procurement@tokaibussan.co.jp","担当者名":"山田健一","支払条件":"現金払い","納期":"毎週月曜・木曜納品","与信限度額":2500000,"ステータス":"有効","作成日時":"2024-03-15T09:30:00","更新日時":"2024-12-10T14:22:00","作成者":"user-0012","更新者":"user-0012"},{"顧客ID":"rec-001","顧客コード":"RT-20250115-001","顧客名":"株式会社ファミリーマート田中","顧客名カナ":"ファミリーマートタナカ","顧客区分":"得意先","郵便番号":"150-0001","住所":"東京都渋谷区神宮前1-2-3","電話番号":"03-1234-5678","メールアドレス":"tanaka.hiroshi@familymart-tanaka.jp","担当者名":"田中洋","支払条件":"月末締め翌月末払い","納期":"指定なし","与信限度額":500000,"ステータス":"有効","作成日時":"2025-01-15T10:30:00","更新日時":"2025-01-15T10:30:00","作成者":"user-0001","更新者":"user-0001"},{"顧客ID":"rec-001","顧客コード":"GRP-0521","顧客名":"株式会社グローバルテック関西","顧客名カナ":"グローバルテックカンサイ","顧客区分":"両方","郵便番号":"530-0001","住所":"大阪府大阪市北区梅田1-3-1 グランドビル15階","電話番号":"06-6345-2100","メールアドレス":"procurement@globaltech-kansai.co.jp","担当者名":"山田健一","支払条件":"月末締め翌々月払い","納期":"注文後10営業日","与信限度額":50000000,"ステータス":"有効","作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者":"user-admin","更新者":"user-sales-01"},{"顧客ID":"rec-001","顧客コード":"C-0001234","顧客名":"株式会社トップ電子","顧客名カナ":"トップデンシ","顧客区分":"得意先","郵便番号":"108-0023","住所":"東京都港区芝浦4-12-8","電話番号":"03-XXXX-5678","メールアドレス":"sales@top-denshi.co.jp","担当者名":"佐藤健一","支払条件":"月末締め翌月末払い","納期":"受注後10営業日","与信限度額":50000000,"ステータス":"有効","作成日時":"2020-06-15T09:30:00","更新日時":"2025-01-20T14:15:00","作成者":"user-admin","更新者":"user-yamada"},{"顧客ID":"rec-001","顧客コード":"C00847","顧客名":"株式会社山田建設","顧客名カナ":"ヤマダケンセツ","顧客区分":"得意先","郵便番号":"150-0001","住所":"東京都渋谷区神宮前1-2-3","電話番号":"03-1234-5678","メールアドレス":"info@yamada-kensetsu.co.jp","担当者名":"佐藤次郎","支払条件":"月末締め翌月末払い","納期":"指定納期対応","与信限度額":5000000,"ステータス":"休止","作成日時":"2022-03-15 10:30:00","更新日時":"2024-06-20 14:45:00","作成者":"user-0012","更新者":"user-0045"},{"顧客ID":"rec-001","顧客コード":"OS-AG-2024-001","顧客名":"アジア流通パートナーズ株式会社","顧客名カナ":"アジアリュウツウパートナーズ","顧客区分":"仕入先","郵便番号":"100-0005","住所":"東京都千代田区丸の内1-1-1 ビジネスビル5階","電話番号":"03-XXXX-5678","メールアドレス":"procurement@asia-partners.co.jp","担当者名":"佐藤健一","支払条件":"L/C決済（信用状）","納期":"FOB上海港、リードタイム60日、最小ロット500単位","与信限度額":50000000,"ステータス":"有効","作成日時":"2024-03-15T09:30:00","更新日時":"2025-01-20T14:45:00","作成者":"user-0001","更新者":"user-0015"},{"顧客ID":"550e8400-e29b-41d4-a716-446655440000","顧客コード":"C-2019-0847","顧客名":"株式会社フジ電機工業","顧客名カナ":"フジデンキコウギョウ","顧客区分":"仕入先","郵便番号":"430-0906","住所":"静岡県浜松市中央区住吉1丁目15-8","電話番号":"053-461-2847","メールアドレス":"order@fuji-denki.co.jp","担当者名":"山田次郎","支払条件":"月末締め翌月末払い","納期":"受注後14日以内","与信限度額":5000000,"ステータス":"廃止","作成日時":"2019-06-15T09:30:00+09:00","更新日時":"2024-11-20T14:15:00+09:00","作成者":"U-001","更新者":"U-008"},{"顧客ID":"rec-001","顧客コード":"C-2024-0847","顧客名":"株式会社トヨタ流通サービス","顧客名カナ":"トヨタリュウツウサービス","顧客区分":"得意先","郵便番号":"471-8501","住所":"愛知県豊田市トヨタ町1番地","電話番号":"0565-29-3000","メールアドレス":"procurement@toyota-logistics.co.jp","担当者名":"山田次郎","支払条件":"月末締め翌月末払い","納期":"指定納期対応","与信限度額":50000000,"ステータス":"有効","作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者":"user-0123","更新者":"user-0456"},{"顧客ID":"rec-001","顧客コード":"SUP20250115001","顧客名":"株式会社山田電子部品","顧客名カナ":"ヤマダデンシブヒン","顧客区分":"仕入先","郵便番号":"1430016","住所":"東京都大田区大森北1丁目2番3号","電話番号":"0336571234","メールアドレス":"info@yamada-denshi.co.jp","担当者名":"佐藤次郎","支払条件":"該当なし","納期":"協議中","与信限度額":5000000,"ステータス":"有効","作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-15T09:30:00","作成者":"USR0001","更新者":"USR0001"}],"商品マスタ":[{"商品ID":"rec-001","商品コード":"PD-2024-0847","商品名":"高性能LEDデスクライト","商品説明":"目に優しいLED照明、調光・調色機能付き、USB充電対応","カテゴリ":"照明器具","単位":"個","標準売価":8500,"標準仕入価":4200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者":"田中太郎","更新者":"佐藤花子"},{"商品ID":"rec-001","商品コード":"SKU-2024-XMAS-001","商品名":"クリスマスケーキ（ショコラ）","商品説明":"12月限定の高級チョコレートケーキ。ベルギー産ダークチョコを使用。","カテゴリ":"季節商品","単位":"個","標準売価":5800,"標準仕入価":2900,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-09-15T10:30:00","更新日時":"2024-11-20T14:15:00","作成者":"山田花子","更新者":"佐藤次郎"},{"商品ID":"rec-001","商品コード":"PRD-2024-0847","商品名":"A4用紙 上質紙 500枚","商品説明":"高品質なA4上質紙。かつて主力商品だったが、デジタル化により需要減少のため廃止。","カテゴリ":"紙製品","単位":"箱","標準売価":1200,"標準仕入価":750,"在庫管理対象":true,"ステータス":"廃止","作成日時":"2023-06-15T09:30:00+09:00","更新日時":"2024-11-20T14:15:00+09:00","作成者":"田中太郎","更新者":"佐藤花子"},{"商品ID":"rec-001","商品コード":"SVC-MAINT-001","商品名":"システム保守サービス（年間契約）","商品説明":"業務システムの定期メンテナンス、トラブル対応、アップデート管理を含む年間保守契約","カテゴリ":"保守・サポートサービス","単位":"式","標準売価":480000,"標準仕入価":0,"在庫管理対象":false,"ステータス":"有効","作成日時":"2024-04-15T09:30:00","更新日時":"2024-11-20T14:15:00","作成者":"鈴木花子","更新者":"佐藤次郎"},{"商品ID":"rec-001","商品コード":"LOT-2024-0847","商品名":"コピー用紙A4 500枚×5冊パック","商品説明":"高白色コピー用紙。オフィス向けロット販売商品。","カテゴリ":"事務用品","単位":"箱","標準売価":2800,"標準仕入価":1650,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-06-15 09:30:00","更新日時":"2024-12-20 14:15:00","作成者":"田中太郎","更新者":"鈴木花子"},{"商品ID":"rec-001","商品コード":"MAT-2024-0847","商品名":"ステンレス鋼製ベアリング φ20mm","商品説明":"精密機械部品用の高精度ベアリング、耐食性に優れたステンレス鋼製","カテゴリ":"機械部品","単位":"個","標準売価":2800,"標準仕入価":1200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-03-15T09:30:00+09:00","更新日時":"2024-11-20T14:45:00+09:00","作成者":"佐藤花子","更新者":"鈴木健一"},{"商品ID":"rec-001","商品コード":"CS-0001","商品名":"ボールペン黒 0.7mm","商品説明":"油性ボールペン、黒インク、軽い書き心地で事務作業に最適","カテゴリ":"文具・消耗品","単位":"個","標準売価":80,"標準仕入価":35,"在庫管理対象":false,"ステータス":"有効","作成日時":"2024-04-15T09:30:00","更新日時":"2024-11-20T14:15:00","作成者":"田中太郎","更新者":"鈴木花子"},{"商品ID":"rec-001","商品コード":"CST-MACH-2024-001","商品名":"精密加工カスタム治具","商品説明":"顧客仕様に基づく高精度な金属加工治具。図面支給による完全カスタム対応。","カテゴリ":"カスタム製造","単位":"個","標準売価":850000,"標準仕入価":520000,"在庫管理対象":false,"ステータス":"有効","作成日時":"2024-06-15T09:30:00","更新日時":"2025-01-20T14:15:00","作成者":"佐藤花子","更新者":"鈴木一郎"},{"商品ID":"rec-001","商品コード":"KG-2024-001","商品名":"北海道産小麦粉 強力粉 25kg","商品説明":"北海道産の高品質強力粉。パン製造に最適な蛋白質含有量。","カテゴリ":"穀類・粉類","単位":"kg","標準売価":4500,"標準仕入価":3200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-03-15T09:30:00","更新日時":"2024-11-20T14:22:00","作成者":"田中太郎","更新者":"佐藤花子"},{"商品ID":"rec-001","商品コード":"PRD-2024-0847","商品名":"高機能LEDデスクライト","商品説明":"USB充電対応、調光機能付きの省エネLEDデスクライト","カテゴリ":"オフィス機器","単位":"個","標準売価":8500,"標準仕入価":4200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-11-15T10:30:00","更新日時":"2024-11-15T10:30:00","作成者":"佐藤花子","更新者":"佐藤花子"}],"取引履歴":[{"取引ID":"rec-001","顧客ID":"cust-20250115-001","取引日":"2025-01-15T10:30:00+09:00","取引種別":"見積","取引金額":450000,"税額":45000,"ステータス":"未処理","備考":"新規顧客。営業担当者による初回訪問後の見積依頼。納期は2月末希望。","作成日時":"2025-01-15T10:35:00+09:00","更新日時":"2025-01-15T10:35:00+09:00","作成者":"yamada-taro"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T09:30:00+09:00","取引種別":"受注","取引金額":850000,"税額":85000,"ステータス":"完了","備考":"見積書rec-est-0847-001承認済み。納期2024年12月20日。","作成日時":"2024-11-15T09:35:22+09:00","更新日時":"2024-11-15T10:12:45+09:00","作成者":"suzuki_hanako"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T10:30:00+09:00","取引種別":"納品","取引金額":450000,"税額":45000,"ステータス":"完了","備考":"受注番号PO-2024-1103の部分納品（1/3回目）。商品コード：LED照明セット×15台納品。残納品予定：12月上旬、1月中旬。","作成日時":"2024-11-15T10:35:22+09:00","更新日時":"2024-11-15T14:20:15+09:00","作成者":"佐藤花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2025-01-28T14:30:00+09:00","取引種別":"納品","取引金額":450000,"税額":45000,"ステータス":"完了","備考":"受注番号PO-2024-1156の最終納品（3回納品の最終回）","作成日時":"2025-01-28T14:35:22+09:00","更新日時":"2025-01-28T16:20:15+09:00","作成者":"佐藤花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T09:30:00+09:00","取引種別":"請求","取引金額":850000,"税額":85000,"ステータス":"完了","備考":"納品完了に伴う請求書発行。納品日2024-11-12。支払期限2024-12-15。","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T14:22:00+09:00","作成者":"鈴木花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T10:30:00+09:00","取引種別":"受注","取引金額":450000,"税額":45000,"ステータス":"キャンセル","備考":"顧客都合により2024-12-10にキャンセル申請。納期前の中止要望に対応。","作成日時":"2024-11-15T10:35:22+09:00","更新日時":"2024-12-10T14:20:15+09:00","作成者":"山田花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T10:30:00Z","取引種別":"受注","取引金額":450000,"税額":45000,"ステータス":"処理中","備考":"前回納品分の追加注文。納期は12月10日希望。","作成日時":"2024-11-15T10:30:00Z","更新日時":"2024-11-15T14:20:00Z","作成者":"田中太郎"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T09:30:00+09:00","取引種別":"請求","取引金額":450000,"税額":45000,"ステータス":"完了","備考":"10月分サービス利用料。銀行振込で11/20に全額入金確認済み","作成日時":"2024-11-15T10:15:00+09:00","更新日時":"2024-11-22T14:45:00+09:00","作成者":"山田花子"},{"取引ID":"rec-001","顧客ID":"cust-00547","取引日":"2025-01-15T14:30:00+09:00","取引種別":"返品","取引金額":-45000,"税額":-4500,"ステータス":"完了","備考":"納品商品の不具合により返品受付。代替品は1月22日に再納品予定。","作成日時":"2025-01-15T14:35:22+09:00","更新日時":"2025-01-16T09:15:47+09:00","作成者":"田中太郎"},{"取引ID":"rec-001","顧客ID":"cust-2024-0847","取引日":"2025-01-31T15:30:00Z","取引種別":"請求","取引金額":2850000,"税額":285000,"ステータス":"完了","備考":"2025年1月分月次まとめ請求。受注5件分を集計。支払期限は2025年2月28日。","作成日時":"2025-02-01T09:15:00Z","更新日時":"2025-02-01T09:15:00Z","作成者":"田中太郎"}]};
+window.AIVIC_PAGE_SCREEN_ID = "scr-1794401382374";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  const tabs = container.querySelectorAll('.tab');\n  const tabContents = container.querySelectorAll('.tab-content');\n  const transactionRows = container.querySelectorAll('#transactionTable tbody tr');\n  const quoteRows = container.querySelectorAll('#quoteTable tbody tr');\n\n  tabs.forEach(tab => {\n    tab.addEventListener('click', () => {\n      tabContents.forEach(content => content.classList.remove('active'));\n      tabs.forEach(t => t.classList.remove('active'));\n      const tabId = 'tab-' + tab.dataset.tab;\n      container.querySelector('#' + tabId).classList.add('active');\n      tab.classList.add('active');\n    });\n  });\n\n  transactionRows.forEach(row => {\n    row.addEventListener('click', () => {\n      const transactionTab = container.querySelector('[data-tab=\"transaction\"]');\n      if (transactionTab) transactionTab.click();\n    });\n  });\n\n  quoteRows.forEach(row => {\n    row.addEventListener('click', () => {\n      const quoteTab = container.querySelector('[data-tab=\"quote\"]');\n      if (quoteTab) quoteTab.click();\n    });\n  });\n}";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav data-aivic-system-switcher style="position:sticky;top:0;z-index:2147483000;display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg);color:var(--top-bar-text);border-bottom:1px solid var(--top-bar-border,var(--border));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--top-bar-text);white-space:nowrap;">新EES</span><a href="./scr-1794401382374.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:1;border-bottom:2px solid currentColor;font-weight:600;">顧客取引履歴・見積管理システム</a><a href="./scr-1794401466084.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">顧客ポータル・ベンダー評価システム</a><a href="./scr-1794401278547.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">販売・仕入統合管理システム</a></nav>
+  <div data-aivic-shell-pattern="sidebar" data-aivic-nav-position="left" data-aivic-density="compact">
+    <header class="shell-top-bar">
+      <div class="shell-logo">
+        <div class="shell-logo-icon">E</div>
+        <span>新EES</span>
+      </div>
+      <div class="shell-user-area">
+        <div class="shell-user-avatar">U</div>
+        <div class="shell-user-name">ユーザー</div>
+        <a href="./login.html" class="shell-logout">ログアウト</a>
+      </div>
+    </header>
+
+    <aside class="shell-sidebar shell-scrollbar">
+      <nav class="shell-nav">
+        <a class="shell-nav-item aivic-active" data-aivic-nav="scr-1794401382374" href="./scr-1794401382374.html">顧客取引履歴・見積管理</a>
+        <a class="shell-nav-item" data-aivic-nav="scr-1794401391211" href="./scr-1794401391211.html">見積作成・管理</a>
+      </nav>
+    </aside>
+
+    <main class="content-area shell-scrollbar">
+      <div data-aivic-panel="scr-1794401382374" style="display:block">
+    <div class="page-header">
+      <div>
+        <div class="breadcrumb">
+          <span>顧客取引履歴・見積管理</span>
+          <span>></span>
+          <span>顧客検索</span>
+        </div>
+        <div class="page-title">顧客取引履歴・見積管理ワークスペース</div>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <div class="left-column">
+        <!-- 顧客検索セクション -->
+        <div class="search-section">
+          <div class="search-group">
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label">顧客検索</label>
+              <input type="text" class="form-input" placeholder="顧客コードまたは顧客名で検索" id="customerSearchInput">
+            </div>
+            <button class="button button-primary" id="searchBtn" style="align-self: flex-end;">検索</button>
+            <button class="button button-secondary" id="masterSearchBtn" style="align-self: flex-end;">顧客マスタ統合検索</button>
+          </div>
+        </div>
+
+        <!-- 取引履歴テーブル -->
+        <div>
+          <h3 class="section-title">顧客別取引履歴</h3>
+          <div class="table-container">
+            <div class="scrollable-table">
+              <table id="transactionTable">
+                <thead>
+                  <tr>
+                    <th>取引日</th>
+                    <th>取引種別</th>
+                    <th>取引金額</th>
+                    <th>ステータス</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-transaction-id="tx-001">
+                    <td>2026-11-10</td>
+                    <td>受注</td>
+                    <td>¥1,500,000</td>
+                    <td>完了</td>
+                  </tr>
+                  <tr data-transaction-id="tx-002">
+                    <td>2026-11-05</td>
+                    <td>見積</td>
+                    <td>¥2,300,000</td>
+                    <td>未処理</td>
+                  </tr>
+                  <tr data-transaction-id="tx-003">
+                    <td>2026-11-01</td>
+                    <td>受注</td>
+                    <td>¥980,000</td>
+                    <td>完了</td>
+                  </tr>
+                  <tr data-transaction-id="tx-004">
+                    <td>2026-10-28</td>
+                    <td>請求</td>
+                    <td>¥1,500,000</td>
+                    <td>完了</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 見積履歴テーブル -->
+        <div>
+          <h3 class="section-title">顧客別見積履歴</h3>
+          <div class="table-container">
+            <div class="scrollable-table-250">
+              <table id="quoteTable">
+                <thead>
+                  <tr>
+                    <th>見積日</th>
+                    <th>見積金額</th>
+                    <th>ステータス</th>
+                    <th>受注転換</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-quote-id="qt-001">
+                    <td>2026-11-05</td>
+                    <td>¥2,300,000</td>
+                    <td>有効</td>
+                    <td>-</td>
+                  </tr>
+                  <tr data-quote-id="qt-002">
+                    <td>2026-10-20</td>
+                    <td>¥1,800,000</td>
+                    <td>受注済</td>
+                    <td>済</td>
+                  </tr>
+                  <tr data-quote-id="qt-003">
+                    <td>2026-10-15</td>
+                    <td>¥950,000</td>
+                    <td>失効</td>
+                    <td>-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-column">
+        <!-- 原価推移グラフ -->
+        <div>
+          <h3 class="section-title">原価推移グラフ</h3>
+          <div class="chart-container" id="costChart">
+            グラフプレースホルダー
+          </div>
+        </div>
+
+        <!-- 詳細パネル -->
+        <div>
+          <h3 class="section-title">詳細情報</h3>
+          <div class="detail-panel">
+            <div class="tabs">
+              <button class="tab active" data-tab="transaction">受注情報</button>
+              <button class="tab" data-tab="quote">見積情報</button>
+            </div>
+
+            <div id="tab-transaction" class="tab-content active">
+              <div class="detail-row">
+                <div class="detail-label">顧客名</div>
+                <div class="detail-value">サンプル顧客A</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">取引日</div>
+                <div class="detail-value">2026-11-10</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">取引金額</div>
+                <div class="detail-value">¥1,500,000</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">備考</div>
+                <div class="detail-value">-</div>
+              </div>
+            </div>
+
+            <div id="tab-quote" class="tab-content">
+              <div class="detail-row">
+                <div class="detail-label">見積日</div>
+                <div class="detail-value">2026-11-05</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">有効期限</div>
+                <div class="detail-value">2026-12-05</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">見積金額</div>
+                <div class="detail-value">¥2,300,000</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">商品明細</div>
+                <div class="detail-value">3品目</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <div data-aivic-panel="scr-1794401391211" style="display:none"></div>
+    </main>
+  </div>
+
+  
+<script>
+(function() {
+  var TABLE_DEFS = window.AIVIC_TABLES || [];
+  var PRESET_SEED = window.AIVIC_PRESET_SEED || {};
+  var SYSTEM_NAME = window.AIVIC_SYSTEM_NAME || "";
+  var APP_ID = window.AIVIC_APP_ID || "";
+  var API_URL = (window.AIVIC_API_URL && window.AIVIC_API_URL !== "REPLACE_WITH_API_URL")
+    ? window.AIVIC_API_URL : window.location.origin;
+
+  // 通知 helper ( SPA 版と同じ )
+  window.aivicNotify = (function() {
+    function ensureContainer() {
+      var c = document.getElementById("aivic-toast-container");
+      if (c) return c;
+      c = document.createElement("div");
+      c.id = "aivic-toast-container";
+      c.style.cssText = "position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:360px;";
+      document.body.appendChild(c);
+      return c;
+    }
+    function show(msg, type) {
+      var c = ensureContainer();
+      var el = document.createElement("div");
+      el.textContent = msg;
+      el.style.cssText = "padding:10px 16px;border-radius:8px;font-size:13px;line-height:1.4;pointer-events:auto;color:#fff;background:" + (type === "error" ? "#dc2626" : "#d97706");
+      c.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = "opacity .3s";
+        el.style.opacity = "0";
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+      }, type === "error" ? 6000 : 4500);
+    }
+    return {
+      error: function(msg) { show("❌ " + msg, "error"); },
+      warn:  function(msg) { show("⚠️ " + msg, "warn"); },
+    };
+  })();
+
+  // CRUD API ( SPA 版と同じ )
+  window.aivicApi = (function() {
+    function dbErr(op) { window.aivicNotify.error("データベースエラー ( " + op + " ): APIサーバーに接続できません。"); }
+    function newId() { return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2); }
+    function q(i) {
+      var t = TABLE_DEFS[i];
+      var dbP = (window.AIVIC_DB_TYPE && window.AIVIC_DB_TYPE !== "dynamodb") ? "&db=" + encodeURIComponent(window.AIVIC_DB_TYPE) : "";
+      return "?app=" + encodeURIComponent(APP_ID) + "&system=" + encodeURIComponent(SYSTEM_NAME) + "&table=" + encodeURIComponent(t ? t.tableName : "table" + i) + dbP;
+    }
+    return {
+      list: async function(tableIndex) {
+        if (!API_URL) return [];
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex)); var d = await r.json(); return Array.isArray(d) ? d : (d.items || []); }
+        catch(e) { dbErr("データ取得"); return []; }
+      },
+      save: async function(tableIndex, item) {
+        if (!API_URL) { dbErr("保存"); return null; }
+        var now = new Date().toISOString();
+        var rec = Object.assign({}, item, { id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now });
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex), { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(rec) }); return await r.json(); }
+        catch(e) { dbErr("保存"); return null; }
+      },
+      update: async function(tableIndex, id, changes) {
+        if (!API_URL) { dbErr("更新"); return null; }
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.assign({}, changes, {updatedAt: new Date().toISOString()})) }); return await r.json(); }
+        catch(e) { dbErr("更新"); return null; }
+      },
+      delete: async function(tableIndex, id) {
+        if (!API_URL) { dbErr("削除"); return {deleted:false}; }
+        try { await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), {method:"DELETE"}); return {deleted:true}; }
+        catch(e) { dbErr("削除"); return {deleted:false}; }
+      },
+    };
+  })();
+
+  // showScreen はマルチページ構成ではページ遷移として動く。
+  var _aivicNavLastTime = 0;
+  var _aivicNavLastTarget = "";
+  var _aivicReady = false;
+  window.showScreen = function(screenId) {
+    if (!screenId) return;
+    if (screenId === window.AIVIC_PAGE_SCREEN_ID) return;
+    var targetPath = './' + encodeURIComponent(screenId) + '.html';
+    var currentName = (window.location.pathname.split('/').pop() || '');
+    if (currentName === (encodeURIComponent(screenId) + '.html') ||
+        currentName === (screenId + '.html')) {
+      return;
+    }
+    var now = Date.now();
+    if (_aivicNavLastTarget === targetPath && (now - _aivicNavLastTime) < 100) {
+      console.warn('[aivic] showScreen 連続呼び出し検知。 無限ループ防止のため抑制:', screenId);
+      return;
+    }
+    if (!_aivicReady) {
+      console.warn('[aivic] DOMContentLoaded 前の showScreen 呼び出し。 抑制:', screenId);
+      return;
+    }
+    _aivicNavLastTime = now;
+    _aivicNavLastTarget = targetPath;
+    window.location.href = targetPath;
+  };
+
+  function seedAllIfEmpty() {
+    if (!API_URL) return Promise.resolve();
+    return Promise.all(TABLE_DEFS.map(function(t, i) {
+      var preset = PRESET_SEED[t.tableName];
+      if (!Array.isArray(preset) || preset.length === 0) return Promise.resolve();
+      return window.aivicApi.list(i).then(function(existing) {
+        if (existing && existing.length > 0) return;
+        return Promise.all(preset.map(function(row) { return window.aivicApi.save(i, row); }));
+      }).catch(function() {});
+    }));
+  }
+
+  // ── 初期表示: このページ専用の panel に initFn を実行 ──
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() { _aivicReady = true; }, 1500);
+    var pageScreenId = window.AIVIC_PAGE_SCREEN_ID;
+    if (!pageScreenId) return;
+
+    // AI シェルが SPA 用の初期表示処理を持っていても、マルチページでは
+    // このファイルに割り当てられた画面だけを表示する。
+    document.querySelectorAll('[data-aivic-panel]').forEach(function(panel) {
+      var isCurrent = panel.getAttribute('data-aivic-panel') === pageScreenId;
+      panel.style.display = isCurrent ? 'block' : 'none';
+    });
+
+    document.querySelectorAll('[data-aivic-nav]').forEach(function(btn) {
+      var isActive = btn.getAttribute("data-aivic-nav") === pageScreenId;
+      btn.classList.toggle("aivic-active", isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    var container = document.querySelector('[data-aivic-panel="' + pageScreenId + '"]');
+    if (!container) return;
+
+    // content 要素の hidden 強制除去 ( 2026-05-24 Playwright 大量 fail 対応 )
+    var isModalLike = function(el) {
+      if (!el || !el.classList) return false;
+      var cn = String(el.className || "");
+      if (/\bmodal\b|\bdialog\b|\boverlay\b|\bpopup\b|\bdropdown\b|\btooltip\b/i.test(cn)) return true;
+      var role = el.getAttribute && el.getAttribute("role");
+      if (role === "dialog" || role === "alertdialog" || role === "tooltip" || role === "menu") return true;
+      if (el.hasAttribute && (el.hasAttribute("data-modal") || el.hasAttribute("data-dropdown") || el.hasAttribute("data-popup") || el.hasAttribute("data-aivic-overlay"))) return true;
+      // 【2026-06-25】 class/role が無くても inline で画面を覆う overlay ( position:fixed ) は modal 扱いにして、
+      //  content 強制可視化が誤ってダイアログをロード時に表示してしまわないようにする。
+      if (el.style && el.style.position === "fixed") return true;
+      return false;
+    };
+    var unhideContentElements = function(root) {
+      var all = root.querySelectorAll('.hidden, [hidden], [style*="display:none"], [style*="display: none"]');
+      for (var k = 0; k < all.length; k++) {
+        var el = all[k];
+        if (isModalLike(el)) continue;
+        var p = el.parentElement;
+        var insideModal = false;
+        while (p && p !== root) {
+          if (isModalLike(p)) { insideModal = true; break; }
+          p = p.parentElement;
+        }
+        if (insideModal) continue;
+        el.classList.remove('hidden');
+        el.removeAttribute('hidden');
+        if (el.style && el.style.display === 'none') el.style.display = '';
+      }
+    };
+    try { unhideContentElements(container); } catch (e) { console.warn('[aivic] unhideContent failed:', e); }
+
+    var initJsSource = window.AIVIC_PAGE_INIT_JS;
+    if (!initJsSource) {
+      seedAllIfEmpty();
+      return;
+    }
+    var initFn = null;
+    try {
+      initFn = (new Function("return (" + initJsSource + ")"))();
+    } catch (e) {
+      console.error("[aivic] initJs compile error:", pageScreenId, e);
+      return;
+    }
+    if (typeof initFn !== "function") return;
+
+    seedAllIfEmpty().then(function() {
+      return Promise.all(TABLE_DEFS.map(function(t, i) {
+        return window.aivicApi.list(i)
+          .then(function(records) { return Object.assign({}, t, { records: records }); })
+          .catch(function() { return Object.assign({}, t, { records: [] }); });
+      }));
+    }).then(function(tables) {
+      try { initFn(container, API_URL, tables); } catch (e) { console.error("[aivic] initFn error:", pageScreenId, e); }
+      _aivicReady = true;
+    });
+  });
+
+  // 【2026-06-27 強化・必ず閉じられる保証】 モーダル/ダイアログを確実に閉じる安全網。
+  //  旧版は Esc のみ + セレクタ .overlay が class="modal-overlay" にマッチせず ( クラストークンが別 )
+  //  閉じられなかった ( ユーザー報告 2026-06-27: ダイアログが閉じない ) 。 ① Esc ② オーバーレイ背景クリック
+  //  ③ 閉じる系ボタン の 3 経路で閉じる。 セレクタは複合クラスも拾うよう [class*="overlay"] を含む。
+  //  閉じ方は「開クラス ( active/open/show 等 ) があれば外す ( 再オープン可 ) 、 無ければ inline display:none」。
+  //  modal-header 等の sub-part を誤って隠さないため [class*="modal"] は使わない。
+  var AIVIC_OVERLAY_SELECTOR = '[class*="overlay"],[data-aivic-overlay],[data-modal],[role="dialog"],[role="alertdialog"]';
+  var aivicCloseOverlay = function(el) {
+    if (!el || !el.classList) return;
+    var openClasses = ["active", "open", "show", "visible", "is-open", "is-active", "show-modal"];
+    var removed = false;
+    for (var c = 0; c < openClasses.length; c++) {
+      if (el.classList.contains(openClasses[c])) { el.classList.remove(openClasses[c]); removed = true; }
+    }
+    if (!removed && el.style) el.style.display = "none";
+  };
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape" && e.keyCode !== 27) return;
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  });
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.closest) {
+      var closer = t.closest('.modal-close,[data-modal-close],[data-close],[data-dismiss]');
+      if (closer) {
+        var oc = closer.closest(AIVIC_OVERLAY_SELECTOR);
+        if (oc) { aivicCloseOverlay(oc); return; }
+      }
+    }
+    // 背景 ( オーバーレイ要素そのもの ) を直接クリックした時のみ閉じる ( モーダル本体クリックでは閉じない ) 。
+    if (t.matches && t.matches(AIVIC_OVERLAY_SELECTOR) && t === e.target) {
+      aivicCloseOverlay(t);
+    }
+  });
+  // 【2026-06-28 強化・ロード時に必ず閉じる】 生成 AI が overlay を初期 display:none にし忘れた場合でも、
+  //  ロード直後にダイアログが画面を覆って操作不能になる事故 ( ユーザー報告 2026-06-28: ダイアログが常に表示され
+  //  閉じられない ) を防ぐ。 認識可能な overlay/dialog セレクタに該当する要素はロード時に必ず閉じる
+  //  ( 開クラス除去 or display:none ) 。 真にロード時表示すべき業務コンテンツは overlay セレクタに該当しないため
+  //  影響しない ( パネルコンテナは data-aivic-panel で別管理 ) 。
+  var aivicHideOverlaysOnLoad = function() {
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aivicHideOverlaysOnLoad);
+  } else {
+    aivicHideOverlaysOnLoad();
+  }
+})();
+
+</script>
+</body>
+</html>

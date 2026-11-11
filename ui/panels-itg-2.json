@@ -1,0 +1,837 @@
+{
+  "systemId": "itg-2",
+  "systemName": "顧客取引履歴・見積管理システム",
+  "cssTheme": "```css\n:root {\n  /* Primary & Interaction */\n  --primary: #2563eb;\n  --primary-hover: #1d4ed8;\n\n  /* Background Layers */\n  --bg-main: #f8fafc;\n  --bg-card: #ffffff;\n  --bg-sidebar: #f1f5f9;\n\n  /* Borders & Dividers */\n  --border: #e2e8f0;\n  --border-width: 1px;\n\n  /* Text */\n  --text: #1e293b;\n  --text-muted: #64748b;\n\n  /* Top Bar */\n  --top-bar-bg: #1e293b;\n  --top-bar-border: #0f172a;\n  --top-bar-text: #f1f5f9;\n\n  /* Typography */\n  --font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;\n\n  /* Spacing & Sizing */\n  --space-unit: 8px;\n  --control-height: 36px;\n  --radius-card: 6px;\n  --radius-control: 4px;\n\n  /* Shadows */\n  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);\n\n  /* Motion */\n  --motion-duration: 200ms;\n\n  /* Surface Texture */\n  --surface-texture: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(226, 232, 240, 0) 100%);\n  --surface-texture-size: 100% 100%;\n  --surface-texture-position: 0 0;\n}\n```",
+  "screens": [
+    {
+      "id": "scr-1794401382374",
+      "name": "顧客取引履歴・見積管理ワークスペース",
+      "purpose": "顧客マスタと取引履歴を統合検索し、顧客別の取引履歴、見積履歴、原価推移を一元管理・参照するワークスペース",
+      "items": [
+        "顧客検索フィールド",
+        "顧客マスタ統合検索ボタン",
+        "取引履歴検索フィルター",
+        "顧客別取引履歴一覧表",
+        "取引履歴詳細表示パネル",
+        "見積履歴検索フィールド",
+        "顧客別見積履歴一覧表",
+        "商品別見積履歴一覧表",
+        "原価推移グラフ",
+        "原価推移データ表",
+        "受注情報照会パネル",
+        "見積情報照会パネル"
+      ]
+    },
+    {
+      "id": "scr-1794401391211",
+      "name": "見積作成・管理画面",
+      "purpose": "顧客からの見積依頼を登録・管理し、見積書を作成・生成・発行するための統合管理画面。見積依頼の受付から見積書の出力までの全プロセスを一元的に処理する。",
+      "items": [
+        "見積依頼一覧",
+        "見積依頼登録ボタン",
+        "顧客選択ドロップダウン",
+        "見積依頼日付入力",
+        "見積依頼内容テキストエリア",
+        "商品選択テーブル",
+        "商品数量入力欄",
+        "商品単価表示",
+        "小計自動計算",
+        "消費税計算",
+        "見積合計金額表示",
+        "見積書プレビュー"
+      ]
+    }
+  ],
+  "screenPanels": [
+    {
+      "screenId": "scr-1794401382374",
+      "panelHtml": "\n    <div class=\"page-header\">\n      <div>\n        <div class=\"breadcrumb\">\n          <span>顧客取引履歴・見積管理</span>\n          <span>></span>\n          <span>顧客検索</span>\n        </div>\n        <div class=\"page-title\">顧客取引履歴・見積管理ワークスペース</div>\n      </div>\n    </div>\n\n    <div class=\"main-container\">\n      <div class=\"left-column\">\n        <!-- 顧客検索セクション -->\n        <div class=\"search-section\">\n          <div class=\"search-group\">\n            <div class=\"form-group\" style=\"flex: 1;\">\n              <label class=\"form-label\">顧客検索</label>\n              <input type=\"text\" class=\"form-input\" placeholder=\"顧客コードまたは顧客名で検索\" id=\"customerSearchInput\">\n            </div>\n            <button class=\"button button-primary\" id=\"searchBtn\" style=\"align-self: flex-end;\">検索</button>\n            <button class=\"button button-secondary\" id=\"masterSearchBtn\" style=\"align-self: flex-end;\">顧客マスタ統合検索</button>\n          </div>\n        </div>\n\n        <!-- 取引履歴テーブル -->\n        <div>\n          <h3 class=\"section-title\">顧客別取引履歴</h3>\n          <div class=\"table-container\">\n            <div class=\"scrollable-table\">\n              <table id=\"transactionTable\">\n                <thead>\n                  <tr>\n                    <th>取引日</th>\n                    <th>取引種別</th>\n                    <th>取引金額</th>\n                    <th>ステータス</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr data-transaction-id=\"tx-001\">\n                    <td>2026-11-10</td>\n                    <td>受注</td>\n                    <td>¥1,500,000</td>\n                    <td>完了</td>\n                  </tr>\n                  <tr data-transaction-id=\"tx-002\">\n                    <td>2026-11-05</td>\n                    <td>見積</td>\n                    <td>¥2,300,000</td>\n                    <td>未処理</td>\n                  </tr>\n                  <tr data-transaction-id=\"tx-003\">\n                    <td>2026-11-01</td>\n                    <td>受注</td>\n                    <td>¥980,000</td>\n                    <td>完了</td>\n                  </tr>\n                  <tr data-transaction-id=\"tx-004\">\n                    <td>2026-10-28</td>\n                    <td>請求</td>\n                    <td>¥1,500,000</td>\n                    <td>完了</td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n\n        <!-- 見積履歴テーブル -->\n        <div>\n          <h3 class=\"section-title\">顧客別見積履歴</h3>\n          <div class=\"table-container\">\n            <div class=\"scrollable-table-250\">\n              <table id=\"quoteTable\">\n                <thead>\n                  <tr>\n                    <th>見積日</th>\n                    <th>見積金額</th>\n                    <th>ステータス</th>\n                    <th>受注転換</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr data-quote-id=\"qt-001\">\n                    <td>2026-11-05</td>\n                    <td>¥2,300,000</td>\n                    <td>有効</td>\n                    <td>-</td>\n                  </tr>\n                  <tr data-quote-id=\"qt-002\">\n                    <td>2026-10-20</td>\n                    <td>¥1,800,000</td>\n                    <td>受注済</td>\n                    <td>済</td>\n                  </tr>\n                  <tr data-quote-id=\"qt-003\">\n                    <td>2026-10-15</td>\n                    <td>¥950,000</td>\n                    <td>失効</td>\n                    <td>-</td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"right-column\">\n        <!-- 原価推移グラフ -->\n        <div>\n          <h3 class=\"section-title\">原価推移グラフ</h3>\n          <div class=\"chart-container\" id=\"costChart\">\n            グラフプレースホルダー\n          </div>\n        </div>\n\n        <!-- 詳細パネル -->\n        <div>\n          <h3 class=\"section-title\">詳細情報</h3>\n          <div class=\"detail-panel\">\n            <div class=\"tabs\">\n              <button class=\"tab active\" data-tab=\"transaction\">受注情報</button>\n              <button class=\"tab\" data-tab=\"quote\">見積情報</button>\n            </div>\n\n            <div id=\"tab-transaction\" class=\"tab-content active\">\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">顧客名</div>\n                <div class=\"detail-value\">サンプル顧客A</div>\n              </div>\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">取引日</div>\n                <div class=\"detail-value\">2026-11-10</div>\n              </div>\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">取引金額</div>\n                <div class=\"detail-value\">¥1,500,000</div>\n              </div>\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">備考</div>\n                <div class=\"detail-value\">-</div>\n              </div>\n            </div>\n\n            <div id=\"tab-quote\" class=\"tab-content\">\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">見積日</div>\n                <div class=\"detail-value\">2026-11-05</div>\n              </div>\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">有効期限</div>\n                <div class=\"detail-value\">2026-12-05</div>\n              </div>\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">見積金額</div>\n                <div class=\"detail-value\">¥2,300,000</div>\n              </div>\n              <div class=\"detail-row\">\n                <div class=\"detail-label\">商品明細</div>\n                <div class=\"detail-value\">3品目</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  ",
+      "initJs": "function(container, apiUrl, tables) {\n  const tabs = container.querySelectorAll('.tab');\n  const tabContents = container.querySelectorAll('.tab-content');\n  const transactionRows = container.querySelectorAll('#transactionTable tbody tr');\n  const quoteRows = container.querySelectorAll('#quoteTable tbody tr');\n\n  tabs.forEach(tab => {\n    tab.addEventListener('click', () => {\n      tabContents.forEach(content => content.classList.remove('active'));\n      tabs.forEach(t => t.classList.remove('active'));\n      const tabId = 'tab-' + tab.dataset.tab;\n      container.querySelector('#' + tabId).classList.add('active');\n      tab.classList.add('active');\n    });\n  });\n\n  transactionRows.forEach(row => {\n    row.addEventListener('click', () => {\n      const transactionTab = container.querySelector('[data-tab=\"transaction\"]');\n      if (transactionTab) transactionTab.click();\n    });\n  });\n\n  quoteRows.forEach(row => {\n    row.addEventListener('click', () => {\n      const quoteTab = container.querySelector('[data-tab=\"quote\"]');\n      if (quoteTab) quoteTab.click();\n    });\n  });\n}",
+      "method": "ai"
+    },
+    {
+      "screenId": "scr-1794401391211",
+      "panelHtml": "\n    <div class=\"page-header\">\n      <div>\n        <div class=\"breadcrumb\">\n          <span>見積管理</span>\n          <span>></span>\n          <span>見積作成・管理</span>\n        </div>\n        <div class=\"page-title\">見積作成・管理</div>\n      </div>\n    </div>\n\n    <div class=\"main-container\">\n      <!-- 見積依頼一覧 -->\n      <div>\n        <h3 class=\"section-title\">見積依頼一覧</h3>\n        <div class=\"quote-list-container\">\n          <div class=\"scrollable-table\">\n            <table id=\"quoteListTable\">\n              <thead>\n                <tr>\n                  <th>見積ID</th>\n                  <th>顧客名</th>\n                  <th>見積日</th>\n                  <th>ステータス</th>\n                  <th>見積金額</th>\n                </tr>\n              </thead>\n              <tbody>\n                <tr data-quote-id=\"qt-001\">\n                  <td>QT-001</td>\n                  <td>顧客A</td>\n                  <td>2026-11-10</td>\n                  <td>新規</td>\n                  <td>¥1,200,000</td>\n                </tr>\n                <tr data-quote-id=\"qt-002\">\n                  <td>QT-002</td>\n                  <td>顧客B</td>\n                  <td>2026-11-08</td>\n                  <td>発行済</td>\n                  <td>¥800,000</td>\n                </tr>\n                <tr data-quote-id=\"qt-003\">\n                  <td>QT-003</td>\n                  <td>顧客C</td>\n                  <td>2026-11-05</td>\n                  <td>失効</td>\n                  <td>¥2,500,000</td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n        </div>\n        <div style=\"padding: calc(var(--space-unit) * 1.5); background-color: var(--bg-card); border: var(--border-width) solid var(--border); border-top: none; border-radius: 0 0 var(--radius-card) var(--radius-card);\">\n          <button class=\"button button-primary\" id=\"newQuoteBtn\" style=\"width: 100%;\">見積依頼登録</button>\n        </div>\n      </div>\n\n      <!-- 見積作成フォーム -->\n      <div>\n        <h3 class=\"section-title\">見積作成フォーム</h3>\n        <div class=\"form-section\">\n          <div class=\"form-row\">\n            <div class=\"form-group\" style=\"flex: 1;\">\n              <label class=\"form-label\">顧客選択 *</label>\n              <select class=\"form-select\" id=\"customerSelect\">\n                <option value=\"\">顧客を選択してください</option>\n                <option value=\"cust-001\">顧客A（C-001）</option>\n                <option value=\"cust-002\">顧客B（C-002）</option>\n                <option value=\"cust-003\">顧客C（C-003）</option>\n              </select>\n            </div>\n            <div class=\"form-group\" style=\"flex: 1;\">\n              <label class=\"form-label\">見積依頼日付 *</label>\n              <input type=\"date\" class=\"form-input\" id=\"quoteDate\">\n            </div>\n          </div>\n\n          <div class=\"form-row\">\n            <div class=\"form-group\">\n              <label class=\"form-label\">見積依頼内容（備考）</label>\n              <textarea class=\"form-textarea\" id=\"quoteRemark\" placeholder=\"見積に関する特記事項があればご入力ください\"></textarea>\n            </div>\n          </div>\n\n          <h3 class=\"section-title\" style=\"margin-top: calc(var(--space-unit) * 2);\">商品選択</h3>\n          <div class=\"table-container\">\n            <div class=\"scrollable-table-250\">\n              <table id=\"productTable\">\n                <thead>\n                  <tr>\n                    <th>商品コード</th>\n                    <th>商品名</th>\n                    <th>単位</th>\n                    <th>数量</th>\n                    <th>単価</th>\n                    <th>小計</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr data-product-id=\"prod-001\">\n                    <td>PD-001</td>\n                    <td>商品A</td>\n                    <td>個</td>\n                    <td><input type=\"number\" class=\"form-input quantity-input\" value=\"10\" min=\"1\"></td>\n                    <td class=\"price-display\">¥10,000</td>\n                    <td class=\"price-display\">¥100,000</td>\n                  </tr>\n                  <tr data-product-id=\"prod-002\">\n                    <td>PD-002</td>\n                    <td>商品B</td>\n                    <td>箱</td>\n                    <td><input type=\"number\" class=\"form-input quantity-input\" value=\"5\" min=\"1\"></td>\n                    <td class=\"price-display\">¥20,000</td>\n                    <td class=\"price-display\">¥100,000</td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n\n        <!-- 小計・税額・合計 -->\n        <div class=\"totals-section\">\n          <div class=\"total-row\">\n            <div class=\"total-label\">小計（税抜き）</div>\n            <div class=\"total-value\">¥200,000</div>\n          </div>\n          <div class=\"total-row\">\n            <div class=\"total-label\">消費税（10%）</div>\n            <div class=\"total-value\">¥20,000</div>\n          </div>\n          <div class=\"total-row\" style=\"border-top: var(--border-width) solid var(--border); padding-top: calc(var(--space-unit) * 1);\">\n            <div class=\"total-label\">見積合計金額</div>\n            <div class=\"total-value\" style=\"font-size: 16px;\">¥220,000</div>\n          </div>\n        </div>\n      </div>\n\n      <!-- 見積書プレビュー -->\n      <div>\n        <h3 class=\"section-title\">見積書プレビュー</h3>\n        <div class=\"preview-section\">\n          <div class=\"preview-placeholder\" id=\"previewArea\">\n            プレビュー表示エリア\n          </div>\n          <div class=\"button-group\">\n            <button class=\"button button-secondary\" id=\"previewBtn\" style=\"flex: 1;\">見積書プレビュー</button>\n            <button class=\"button button-primary\" id=\"downloadBtn\" style=\"flex: 1;\">PDF出力</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  ",
+      "initJs": "function(container, apiUrl, tables) {\n  const quantityInputs = container.querySelectorAll('.quantity-input');\n  const productTable = container.querySelector('#productTable tbody');\n  const previewBtn = container.querySelector('#previewBtn');\n  const downloadBtn = container.querySelector('#downloadBtn');\n  const newQuoteBtn = container.querySelector('#newQuoteBtn');\n  const quoteListRows = container.querySelectorAll('#quoteListTable tbody tr');\n\n  function updateTotals() {\n    let subtotal = 0;\n    const rows = productTable.querySelectorAll('tr');\n    rows.forEach(row => {\n      const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;\n      const priceText = row.querySelectorAll('.price-display')[0].textContent;\n      const price = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;\n      subtotal += quantity * price;\n    });\n    const tax = Math.floor(subtotal * 0.1);\n    const total = subtotal + tax;\n    const totalsSection = container.querySelector('.totals-section');\n    const totalRows = totalsSection.querySelectorAll('.total-row');\n    if (totalRows.length >= 3) {\n      totalRows[0].querySelector('.total-value').textContent = '¥' + subtotal.toLocaleString();\n      totalRows[1].querySelector('.total-value').textContent = '¥' + tax.toLocaleString();\n      totalRows[2].querySelector('.total-value').textContent = '¥' + total.toLocaleString();\n    }\n  }\n\n  quantityInputs.forEach(input => {\n    input.addEventListener('change', updateTotals);\n  });\n\n  previewBtn.addEventListener('click', () => {\n    const previewArea = container.querySelector('#previewArea');\n    previewArea.innerHTML = '<div style=\"padding: 16px; font-size: 12px; color: var(--text);\"><strong>見積書</strong><br>顧客: 顧客A<br>見積日: ' + new Date().toLocaleDateString('ja-JP') + '<br>商品明細: 2品目<br>合計: ¥220,000</div>';\n  });\n\n  downloadBtn.addEventListener('click', () => {\n    alert('PDF出力機能（実装予定）');\n  });\n\n  newQuoteBtn.addEventListener('click', () => {\n    container.querySelector('#customerSelect').value = '';\n    container.querySelector('#quoteDate').value = '';\n    container.querySelector('#quoteRemark').value = '';\n    quantityInputs.forEach(input => input.value = input.defaultValue || 1);\n    updateTotals();\n  });\n\n  quoteListRows.forEach(row => {\n    row.addEventListener('click', () => {\n      const quoteId = row.dataset.quoteId;\n      container.querySelector('#customerSelect').value = 'cust-001';\n      updateTotals();\n    });\n  });\n}",
+      "method": "ai"
+    }
+  ],
+  "tableDefinitions": [
+    {
+      "tableName": "顧客マスタ",
+      "purpose": "顧客情報を一元管理し、販売・仕入取引の相手先として機能する基本マスタテーブル",
+      "columns": [
+        {
+          "name": "顧客ID",
+          "type": "uuid",
+          "required": true,
+          "description": "顧客を一意に識別するプライマリキー"
+        },
+        {
+          "name": "顧客コード",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "顧客の業務用識別コード、ユーザーが参照・検索する際に使用"
+        },
+        {
+          "name": "顧客名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "顧客の正式名称"
+        },
+        {
+          "name": "顧客名カナ",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "顧客名のカナ表記、検索・ソート用"
+        },
+        {
+          "name": "顧客区分",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "顧客の分類（得意先/仕入先/両方等）、フィルタリング・集計に使用"
+        },
+        {
+          "name": "郵便番号",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "顧客の郵便番号"
+        },
+        {
+          "name": "住所",
+          "type": "text",
+          "required": false,
+          "description": "顧客の住所"
+        },
+        {
+          "name": "電話番号",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "顧客の電話番号"
+        },
+        {
+          "name": "メールアドレス",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "顧客のメールアドレス"
+        },
+        {
+          "name": "担当者名",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "顧客の担当者名"
+        },
+        {
+          "name": "支払条件",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "売上時の支払条件（現金/月末締め等）"
+        },
+        {
+          "name": "納期",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "仕入時の納期条件"
+        },
+        {
+          "name": "与信限度額",
+          "type": "integer",
+          "required": false,
+          "description": "顧客に対する与信限度額"
+        },
+        {
+          "name": "ステータス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "顧客の状態（有効/休止/廃止等）、取引可否の判定に使用"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "レコード作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "レコード最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "レコード作成者のユーザーID"
+        },
+        {
+          "name": "更新者",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "レコード最終更新者のユーザーID"
+        }
+      ]
+    },
+    {
+      "tableName": "商品マスタ",
+      "purpose": "商品の基本情報を一元管理し、受注・仕入・在庫・請求などの各業務で参照される商品の定義情報を保持する",
+      "columns": [
+        {
+          "name": "商品ID",
+          "type": "uuid",
+          "required": true,
+          "description": "商品を一意に識別するプライマリキー"
+        },
+        {
+          "name": "商品コード",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "業務で使用する商品の一意なコード、受注・仕入・在庫管理で検索・フィルタリングに使用"
+        },
+        {
+          "name": "商品名",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "商品の名称、受注票・請求書などの帳票に表示"
+        },
+        {
+          "name": "商品説明",
+          "type": "text",
+          "required": false,
+          "description": "商品の詳細説明"
+        },
+        {
+          "name": "カテゴリ",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "商品の分類、フィルタリングや集計に使用"
+        },
+        {
+          "name": "単位",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "商品の数量単位（個、箱、kg等）、受注・仕入・在庫で使用"
+        },
+        {
+          "name": "標準売価",
+          "type": "integer",
+          "required": true,
+          "description": "商品の標準的な売価、受注時の初期値として使用"
+        },
+        {
+          "name": "標準仕入価",
+          "type": "integer",
+          "required": true,
+          "description": "商品の標準的な仕入価、発注時の初期値として使用"
+        },
+        {
+          "name": "在庫管理対象",
+          "type": "boolean",
+          "required": true,
+          "description": "在庫管理の対象とするかどうか、在庫テーブルへの登録判定に使用"
+        },
+        {
+          "name": "ステータス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "商品の状態（有効、廃止等）、受注・仕入時のフィルタリングに使用"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "商品マスタレコードの作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "商品マスタレコードの最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "商品マスタレコードを作成したユーザー"
+        },
+        {
+          "name": "更新者",
+          "type": "varchar(100)",
+          "required": false,
+          "description": "商品マスタレコードを最後に更新したユーザー"
+        }
+      ]
+    },
+    {
+      "tableName": "取引履歴",
+      "purpose": "顧客との取引内容を記録し、見積から受注・納品・請求までの一連のプロセスを管理するトランザクションテーブル",
+      "columns": [
+        {
+          "name": "取引ID",
+          "type": "uuid",
+          "required": true,
+          "description": "取引履歴の一意識別子"
+        },
+        {
+          "name": "顧客ID",
+          "type": "uuid",
+          "required": true,
+          "description": "顧客マスタへの外部キー参照"
+        },
+        {
+          "name": "取引日",
+          "type": "timestamp",
+          "required": true,
+          "description": "取引が発生した日時"
+        },
+        {
+          "name": "取引種別",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "見積/受注/納品/請求などの取引タイプ"
+        },
+        {
+          "name": "取引金額",
+          "type": "integer",
+          "required": true,
+          "description": "取引の合計金額（税抜き）"
+        },
+        {
+          "name": "税額",
+          "type": "integer",
+          "required": false,
+          "description": "取引に対する消費税額"
+        },
+        {
+          "name": "ステータス",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "取引の現在ステータス（未処理/処理中/完了/キャンセル等）"
+        },
+        {
+          "name": "備考",
+          "type": "text",
+          "required": false,
+          "description": "取引に関する補足情報やコメント"
+        },
+        {
+          "name": "作成日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "レコード作成日時"
+        },
+        {
+          "name": "更新日時",
+          "type": "timestamp",
+          "required": true,
+          "description": "レコード最終更新日時"
+        },
+        {
+          "name": "作成者",
+          "type": "varchar(100)",
+          "required": true,
+          "description": "レコード作成者のユーザーID"
+        }
+      ]
+    }
+  ],
+  "presetSeedData": {
+    "顧客マスタ": [
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "C-20240015",
+        "顧客名": "株式会社トヨタ自動車工業",
+        "顧客名カナ": "トヨタジドウシャコウギョウ",
+        "顧客区分": "得意先",
+        "郵便番号": "471-8571",
+        "住所": "愛知県豊田市トヨタ町1番地",
+        "電話番号": "0565-28-2121",
+        "メールアドレス": "procurement@toyota.co.jp",
+        "担当者名": "佐藤次郎",
+        "支払条件": "月末締め翌月末払い",
+        "納期": "該当なし",
+        "与信限度額": 500000000,
+        "ステータス": "有効",
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2025-01-20T14:45:00",
+        "作成者": "user-0001",
+        "更新者": "user-0003"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "SUP-0847",
+        "顧客名": "株式会社東海物流センター",
+        "顧客名カナ": "トウカイブツリュウセンター",
+        "顧客区分": "仕入先",
+        "郵便番号": "460-0008",
+        "住所": "愛知県名古屋市中区栄2丁目3番1号",
+        "電話番号": "052-201-5847",
+        "メールアドレス": "procurement@tokaibussan.co.jp",
+        "担当者名": "山田健一",
+        "支払条件": "現金払い",
+        "納期": "毎週月曜・木曜納品",
+        "与信限度額": 2500000,
+        "ステータス": "有効",
+        "作成日時": "2024-03-15T09:30:00",
+        "更新日時": "2024-12-10T14:22:00",
+        "作成者": "user-0012",
+        "更新者": "user-0012"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "RT-20250115-001",
+        "顧客名": "株式会社ファミリーマート田中",
+        "顧客名カナ": "ファミリーマートタナカ",
+        "顧客区分": "得意先",
+        "郵便番号": "150-0001",
+        "住所": "東京都渋谷区神宮前1-2-3",
+        "電話番号": "03-1234-5678",
+        "メールアドレス": "tanaka.hiroshi@familymart-tanaka.jp",
+        "担当者名": "田中洋",
+        "支払条件": "月末締め翌月末払い",
+        "納期": "指定なし",
+        "与信限度額": 500000,
+        "ステータス": "有効",
+        "作成日時": "2025-01-15T10:30:00",
+        "更新日時": "2025-01-15T10:30:00",
+        "作成者": "user-0001",
+        "更新者": "user-0001"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "GRP-0521",
+        "顧客名": "株式会社グローバルテック関西",
+        "顧客名カナ": "グローバルテックカンサイ",
+        "顧客区分": "両方",
+        "郵便番号": "530-0001",
+        "住所": "大阪府大阪市北区梅田1-3-1 グランドビル15階",
+        "電話番号": "06-6345-2100",
+        "メールアドレス": "procurement@globaltech-kansai.co.jp",
+        "担当者名": "山田健一",
+        "支払条件": "月末締め翌々月払い",
+        "納期": "注文後10営業日",
+        "与信限度額": 50000000,
+        "ステータス": "有効",
+        "作成日時": "2024-04-15 09:30:00",
+        "更新日時": "2025-01-20 14:15:00",
+        "作成者": "user-admin",
+        "更新者": "user-sales-01"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "C-0001234",
+        "顧客名": "株式会社トップ電子",
+        "顧客名カナ": "トップデンシ",
+        "顧客区分": "得意先",
+        "郵便番号": "108-0023",
+        "住所": "東京都港区芝浦4-12-8",
+        "電話番号": "03-XXXX-5678",
+        "メールアドレス": "sales@top-denshi.co.jp",
+        "担当者名": "佐藤健一",
+        "支払条件": "月末締め翌月末払い",
+        "納期": "受注後10営業日",
+        "与信限度額": 50000000,
+        "ステータス": "有効",
+        "作成日時": "2020-06-15T09:30:00",
+        "更新日時": "2025-01-20T14:15:00",
+        "作成者": "user-admin",
+        "更新者": "user-yamada"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "C00847",
+        "顧客名": "株式会社山田建設",
+        "顧客名カナ": "ヤマダケンセツ",
+        "顧客区分": "得意先",
+        "郵便番号": "150-0001",
+        "住所": "東京都渋谷区神宮前1-2-3",
+        "電話番号": "03-1234-5678",
+        "メールアドレス": "info@yamada-kensetsu.co.jp",
+        "担当者名": "佐藤次郎",
+        "支払条件": "月末締め翌月末払い",
+        "納期": "指定納期対応",
+        "与信限度額": 5000000,
+        "ステータス": "休止",
+        "作成日時": "2022-03-15 10:30:00",
+        "更新日時": "2024-06-20 14:45:00",
+        "作成者": "user-0012",
+        "更新者": "user-0045"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "OS-AG-2024-001",
+        "顧客名": "アジア流通パートナーズ株式会社",
+        "顧客名カナ": "アジアリュウツウパートナーズ",
+        "顧客区分": "仕入先",
+        "郵便番号": "100-0005",
+        "住所": "東京都千代田区丸の内1-1-1 ビジネスビル5階",
+        "電話番号": "03-XXXX-5678",
+        "メールアドレス": "procurement@asia-partners.co.jp",
+        "担当者名": "佐藤健一",
+        "支払条件": "L/C決済（信用状）",
+        "納期": "FOB上海港、リードタイム60日、最小ロット500単位",
+        "与信限度額": 50000000,
+        "ステータス": "有効",
+        "作成日時": "2024-03-15T09:30:00",
+        "更新日時": "2025-01-20T14:45:00",
+        "作成者": "user-0001",
+        "更新者": "user-0015"
+      },
+      {
+        "顧客ID": "550e8400-e29b-41d4-a716-446655440000",
+        "顧客コード": "C-2019-0847",
+        "顧客名": "株式会社フジ電機工業",
+        "顧客名カナ": "フジデンキコウギョウ",
+        "顧客区分": "仕入先",
+        "郵便番号": "430-0906",
+        "住所": "静岡県浜松市中央区住吉1丁目15-8",
+        "電話番号": "053-461-2847",
+        "メールアドレス": "order@fuji-denki.co.jp",
+        "担当者名": "山田次郎",
+        "支払条件": "月末締め翌月末払い",
+        "納期": "受注後14日以内",
+        "与信限度額": 5000000,
+        "ステータス": "廃止",
+        "作成日時": "2019-06-15T09:30:00+09:00",
+        "更新日時": "2024-11-20T14:15:00+09:00",
+        "作成者": "U-001",
+        "更新者": "U-008"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "C-2024-0847",
+        "顧客名": "株式会社トヨタ流通サービス",
+        "顧客名カナ": "トヨタリュウツウサービス",
+        "顧客区分": "得意先",
+        "郵便番号": "471-8501",
+        "住所": "愛知県豊田市トヨタ町1番地",
+        "電話番号": "0565-29-3000",
+        "メールアドレス": "procurement@toyota-logistics.co.jp",
+        "担当者名": "山田次郎",
+        "支払条件": "月末締め翌月末払い",
+        "納期": "指定納期対応",
+        "与信限度額": 50000000,
+        "ステータス": "有効",
+        "作成日時": "2024-04-15 09:30:00",
+        "更新日時": "2025-01-20 14:15:00",
+        "作成者": "user-0123",
+        "更新者": "user-0456"
+      },
+      {
+        "顧客ID": "rec-001",
+        "顧客コード": "SUP20250115001",
+        "顧客名": "株式会社山田電子部品",
+        "顧客名カナ": "ヤマダデンシブヒン",
+        "顧客区分": "仕入先",
+        "郵便番号": "1430016",
+        "住所": "東京都大田区大森北1丁目2番3号",
+        "電話番号": "0336571234",
+        "メールアドレス": "info@yamada-denshi.co.jp",
+        "担当者名": "佐藤次郎",
+        "支払条件": "該当なし",
+        "納期": "協議中",
+        "与信限度額": 5000000,
+        "ステータス": "有効",
+        "作成日時": "2025-01-15T09:30:00",
+        "更新日時": "2025-01-15T09:30:00",
+        "作成者": "USR0001",
+        "更新者": "USR0001"
+      }
+    ],
+    "商品マスタ": [
+      {
+        "商品ID": "rec-001",
+        "商品コード": "PD-2024-0847",
+        "商品名": "高性能LEDデスクライト",
+        "商品説明": "目に優しいLED照明、調光・調色機能付き、USB充電対応",
+        "カテゴリ": "照明器具",
+        "単位": "個",
+        "標準売価": 8500,
+        "標準仕入価": 4200,
+        "在庫管理対象": true,
+        "ステータス": "有効",
+        "作成日時": "2024-04-15 09:30:00",
+        "更新日時": "2025-01-20 14:15:00",
+        "作成者": "田中太郎",
+        "更新者": "佐藤花子"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "SKU-2024-XMAS-001",
+        "商品名": "クリスマスケーキ（ショコラ）",
+        "商品説明": "12月限定の高級チョコレートケーキ。ベルギー産ダークチョコを使用。",
+        "カテゴリ": "季節商品",
+        "単位": "個",
+        "標準売価": 5800,
+        "標準仕入価": 2900,
+        "在庫管理対象": true,
+        "ステータス": "有効",
+        "作成日時": "2024-09-15T10:30:00",
+        "更新日時": "2024-11-20T14:15:00",
+        "作成者": "山田花子",
+        "更新者": "佐藤次郎"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "PRD-2024-0847",
+        "商品名": "A4用紙 上質紙 500枚",
+        "商品説明": "高品質なA4上質紙。かつて主力商品だったが、デジタル化により需要減少のため廃止。",
+        "カテゴリ": "紙製品",
+        "単位": "箱",
+        "標準売価": 1200,
+        "標準仕入価": 750,
+        "在庫管理対象": true,
+        "ステータス": "廃止",
+        "作成日時": "2023-06-15T09:30:00+09:00",
+        "更新日時": "2024-11-20T14:15:00+09:00",
+        "作成者": "田中太郎",
+        "更新者": "佐藤花子"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "SVC-MAINT-001",
+        "商品名": "システム保守サービス（年間契約）",
+        "商品説明": "業務システムの定期メンテナンス、トラブル対応、アップデート管理を含む年間保守契約",
+        "カテゴリ": "保守・サポートサービス",
+        "単位": "式",
+        "標準売価": 480000,
+        "標準仕入価": 0,
+        "在庫管理対象": false,
+        "ステータス": "有効",
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2024-11-20T14:15:00",
+        "作成者": "鈴木花子",
+        "更新者": "佐藤次郎"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "LOT-2024-0847",
+        "商品名": "コピー用紙A4 500枚×5冊パック",
+        "商品説明": "高白色コピー用紙。オフィス向けロット販売商品。",
+        "カテゴリ": "事務用品",
+        "単位": "箱",
+        "標準売価": 2800,
+        "標準仕入価": 1650,
+        "在庫管理対象": true,
+        "ステータス": "有効",
+        "作成日時": "2024-06-15 09:30:00",
+        "更新日時": "2024-12-20 14:15:00",
+        "作成者": "田中太郎",
+        "更新者": "鈴木花子"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "MAT-2024-0847",
+        "商品名": "ステンレス鋼製ベアリング φ20mm",
+        "商品説明": "精密機械部品用の高精度ベアリング、耐食性に優れたステンレス鋼製",
+        "カテゴリ": "機械部品",
+        "単位": "個",
+        "標準売価": 2800,
+        "標準仕入価": 1200,
+        "在庫管理対象": true,
+        "ステータス": "有効",
+        "作成日時": "2024-03-15T09:30:00+09:00",
+        "更新日時": "2024-11-20T14:45:00+09:00",
+        "作成者": "佐藤花子",
+        "更新者": "鈴木健一"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "CS-0001",
+        "商品名": "ボールペン黒 0.7mm",
+        "商品説明": "油性ボールペン、黒インク、軽い書き心地で事務作業に最適",
+        "カテゴリ": "文具・消耗品",
+        "単位": "個",
+        "標準売価": 80,
+        "標準仕入価": 35,
+        "在庫管理対象": false,
+        "ステータス": "有効",
+        "作成日時": "2024-04-15T09:30:00",
+        "更新日時": "2024-11-20T14:15:00",
+        "作成者": "田中太郎",
+        "更新者": "鈴木花子"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "CST-MACH-2024-001",
+        "商品名": "精密加工カスタム治具",
+        "商品説明": "顧客仕様に基づく高精度な金属加工治具。図面支給による完全カスタム対応。",
+        "カテゴリ": "カスタム製造",
+        "単位": "個",
+        "標準売価": 850000,
+        "標準仕入価": 520000,
+        "在庫管理対象": false,
+        "ステータス": "有効",
+        "作成日時": "2024-06-15T09:30:00",
+        "更新日時": "2025-01-20T14:15:00",
+        "作成者": "佐藤花子",
+        "更新者": "鈴木一郎"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "KG-2024-001",
+        "商品名": "北海道産小麦粉 強力粉 25kg",
+        "商品説明": "北海道産の高品質強力粉。パン製造に最適な蛋白質含有量。",
+        "カテゴリ": "穀類・粉類",
+        "単位": "kg",
+        "標準売価": 4500,
+        "標準仕入価": 3200,
+        "在庫管理対象": true,
+        "ステータス": "有効",
+        "作成日時": "2024-03-15T09:30:00",
+        "更新日時": "2024-11-20T14:22:00",
+        "作成者": "田中太郎",
+        "更新者": "佐藤花子"
+      },
+      {
+        "商品ID": "rec-001",
+        "商品コード": "PRD-2024-0847",
+        "商品名": "高機能LEDデスクライト",
+        "商品説明": "USB充電対応、調光機能付きの省エネLEDデスクライト",
+        "カテゴリ": "オフィス機器",
+        "単位": "個",
+        "標準売価": 8500,
+        "標準仕入価": 4200,
+        "在庫管理対象": true,
+        "ステータス": "有効",
+        "作成日時": "2024-11-15T10:30:00",
+        "更新日時": "2024-11-15T10:30:00",
+        "作成者": "佐藤花子",
+        "更新者": "佐藤花子"
+      }
+    ],
+    "取引履歴": [
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-20250115-001",
+        "取引日": "2025-01-15T10:30:00+09:00",
+        "取引種別": "見積",
+        "取引金額": 450000,
+        "税額": 45000,
+        "ステータス": "未処理",
+        "備考": "新規顧客。営業担当者による初回訪問後の見積依頼。納期は2月末希望。",
+        "作成日時": "2025-01-15T10:35:00+09:00",
+        "更新日時": "2025-01-15T10:35:00+09:00",
+        "作成者": "yamada-taro"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-0847",
+        "取引日": "2024-11-15T09:30:00+09:00",
+        "取引種別": "受注",
+        "取引金額": 850000,
+        "税額": 85000,
+        "ステータス": "完了",
+        "備考": "見積書rec-est-0847-001承認済み。納期2024年12月20日。",
+        "作成日時": "2024-11-15T09:35:22+09:00",
+        "更新日時": "2024-11-15T10:12:45+09:00",
+        "作成者": "suzuki_hanako"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-0847",
+        "取引日": "2024-11-15T10:30:00+09:00",
+        "取引種別": "納品",
+        "取引金額": 450000,
+        "税額": 45000,
+        "ステータス": "完了",
+        "備考": "受注番号PO-2024-1103の部分納品（1/3回目）。商品コード：LED照明セット×15台納品。残納品予定：12月上旬、1月中旬。",
+        "作成日時": "2024-11-15T10:35:22+09:00",
+        "更新日時": "2024-11-15T14:20:15+09:00",
+        "作成者": "佐藤花子"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-0847",
+        "取引日": "2025-01-28T14:30:00+09:00",
+        "取引種別": "納品",
+        "取引金額": 450000,
+        "税額": 45000,
+        "ステータス": "完了",
+        "備考": "受注番号PO-2024-1156の最終納品（3回納品の最終回）",
+        "作成日時": "2025-01-28T14:35:22+09:00",
+        "更新日時": "2025-01-28T16:20:15+09:00",
+        "作成者": "佐藤花子"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-0847",
+        "取引日": "2024-11-15T09:30:00+09:00",
+        "取引種別": "請求",
+        "取引金額": 850000,
+        "税額": 85000,
+        "ステータス": "完了",
+        "備考": "納品完了に伴う請求書発行。納品日2024-11-12。支払期限2024-12-15。",
+        "作成日時": "2024-11-15T09:30:00+09:00",
+        "更新日時": "2024-11-15T14:22:00+09:00",
+        "作成者": "鈴木花子"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-0847",
+        "取引日": "2024-11-15T10:30:00+09:00",
+        "取引種別": "受注",
+        "取引金額": 450000,
+        "税額": 45000,
+        "ステータス": "キャンセル",
+        "備考": "顧客都合により2024-12-10にキャンセル申請。納期前の中止要望に対応。",
+        "作成日時": "2024-11-15T10:35:22+09:00",
+        "更新日時": "2024-12-10T14:20:15+09:00",
+        "作成者": "山田花子"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-0847",
+        "取引日": "2024-11-15T10:30:00Z",
+        "取引種別": "受注",
+        "取引金額": 450000,
+        "税額": 45000,
+        "ステータス": "処理中",
+        "備考": "前回納品分の追加注文。納期は12月10日希望。",
+        "作成日時": "2024-11-15T10:30:00Z",
+        "更新日時": "2024-11-15T14:20:00Z",
+        "作成者": "田中太郎"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-0847",
+        "取引日": "2024-11-15T09:30:00+09:00",
+        "取引種別": "請求",
+        "取引金額": 450000,
+        "税額": 45000,
+        "ステータス": "完了",
+        "備考": "10月分サービス利用料。銀行振込で11/20に全額入金確認済み",
+        "作成日時": "2024-11-15T10:15:00+09:00",
+        "更新日時": "2024-11-22T14:45:00+09:00",
+        "作成者": "山田花子"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-00547",
+        "取引日": "2025-01-15T14:30:00+09:00",
+        "取引種別": "返品",
+        "取引金額": -45000,
+        "税額": -4500,
+        "ステータス": "完了",
+        "備考": "納品商品の不具合により返品受付。代替品は1月22日に再納品予定。",
+        "作成日時": "2025-01-15T14:35:22+09:00",
+        "更新日時": "2025-01-16T09:15:47+09:00",
+        "作成者": "田中太郎"
+      },
+      {
+        "取引ID": "rec-001",
+        "顧客ID": "cust-2024-0847",
+        "取引日": "2025-01-31T15:30:00Z",
+        "取引種別": "請求",
+        "取引金額": 2850000,
+        "税額": 285000,
+        "ステータス": "完了",
+        "備考": "2025年1月分月次まとめ請求。受注5件分を集計。支払期限は2025年2月28日。",
+        "作成日時": "2025-02-01T09:15:00Z",
+        "更新日時": "2025-02-01T09:15:00Z",
+        "作成者": "田中太郎"
+      }
+    ]
+  },
+  "shellHtml": "<!DOCTYPE html>\n<html lang=\"ja\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>新EES - 顧客取引履歴・見積管理システム</title>\n  <style>\n:root {\n  --primary: #2563eb;\n  --primary-hover: #1d4ed8;\n  --bg-main: #f8fafc;\n  --bg-card: #ffffff;\n  --bg-sidebar: #f1f5f9;\n  --border: #e2e8f0;\n  --border-width: 1px;\n  --text: #1e293b;\n  --text-muted: #64748b;\n  --top-bar-bg: #1e293b;\n  --top-bar-border: #0f172a;\n  --top-bar-text: #f1f5f9;\n  --font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubuntu\", \"Cantarell\", \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif;\n  --space-unit: 8px;\n  --control-height: 36px;\n  --radius-card: 6px;\n  --radius-control: 4px;\n  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);\n  --motion-duration: 200ms;\n  --surface-texture: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(226, 232, 240, 0) 100%);\n  --surface-texture-size: 100% 100%;\n  --surface-texture-position: 0 0;\n}\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nhtml, body {\n  height: 100%;\n  font-family: var(--font-family);\n  color: var(--text);\n  background-color: var(--bg-main);\n}\n\nbody {\n  display: flex;\n  flex-direction: column;\n}\n\n[data-aivic-shell-pattern=\"sidebar\"] {\n  display: flex;\n  height: 100vh;\n  overflow: hidden;\n}\n\n.shell-top-bar {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 56px;\n  background-color: var(--top-bar-bg);\n  border-bottom: var(--border-width) solid var(--top-bar-border);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 calc(var(--space-unit) * 2);\n  z-index: 100;\n  box-shadow: var(--shadow-card);\n}\n\n.shell-logo {\n  display: flex;\n  align-items: center;\n  gap: calc(var(--space-unit) * 1.5);\n  font-size: 14px;\n  font-weight: 600;\n  color: var(--top-bar-text);\n}\n\n.shell-logo-icon {\n  width: 28px;\n  height: 28px;\n  background-color: var(--primary);\n  border-radius: var(--radius-control);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 12px;\n  font-weight: 700;\n  color: white;\n}\n\n.shell-user-area {\n  display: flex;\n  align-items: center;\n  gap: calc(var(--space-unit) * 1.5);\n}\n\n.shell-user-avatar {\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background-color: var(--primary);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 13px;\n  font-weight: 600;\n  color: white;\n}\n\n.shell-user-name {\n  font-size: 13px;\n  color: var(--top-bar-text);\n}\n\n.shell-logout {\n  font-size: 12px;\n  color: var(--top-bar-text);\n  text-decoration: none;\n  transition: color var(--motion-duration);\n}\n\n.shell-logout:hover {\n  color: var(--primary);\n}\n\n.shell-sidebar {\n  position: fixed;\n  left: 0;\n  top: 56px;\n  bottom: 0;\n  width: 240px;\n  background-color: var(--bg-sidebar);\n  border-right: var(--border-width) solid var(--border);\n  overflow-y: auto;\n  padding: calc(var(--space-unit) * 2) 0;\n  z-index: 99;\n}\n\n.shell-nav {\n  display: flex;\n  flex-direction: column;\n  gap: 0;\n}\n\n.shell-nav-item {\n  display: block;\n  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);\n  font-size: 13px;\n  color: var(--text);\n  text-decoration: none;\n  cursor: pointer;\n  transition: background-color var(--motion-duration), color var(--motion-duration);\n  border-left: 3px solid transparent;\n}\n\n.shell-nav-item:hover {\n  background-color: rgba(37, 99, 235, 0.08);\n  color: var(--primary);\n}\n\n.shell-nav-item.aivic-active {\n  background-color: rgba(37, 99, 235, 0.12);\n  color: var(--primary);\n  border-left-color: var(--primary);\n  font-weight: 500;\n}\n\n.content-area {\n  margin-left: 240px;\n  margin-top: 56px;\n  flex: 1;\n  overflow-y: auto;\n  background-color: var(--bg-main);\n  background-image: var(--surface-texture);\n  background-size: var(--surface-texture-size);\n  background-position: var(--surface-texture-position);\n}\n\n[data-aivic-panel] {\n  width: 100%;\n  min-height: 100%;\n}\n\n.shell-scrollbar {\n  scrollbar-width: thin;\n  scrollbar-color: rgba(100, 116, 139, 0.3) transparent;\n}\n\n.shell-scrollbar::-webkit-scrollbar {\n  width: 6px;\n}\n\n.shell-scrollbar::-webkit-scrollbar-track {\n  background: transparent;\n}\n\n.shell-scrollbar::-webkit-scrollbar-thumb {\n  background-color: rgba(100, 116, 139, 0.3);\n  border-radius: 3px;\n}\n\n.shell-scrollbar::-webkit-scrollbar-thumb:hover {\n  background-color: rgba(100, 116, 139, 0.5);\n}\n  </style>\n  <!--AIVIC_GLOBALS-->\n</head>\n<body>\n  <div data-aivic-shell-pattern=\"sidebar\" data-aivic-nav-position=\"left\" data-aivic-density=\"compact\">\n    <header class=\"shell-top-bar\">\n      <div class=\"shell-logo\">\n        <div class=\"shell-logo-icon\">E</div>\n        <span>新EES</span>\n      </div>\n      <div class=\"shell-user-area\">\n        <div class=\"shell-user-avatar\">U</div>\n        <div class=\"shell-user-name\">ユーザー</div>\n        <a href=\"./login.html\" class=\"shell-logout\">ログアウト</a>\n      </div>\n    </header>\n\n    <aside class=\"shell-sidebar shell-scrollbar\">\n      <nav class=\"shell-nav\">\n        <a class=\"shell-nav-item aivic-active\" data-aivic-nav=\"scr-1794401382374\" onclick=\"window.showScreen('scr-1794401382374')\">顧客取引履歴・見積管理</a>\n        <a class=\"shell-nav-item\" data-aivic-nav=\"scr-1794401391211\" onclick=\"window.showScreen('scr-1794401391211')\">見積作成・管理</a>\n      </nav>\n    </aside>\n\n    <main class=\"content-area shell-scrollbar\">\n      <div data-aivic-panel=\"scr-1794401382374\"></div>\n      <div data-aivic-panel=\"scr-1794401391211\"></div>\n    </main>\n  </div>\n\n  <!--AIVIC_RUNTIME-->\n</body>\n</html>",
+  "screenTaste": "フラットな画面"
+}

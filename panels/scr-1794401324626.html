@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新EES - 販売・仕入統合管理システム</title>
+  <style>
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --border: #e2e8f0;
+  --border-width: 1px;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --top-bar-bg: #1e293b;
+  --top-bar-border: #0f172a;
+  --top-bar-text: #f1f5f9;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --space-unit: 8px;
+  --control-height: 36px;
+  --radius-card: 6px;
+  --radius-control: 4px;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --motion-duration: 200ms;
+  --surface-texture: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(226, 232, 240, 0) 100%);
+  --surface-texture-size: 100% 100%;
+  --surface-texture-position: 0 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+  color: var(--text);
+  background-color: var(--bg-main);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-aivic-shell-pattern="sidebar"] {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.shell-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: var(--top-bar-bg);
+  border-bottom: var(--border-width) solid var(--top-bar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--space-unit) * 2);
+  z-index: 100;
+  box-shadow: var(--shadow-card);
+}
+
+.shell-logo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--top-bar-text);
+}
+
+.shell-logo-icon {
+  width: 28px;
+  height: 28px;
+  background-color: var(--primary);
+  border-radius: var(--radius-control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.shell-user-area {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+}
+
+.shell-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.shell-user-name {
+  font-size: 13px;
+  color: var(--top-bar-text);
+}
+
+.shell-logout {
+  font-size: 12px;
+  color: var(--top-bar-text);
+  text-decoration: none;
+  transition: color var(--motion-duration);
+}
+
+.shell-logout:hover {
+  color: var(--primary);
+}
+
+.shell-sidebar {
+  position: fixed;
+  left: 0;
+  top: 56px;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  border-right: var(--border-width) solid var(--border);
+  overflow-y: auto;
+  padding: calc(var(--space-unit) * 2) 0;
+  z-index: 99;
+}
+
+.shell-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.shell-nav-item {
+  display: block;
+  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-duration), color var(--motion-duration);
+  border-left: 3px solid transparent;
+}
+
+.shell-nav-item:hover {
+  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--primary);
+}
+
+.shell-nav-item.aivic-active {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+.content-area {
+  margin-left: 240px;
+  margin-top: 56px;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--bg-main);
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+  background-position: var(--surface-texture-position);
+}
+
+[data-aivic-panel] {
+  width: 100%;
+  min-height: 100%;
+}
+
+.shell-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.3) transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 3px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.5);
+}
+
+  </style>
+  
+<script>
+window.AIVIC_API_URL = "https://772uyvnqfxpzjoed4k3cnncqgu0zkwuc.lambda-url.us-east-1.on.aws/";
+window.AIVIC_APP_ID = "session-712a4470-1165-48cd-ab84-8bbcf0e8bb22";
+window.AIVIC_APPLICATION_NAME = "新EES";
+window.AIVIC_SYSTEM_NAME = "販売・仕入統合管理システム";
+window.AIVIC_TABLES = [{"tableName":"受注","purpose":"販売・仕入統合管理システムにおいて、顧客からの受注情報を一元管理し、受注から納品・請求までの営業プロセスを追跡・管理するトランザクションテーブル","columns":[{"name":"受注ID","type":"uuid","required":true,"description":"受注を一意に識別するプライマリキー"},{"name":"受注番号","type":"varchar(100)","required":true,"description":"ユーザーが参照する受注の一意な番号（例：RO-2024-001）"},{"name":"顧客ID","type":"uuid","required":true,"description":"顧客マスタへの外部キー参照"},{"name":"受注日","type":"timestamp","required":true,"description":"受注が発生した日時"},{"name":"納期","type":"timestamp","required":true,"description":"顧客が要求する納品期限"},{"name":"受注ステータス","type":"varchar(100)","required":true,"description":"受注の現在の状態（未処理、処理中、納品済、キャンセル等）"},{"name":"合計金額","type":"integer","required":true,"description":"受注全体の合計金額（税抜き、単位：円）"},{"name":"税額","type":"integer","required":false,"description":"受注に対する消費税額（単位：円）"},{"name":"税込合計金額","type":"integer","required":false,"description":"受注の税込み合計金額（単位：円）"},{"name":"備考","type":"text","required":false,"description":"受注に関する特記事項や特別指示"},{"name":"作成日時","type":"timestamp","required":true,"description":"受注レコードが作成された日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"受注レコードを作成したユーザーID"},{"name":"更新日時","type":"timestamp","required":true,"description":"受注レコードが最後に更新された日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"受注レコードを最後に更新したユーザーID"}]},{"tableName":"受注明細","purpose":"受注に紐付く個別商品の明細情報を管理し、販売・仕入統合管理システムにおける受注の商品構成、数量、金額を記録するトランザクションテーブル","columns":[{"name":"受注明細ID","type":"uuid","required":true,"description":"受注明細を一意に識別するプライマリキー"},{"name":"受注ID","type":"uuid","required":true,"description":"親テーブル受注への外部キー、どの受注に属するかを示す"},{"name":"明細行番号","type":"integer","required":true,"description":"受注内での行番号、同一受注内での順序を示す"},{"name":"商品ID","type":"uuid","required":true,"description":"商品マスタへの外部キー、販売対象の商品を特定する"},{"name":"商品コード","type":"varchar(100)","required":true,"description":"商品の一意なコード、業務上の検索・フィルタリングに使用"},{"name":"商品名","type":"varchar(100)","required":true,"description":"商品の名称、受注書や帳票に表示される"},{"name":"数量","type":"integer","required":true,"description":"受注した商品の数量、仕入・在庫管理の基準となる"},{"name":"単価","type":"integer","required":true,"description":"商品の単価、金額計算の基準となる"},{"name":"金額","type":"integer","required":true,"description":"明細の合計金額、数量×単価で計算される"},{"name":"税率","type":"integer","required":false,"description":"この明細に適用される税率、パーセンテージで保持"},{"name":"税額","type":"integer","required":false,"description":"この明細の税額"},{"name":"備考","type":"text","required":false,"description":"明細に関する特記事項や指示"},{"name":"作成日時","type":"timestamp","required":true,"description":"明細が作成された日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"明細が最後に更新された日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"明細を作成したユーザー"},{"name":"更新者","type":"varchar(100)","required":false,"description":"明細を最後に更新したユーザー"}]},{"tableName":"仕入先マスタ","purpose":"仕入先の基本情報を一元管理し、仕入取引の相手先情報として参照される。仕入価格設定や支払条件などの取引条件を保持する。","columns":[{"name":"仕入先ID","type":"uuid","required":true,"description":"仕入先を一意に識別するプライマリキー"},{"name":"仕入先コード","type":"varchar(100)","required":true,"description":"仕入先の業務用コード、ユーザーが参照・検索する際に使用"},{"name":"仕入先名","type":"varchar(100)","required":true,"description":"仕入先の正式名称"},{"name":"仕入先名カナ","type":"varchar(100)","required":false,"description":"仕入先名のカナ表記、検索・ソート用"},{"name":"住所","type":"text","required":false,"description":"仕入先の住所"},{"name":"電話番号","type":"varchar(100)","required":false,"description":"仕入先の連絡先電話番号"},{"name":"メールアドレス","type":"varchar(100)","required":false,"description":"仕入先の連絡先メールアドレス"},{"name":"担当者名","type":"varchar(100)","required":false,"description":"仕入先の担当者名"},{"name":"支払条件","type":"varchar(100)","required":false,"description":"仕入先との支払条件（例：翌月末払い、現金払い）"},{"name":"支払期日","type":"integer","required":false,"description":"支払期日（月内の日数、例：末日は31）"},{"name":"消費税区分","type":"varchar(100)","required":false,"description":"消費税の扱い（課税、非課税、免税等）"},{"name":"取引ステータス","type":"varchar(100)","required":true,"description":"仕入先の取引状態（有効、休止、廃止等）"},{"name":"備考","type":"text","required":false,"description":"仕入先に関する備考・特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":false,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"発注","purpose":"仕入先への発注を管理し、受注から仕入までのサプライチェーンを統制するトランザクションテーブル","columns":[{"name":"発注ID","type":"uuid","required":true,"description":"発注の一意識別子"},{"name":"発注番号","type":"varchar(100)","required":true,"description":"ユーザーが参照する発注番号"},{"name":"仕入先ID","type":"uuid","required":true,"description":"仕入先マスタへの外部キー"},{"name":"受注ID","type":"uuid","required":false,"description":"関連する受注への外部キー（受注から発注される場合）"},{"name":"発注日","type":"timestamp","required":true,"description":"発注を発行した日時"},{"name":"納期","type":"timestamp","required":true,"description":"仕入先からの納入予定日時"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"発注ステータス（未確定、確定、納入済、キャンセル等）"},{"name":"合計金額","type":"integer","required":true,"description":"発注の合計金額（税抜き）"},{"name":"税額","type":"integer","required":true,"description":"発注の消費税額"},{"name":"税込合計金額","type":"integer","required":true,"description":"発注の税込合計金額"},{"name":"備考","type":"text","required":false,"description":"発注に関する備考やコメント"},{"name":"作成日時","type":"timestamp","required":true,"description":"発注レコード作成日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"発注を作成したユーザー"},{"name":"更新日時","type":"timestamp","required":true,"description":"発注レコード最終更新日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"発注を最後に更新したユーザー"}]},{"tableName":"発注明細","purpose":"発注に紐づく個別商品の明細情報を管理し、仕入先への発注内容、数量、単価、納期などを記録するトランザクションテーブル","columns":[{"name":"発注明細ID","type":"uuid","required":true,"description":"発注明細の一意識別子"},{"name":"発注ID","type":"uuid","required":true,"description":"親テーブル発注への外部キー"},{"name":"商品コード","type":"varchar(100)","required":true,"description":"発注対象商品の識別コード"},{"name":"商品名","type":"varchar(100)","required":true,"description":"発注対象商品の名称"},{"name":"発注数量","type":"integer","required":true,"description":"発注する商品の数量"},{"name":"単価","type":"integer","required":true,"description":"商品の単価（仕入価格）"},{"name":"金額","type":"integer","required":true,"description":"発注数量と単価の積"},{"name":"納期","type":"timestamp","required":true,"description":"商品の納入予定日時"},{"name":"備考","type":"text","required":false,"description":"発注明細に関する特記事項や指示"},{"name":"作成日時","type":"timestamp","required":true,"description":"発注明細の作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"発注明細の最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"発注明細を作成したユーザー"}]},{"tableName":"納品","purpose":"受注に基づいた納品実績を記録し、顧客への納品状況を管理するトランザクションテーブル","columns":[{"name":"納品ID","type":"uuid","required":true,"description":"納品レコードの一意識別子"},{"name":"受注ID","type":"uuid","required":true,"description":"対応する受注マスタへの外部キー"},{"name":"受注明細ID","type":"uuid","required":true,"description":"対応する受注明細への外部キー"},{"name":"顧客ID","type":"uuid","required":true,"description":"納品先顧客マスタへの外部キー"},{"name":"納品日","type":"timestamp","required":true,"description":"実際の納品日時"},{"name":"納品数量","type":"integer","required":true,"description":"納品した商品の数量"},{"name":"納品ステータス","type":"varchar(100)","required":true,"description":"納品状態(未納品/納品済/部分納品/キャンセル等)"},{"name":"配送業者","type":"varchar(100)","required":false,"description":"配送を担当する業者名"},{"name":"追跡番号","type":"varchar(100)","required":false,"description":"配送の追跡番号"},{"name":"納品先住所","type":"text","required":false,"description":"実際の納品先住所"},{"name":"備考","type":"text","required":false,"description":"納品に関する特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"納品レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"納品レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"納品レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":false,"description":"納品レコード最終更新者のユーザーID"}]},{"tableName":"納品明細","purpose":"発注に基づく納品の明細行を管理し、仕入先からの納品内容、数量、受け入れ状況を記録する","columns":[{"name":"納品明細ID","type":"uuid","required":true,"description":"納品明細の一意識別子"},{"name":"納品ID","type":"uuid","required":true,"description":"親テーブル納品への外部キー"},{"name":"発注明細ID","type":"uuid","required":true,"description":"発注明細への外部キー、納品対象の発注内容を特定"},{"name":"商品コード","type":"varchar(100)","required":true,"description":"納品される商品の識別コード"},{"name":"商品名","type":"varchar(100)","required":true,"description":"納品される商品の名称"},{"name":"発注数量","type":"integer","required":true,"description":"発注時の数量"},{"name":"納品数量","type":"integer","required":true,"description":"実際に納品された数量"},{"name":"単価","type":"integer","required":true,"description":"商品の単価（仕入価格）"},{"name":"金額","type":"integer","required":true,"description":"納品数量×単価の金額"},{"name":"受け入れ状況","type":"varchar(100)","required":true,"description":"納品の受け入れ状況（未検収、検収中、検収完了、不良等）"},{"name":"備考","type":"text","required":false,"description":"納品明細に関する備考や特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"納品明細レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"納品明細レコード最終更新日時"}]},{"tableName":"請求","purpose":"売上請求書の発行・管理と入金状況の追跡を行うトランザクションテーブル。受注から生成され、顧客への請求内容と支払い状況を記録する。","columns":[{"name":"請求ID","type":"uuid","required":true,"description":"請求書の一意識別子"},{"name":"受注ID","type":"uuid","required":true,"description":"関連する受注の外部キー"},{"name":"顧客ID","type":"uuid","required":true,"description":"請求対象の顧客マスタへの外部キー"},{"name":"請求番号","type":"varchar(100)","required":true,"description":"顧客に通知する請求書番号"},{"name":"請求日","type":"timestamp","required":true,"description":"請求書を発行した日付"},{"name":"請求金額","type":"integer","required":true,"description":"請求総額（税込み、単位：円）"},{"name":"税額","type":"integer","required":true,"description":"請求に含まれる消費税額（単位：円）"},{"name":"支払期限","type":"timestamp","required":true,"description":"支払い期日"},{"name":"入金済み金額","type":"integer","required":true,"description":"現在までの入金累計額（単位：円）"},{"name":"請求ステータス","type":"varchar(100)","required":true,"description":"請求状態（未送付、送付済み、一部入金、全額入金、キャンセル等）"},{"name":"摘要","type":"text","required":false,"description":"請求に関する備考や特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"請求レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"請求レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"請求レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":true,"description":"請求レコード最終更新者のユーザーID"}]},{"tableName":"請求明細","purpose":"請求書の明細行を管理し、受注明細または発注明細に基づいて商品・サービスの請求内容、数量、金額を記録する","columns":[{"name":"請求明細ID","type":"uuid","required":true,"description":"請求明細の一意識別子"},{"name":"請求ID","type":"uuid","required":true,"description":"親テーブル請求への外部キー"},{"name":"受注明細ID","type":"uuid","required":false,"description":"販売請求の場合、受注明細への外部キー"},{"name":"発注明細ID","type":"uuid","required":false,"description":"仕入請求の場合、発注明細への外部キー"},{"name":"商品コード","type":"varchar(100)","required":true,"description":"請求対象の商品またはサービスのコード"},{"name":"商品名","type":"varchar(100)","required":true,"description":"請求対象の商品またはサービスの名称"},{"name":"数量","type":"integer","required":true,"description":"請求する商品の数量"},{"name":"単価","type":"integer","required":true,"description":"商品の単価（税抜き）"},{"name":"金額","type":"integer","required":true,"description":"数量×単価の小計（税抜き）"},{"name":"税率","type":"integer","required":true,"description":"適用される消費税率（パーセンテージ）"},{"name":"税額","type":"integer","required":true,"description":"金額に対する消費税額"},{"name":"摘要","type":"text","required":false,"description":"請求明細に関する備考やコメント"},{"name":"作成日時","type":"timestamp","required":true,"description":"請求明細の作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"請求明細の最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"請求明細を作成したユーザー"}]},{"tableName":"在庫","purpose":"商品の在庫数量、保管場所、入出庫履歴を一元管理し、受注・発注・納品との連携を通じて在庫状況をリアルタイム把握するマスタテーブル","columns":[{"name":"在庫ID","type":"uuid","required":true,"description":"在庫レコードの一意識別子"},{"name":"商品ID","type":"uuid","required":true,"description":"商品マスタへの外部キー、どの商品の在庫かを特定"},{"name":"保管場所","type":"varchar(100)","required":true,"description":"倉庫・棚番号など商品の物理的な保管位置"},{"name":"現在庫数","type":"integer","required":true,"description":"現在の在庫数量、受注・発注・納品により増減"},{"name":"予約数","type":"integer","required":false,"description":"受注により予約済みの数量、出荷待ち状態"},{"name":"発注待ち数","type":"integer","required":false,"description":"発注済みで納品待ちの数量"},{"name":"最小在庫数","type":"integer","required":false,"description":"発注判定の閾値、この数量以下で発注推奨"},{"name":"最大在庫数","type":"integer","required":false,"description":"保管容量上限、在庫管理計画の参考値"},{"name":"単位","type":"varchar(100)","required":false,"description":"個、箱、kg等の在庫数量の単位"},{"name":"最終入庫日時","type":"timestamp","required":false,"description":"最後に在庫が増加した日時"},{"name":"最終出庫日時","type":"timestamp","required":false,"description":"最後に在庫が減少した日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"在庫レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"在庫レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"在庫レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":false,"description":"在庫レコード最終更新者のユーザーID"}]},{"tableName":"在庫引当","purpose":"受注に対する在庫の引当を管理し、受注と在庫の紐付けを記録するトランザクションテーブル","columns":[{"name":"引当ID","type":"uuid","required":true,"description":"在庫引当の一意識別子"},{"name":"受注ID","type":"uuid","required":true,"description":"受注テーブルへの外部キー"},{"name":"受注明細ID","type":"uuid","required":true,"description":"受注明細テーブルへの外部キー"},{"name":"在庫ID","type":"uuid","required":true,"description":"在庫テーブルへの外部キー"},{"name":"引当数量","type":"integer","required":true,"description":"この引当で確保する在庫数量"},{"name":"引当状態","type":"varchar(100)","required":true,"description":"引当の状態(引当中/出荷済/キャンセル)"},{"name":"引当日時","type":"timestamp","required":true,"description":"在庫を引当した日時"},{"name":"出荷日時","type":"timestamp","required":false,"description":"引当在庫が出荷された日時"},{"name":"キャンセル日時","type":"timestamp","required":false,"description":"引当がキャンセルされた日時"},{"name":"備考","type":"text","required":false,"description":"引当に関する備考"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"}]},{"tableName":"販売フロー異常","purpose":"販売プロセス内で発生した異常事象を記録・管理し、受注から納品・請求までのフロー中の問題を追跡・解決するための履歴テーブル","columns":[{"name":"異常ID","type":"uuid","required":true,"description":"販売フロー異常の一意識別子"},{"name":"受注ID","type":"uuid","required":false,"description":"関連する受注の識別子"},{"name":"異常タイプ","type":"varchar(100)","required":true,"description":"異常の種類(在庫不足、納期遅延、品質問題、請求不一致等)"},{"name":"異常ステータス","type":"varchar(100)","required":true,"description":"異常の状態(未対応、対応中、解決済み、キャンセル)"},{"name":"発生箇所","type":"varchar(100)","required":true,"description":"異常が発生したプロセス段階(受注、在庫、発注、納品、請求)"},{"name":"商品ID","type":"uuid","required":false,"description":"関連する商品の識別子"},{"name":"顧客ID","type":"uuid","required":false,"description":"関連する顧客の識別子"},{"name":"異常内容","type":"text","required":true,"description":"異常の詳細説明"},{"name":"対応内容","type":"text","required":false,"description":"実施した対応内容"},{"name":"優先度","type":"varchar(100)","required":true,"description":"異常の優先度(高、中、低)"},{"name":"発生日時","type":"timestamp","required":true,"description":"異常が検出された日時"},{"name":"解決予定日","type":"timestamp","required":false,"description":"異常の解決予定日時"},{"name":"解決日時","type":"timestamp","required":false,"description":"異常が解決された日時"},{"name":"担当者","type":"varchar(100)","required":false,"description":"異常対応の担当者"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者"}]},{"tableName":"仕入フロー異常","purpose":"仕入プロセス内で発生した異常事象を記録・管理し、発注から納品・請求までのフロー中の問題を追跡・解決するための履歴テーブル","columns":[{"name":"異常ID","type":"uuid","required":true,"description":"仕入フロー異常の一意識別子"},{"name":"発注ID","type":"uuid","required":false,"description":"関連する発注レコードの外部キー"},{"name":"納品ID","type":"uuid","required":false,"description":"関連する納品レコードの外部キー"},{"name":"請求ID","type":"uuid","required":false,"description":"関連する請求レコードの外部キー"},{"name":"仕入先ID","type":"uuid","required":true,"description":"仕入先マスタへの外部キー"},{"name":"異常種別","type":"varchar(100)","required":true,"description":"異常の分類（数量不一致、品質不良、納期遅延、請求額相違等）"},{"name":"異常内容","type":"text","required":true,"description":"異常の詳細説明"},{"name":"発生日時","type":"timestamp","required":true,"description":"異常が検出された日時"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"異常の状態（未対応、対応中、解決済、保留等）"},{"name":"対応内容","type":"text","required":false,"description":"実施した対応内容"},{"name":"対応完了日時","type":"timestamp","required":false,"description":"異常対応が完了した日時"},{"name":"担当者","type":"varchar(100)","required":false,"description":"異常対応の担当者名"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者"}]},{"tableName":"異常通知ログ","purpose":"販売・仕入フローで発生した異常イベントの通知履歴を記録し、異常の発生時刻、種類、対象、ステータスを一元管理するトランザクションテーブル","columns":[{"name":"異常通知ログID","type":"uuid","required":true,"description":"異常通知ログの一意識別子"},{"name":"異常種別","type":"varchar(100)","required":true,"description":"異常の種類を示す区分値（販売フロー異常または仕入フロー異常）"},{"name":"販売フロー異常ID","type":"uuid","required":false,"description":"販売フロー異常テーブルへの外部キー（販売フロー異常の場合のみ）"},{"name":"仕入フロー異常ID","type":"uuid","required":false,"description":"仕入フロー異常テーブルへの外部キー（仕入フロー異常の場合のみ）"},{"name":"通知ステータス","type":"varchar(100)","required":true,"description":"通知の状態（未対応、対応中、解決済み等）"},{"name":"通知内容","type":"text","required":true,"description":"異常の詳細説明"},{"name":"重要度","type":"varchar(100)","required":true,"description":"異常の重要度レベル（高、中、低等）"},{"name":"発生日時","type":"timestamp","required":true,"description":"異常が発生した日時"},{"name":"通知日時","type":"timestamp","required":true,"description":"異常が通知された日時"},{"name":"対応予定日時","type":"timestamp","required":false,"description":"異常への対応予定日時"},{"name":"対応完了日時","type":"timestamp","required":false,"description":"異常への対応が完了した日時"},{"name":"対応者","type":"varchar(100)","required":false,"description":"異常に対応したユーザーID"},{"name":"対応コメント","type":"text","required":false,"description":"対応内容に関するコメント"},{"name":"作成日時","type":"timestamp","required":true,"description":"ログレコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ログレコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"ログレコード作成者のユーザーID"}]},{"tableName":"代替仕入先候補","purpose":"仕入先の供給リスク軽減のため、商品ごとに代替可能な仕入先候補を管理し、仕入フロー異常時の代替手配を支援する","columns":[{"name":"代替仕入先候補ID","type":"uuid","required":true,"description":"代替仕入先候補を一意に識別するID"},{"name":"商品ID","type":"uuid","required":true,"description":"商品マスタへの外部キー、対象となる商品"},{"name":"仕入先ID","type":"uuid","required":true,"description":"仕入先マスタへの外部キー、代替候補となる仕入先"},{"name":"優先順位","type":"integer","required":true,"description":"同一商品における代替仕入先の優先度、数値が小さいほど優先"},{"name":"リードタイム日数","type":"integer","required":false,"description":"この仕入先からの納期目安（日数）"},{"name":"最小発注数量","type":"integer","required":false,"description":"この仕入先での最小発注ロット"},{"name":"単価","type":"varchar(100)","required":false,"description":"この仕入先での単価（参考値）"},{"name":"有効フラグ","type":"boolean","required":true,"description":"代替仕入先候補として有効かどうか"},{"name":"備考","type":"text","required":false,"description":"代替仕入先選定の理由や特記事項"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"レコード作成者のユーザーID"}]},{"tableName":"納期調整案","purpose":"受注納期の調整が必要な場合に、複数の納期調整案を管理し、顧客への提案・承認プロセスを支援するテーブル","columns":[{"name":"納期調整案ID","type":"uuid","required":true,"description":"納期調整案の一意識別子"},{"name":"受注ID","type":"uuid","required":true,"description":"対象となる受注の識別子"},{"name":"受注明細ID","type":"uuid","required":true,"description":"対象となる受注明細の識別子"},{"name":"顧客ID","type":"uuid","required":true,"description":"顧客マスタへの外部キー"},{"name":"調整案番号","type":"integer","required":true,"description":"同一受注明細内での調整案の連番"},{"name":"提案納期","type":"timestamp","required":true,"description":"顧客に提案する新しい納期"},{"name":"理由","type":"text","required":true,"description":"納期調整が必要な理由"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"調整案のステータス（提案中、承認済、却下、キャンセル等）"},{"name":"顧客承認日時","type":"timestamp","required":false,"description":"顧客が調整案を承認した日時"},{"name":"顧客承認者","type":"varchar(100)","required":false,"description":"顧客側の承認者名"},{"name":"却下理由","type":"text","required":false,"description":"顧客が調整案を却下した場合の理由"},{"name":"作成日時","type":"timestamp","required":true,"description":"調整案の作成日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"調整案を作成したユーザー"},{"name":"更新日時","type":"timestamp","required":true,"description":"調整案の最終更新日時"},{"name":"更新者","type":"varchar(100)","required":true,"description":"調整案を最後に更新したユーザー"}]},{"tableName":"ユーザー","purpose":"販売・仕入統合管理システムのユーザー認証・認可・操作履歴を管理し、システムアクセス制御と監査証跡を実現する","columns":[{"name":"ユーザーID","type":"uuid","required":true,"description":"ユーザーの一意識別子"},{"name":"ユーザー名","type":"varchar(100)","required":true,"description":"ログイン時に使用するユーザー名"},{"name":"メールアドレス","type":"varchar(100)","required":true,"description":"ユーザーの連絡先メールアドレス"},{"name":"パスワードハッシュ","type":"varchar(255)","required":true,"description":"暗号化されたパスワード"},{"name":"氏名","type":"varchar(100)","required":true,"description":"ユーザーの実名"},{"name":"部門","type":"varchar(100)","required":false,"description":"ユーザーが属する部門"},{"name":"ロール","type":"varchar(50)","required":true,"description":"ユーザーに割り当てられた権限ロール（管理者、販売担当、仕入担当等）"},{"name":"ステータス","type":"varchar(20)","required":true,"description":"ユーザーの状態（有効、無効、休止等）"},{"name":"最終ログイン日時","type":"timestamp","required":false,"description":"ユーザーが最後にシステムにログインした日時"},{"name":"作成日時","type":"timestamp","required":true,"description":"ユーザーレコードが作成された日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ユーザーレコードが最後に更新された日時"},{"name":"作成者","type":"uuid","required":true,"description":"ユーザーレコードを作成したユーザーID"},{"name":"更新者","type":"uuid","required":true,"description":"ユーザーレコードを最後に更新したユーザーID"}]},{"tableName":"操作履歴","purpose":"ユーザーによるシステム操作の全履歴を記録し、監査証跡、トラブルシューティング、ユーザー行動分析に利用する","columns":[{"name":"操作履歴ID","type":"uuid","required":true,"description":"操作履歴の一意識別子"},{"name":"ユーザーID","type":"uuid","required":true,"description":"操作を実行したユーザーの識別子、ユーザーテーブルへの外部キー"},{"name":"操作種別","type":"varchar(100)","required":true,"description":"操作の種類（作成、更新、削除、参照、ログイン、ログアウト等）"},{"name":"対象テーブル","type":"varchar(100)","required":true,"description":"操作対象のテーブル名"},{"name":"対象レコードID","type":"uuid","required":false,"description":"操作対象のレコード識別子"},{"name":"操作内容","type":"text","required":false,"description":"操作の詳細説明または変更内容"},{"name":"変更前値","type":"text","required":false,"description":"更新操作の場合の変更前の値"},{"name":"変更後値","type":"text","required":false,"description":"更新操作の場合の変更後の値"},{"name":"操作日時","type":"timestamp","required":true,"description":"操作が実行された日時"},{"name":"IPアドレス","type":"varchar(100)","required":false,"description":"操作を実行したクライアントのIPアドレス"},{"name":"セッションID","type":"varchar(100)","required":false,"description":"操作時のセッション識別子"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"操作の結果ステータス（成功、失敗、エラー等）"},{"name":"エラーメッセージ","type":"text","required":false,"description":"操作失敗時のエラーメッセージ"}]}];
+window.AIVIC_PRESET_SEED = {"受注":[{"受注ID":"rec-001","受注番号":"RO-2024-11-0847","顧客ID":"cust-0042","受注日":"2024-11-15T09:30:00","納期":"2024-12-10T17:00:00","受注ステータス":"処理中","合計金額":2850000,"税額":285000,"税込合計金額":3135000,"備考":"月次定期発注。前月と同仕様。納期厳守。請求書は月末締め翌月10日払い。","作成日時":"2024-11-15T09:35:22","作成者":"営業部_山田花子","更新日時":"2024-11-16T14:12:45","更新者":"製造部_佐藤次郎"},{"受注ID":"rec-001","受注番号":"RO-2025-0001","顧客ID":"cust-rec-001","受注日":"2025-01-15T10:30:00+09:00","納期":"2025-02-28T23:59:59+09:00","受注ステータス":"処理中","合計金額":450000,"税額":45000,"税込合計金額":495000,"備考":"新規顧客初回注文。納期厳守でお願いします。請求書は月末締めでお願いします。","作成日時":"2025-01-15T10:35:22+09:00","作成者":"山田花子","更新日時":"2025-01-15T10:35:22+09:00","更新者":"山田花子"},{"受注ID":"rec-001","受注番号":"RO-2025-0847","顧客ID":"rec-cust-0342","受注日":"2025-01-15T09:30:00Z","納期":"2025-01-17T17:00:00Z","受注ステータス":"処理中","合計金額":850000,"税額":85000,"税込合計金額":935000,"備考":"生産ラインの故障対応のため特急納期。品質検査は納品時に実施。","作成日時":"2025-01-15T09:35:00Z","作成者":"田中太郎","更新日時":"2025-01-15T14:20:00Z","更新者":"鈴木花子"},{"受注ID":"rec-001","受注番号":"RO-2024-0847","顧客ID":"rec-cust-0342","受注日":"2024-11-15T10:30:00+09:00","納期":"2024-12-20T00:00:00+09:00","受注ステータス":"キャンセル","合計金額":850000,"税額":85000,"税込合計金額":935000,"備考":"顧客都合により2024年12月3日にキャンセル申請。納期前のキャンセルのため違約金なし。","作成日時":"2024-11-15T10:35:22+09:00","作成者":"山田花子","更新日時":"2024-12-03T14:22:15+09:00","更新者":"佐藤次郎"},{"受注ID":"rec-001","受注番号":"RO-2024-0847","顧客ID":"rec-cust-0156","受注日":"2024-10-15T09:30:00+09:00","納期":"2024-12-20T17:00:00+09:00","受注ステータス":"処理中","合計金額":2850000,"税額":285000,"税込合計金額":3135000,"備考":"納期遅延中。部品調達の遅れにより現在3週間遅延。顧客と調整済み、1月中旬納品予定。","作成日時":"2024-10-15T09:35:00+09:00","作成者":"山田花子","更新日時":"2025-01-08T14:20:00+09:00","更新者":"佐藤次郎"},{"受注ID":"rec-001","受注番号":"RO-2024-0847","顧客ID":"rec-cust-0312","受注日":"2024-11-15T09:30:00","納期":"2025-02-28T17:00:00","受注ステータス":"処理中","合計金額":4850000,"税額":485000,"税込合計金額":5335000,"備考":"大型プロジェクト。納期厳守。検査基準は別紙仕様書参照。納品先は東京本社と大阪営業所の2箇所。","作成日時":"2024-11-15T09:35:22","作成者":"田中太郎","更新日時":"2024-12-10T14:22:15","更新者":"鈴木花子"},{"受注ID":"rec-001","受注番号":"RO-2024-0847","顧客ID":"rec-cust-0234","受注日":"2024-10-15T09:30:00Z","納期":"2024-11-30T23:59:59Z","受注ステータス":"納品済","合計金額":450000,"税額":45000,"税込合計金額":495000,"備考":"納品完了、請求書発行待ち。配送先は東京支店。","作成日時":"2024-10-15T09:30:00Z","作成者":"田中太郎","更新日時":"2024-11-28T14:20:00Z","更新者":"佐藤花子"},{"受注ID":"rec-001","受注番号":"RO-2024-00847","顧客ID":"rec-cust-0324","受注日":"2024-11-15T09:30:00","納期":"2024-12-20T17:00:00","受注ステータス":"処理中","合計金額":2850000,"税額":285000,"税込合計金額":3135000,"備考":"11/22に顧客より仕様変更依頼あり。追加オプション対応により金額を当初2,500,000円から2,850,000円に変更。納期据え置き。","作成日時":"2024-11-15T09:35:22","作成者":"田中太郎","更新日時":"2024-11-22T14:18:45","更新者":"鈴木花子"},{"受注ID":"rec-001","受注番号":"CR-2024-0847","顧客ID":"rec-cust-0152","受注日":"2024-11-15T14:30:00+09:00","納期":"2024-11-20T23:59:59+09:00","受注ステータス":"処理中","合計金額":-45000,"税額":-4500,"税込合計金額":-49500,"備考":"2024-11-10納品分の返品対応。不良品のため全数返却。クレジット処理。","作成日時":"2024-11-15T14:35:22+09:00","作成者":"田中太郎","更新日時":"2024-11-15T14:35:22+09:00","更新者":"田中太郎"},{"受注ID":"rec-001","受注番号":"RO-2024-0847","顧客ID":"rec-cust-0512","受注日":"2024-12-15T09:30:00Z","納期":"2025-01-20T18:00:00Z","受注ステータス":"保留中","合計金額":450000,"税額":45000,"税込合計金額":495000,"備考":"顧客の予算承認待ち。承認後に処理開始予定。","作成日時":"2024-12-15T09:35:00Z","作成者":"田中太郎","更新日時":"2024-12-15T09:35:00Z","更新者":"田中太郎"}],"受注明細":[{"受注明細ID":"rec-001","受注ID":"rec-order-2024-001","明細行番号":1,"商品ID":"rec-prod-2024-001","商品コード":"PRD-A001-001","商品名":"オフィスチェア スタンダードモデル ブラック","数量":5,"単価":18000,"金額":90000,"税率":10,"税額":9000,"備考":"納期指定なし、通常配送で対応","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者":"田中太郎","更新者":"田中太郎"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-0847","明細行番号":1,"商品ID":"rec-prod-5421","商品コード":"LED-PAL-60W-NW","商品名":"LED電球 60W相当 昼白色","数量":500,"単価":280,"金額":140000,"税率":10,"税額":14000,"備考":"数量割引15%適用済み、納期2025年2月末","作成日時":"2024-12-15 09:30:00","更新日時":"2024-12-15 09:30:00","作成者":"山田花子","更新者":"山田花子"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-0847","明細行番号":3,"商品ID":"rec-prod-5432","商品コード":"CUS-LED-PANEL-27","商品名":"27インチLEDパネル（カスタム仕様）","数量":5,"単価":48000,"金額":240000,"税率":10,"税額":24000,"備考":"色温度6500K、輝度調整機能追加による単価変更対応","作成日時":"2024-11-15 10:30:00","更新日時":"2024-11-18 14:22:00","作成者":"田中太郎","更新者":"鈴木花子"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-1127","明細行番号":1,"商品ID":"rec-prod-seasonal-001","商品コード":"SKU-2024-XMAS-CAKE","商品名":"クリスマスショートケーキ（4号）","数量":12,"単価":3500,"金額":42000,"税率":10,"税額":4200,"備考":"12月25日配送指定。冷蔵便で送付。","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者":"鈴木花子","更新者":"鈴木花子"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-0847","明細行番号":1,"商品ID":"rec-prod-set-001","商品コード":"SET-OFFICE-2024","商品名":"オフィス家具セット（デスク+チェア+ラック）","数量":5,"単価":85000,"金額":425000,"税率":10,"税額":42500,"備考":"新オフィス開設用セット販売、納期は2025年3月末まで","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者":"田中太郎","更新者":"田中太郎"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-0847","明細行番号":2,"商品ID":"rec-prod-5432","商品コード":"SKU-A1200-BK","商品名":"オフィスチェア ハイバック黒","数量":3,"単価":18500,"金額":55500,"税率":10,"税額":5550,"備考":"返品1脚に伴い数量を5脚から3脚に調整","作成日時":"2024-11-15 09:30:00","更新日時":"2024-12-08 14:22:00","作成者":"田中太郎","更新者":"佐藤花子"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-1127","明細行番号":1,"商品ID":"rec-prod-0847","商品コード":"LED-PAN-60W-NW","商品名":"LEDパネルライト 60W 昼白色","数量":50,"単価":8500,"金額":425000,"税率":10,"税額":42500,"備考":"2025年1月納入分。旧税率8%適用予定だったが10%へ変更対応","作成日時":"2024-11-27 09:15:00","更新日時":"2024-11-28 14:32:00","作成者":"佐藤花子","更新者":"鈴木太郎"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-1523","明細行番号":2,"商品ID":"rec-product-789","商品コード":"PRD-LED-40W-WH","商品名":"LEDシーリングライト40W白色","数量":5,"単価":3800,"金額":19000,"税率":10,"税額":1900,"備考":"年末セール対象商品、特別価格適用（通常5500円→3800円）","作成日時":"2024-12-10 09:15:00","更新日時":"2024-12-10 09:15:00","作成者":"山田花子","更新者":"山田花子"},{"受注明細ID":"rec-001","受注ID":"rec-order-2024-1847","明細行番号":1,"商品ID":"rec-prod-5023","商品コード":"ALM-2400-BK","商品名":"アルミニウム製フレーム 2400mm ブラック","数量":50,"単価":2800,"金額":140000,"税率":10,"税額":14000,"備考":"納期遅延対応による追加注文、3月末納期希望","作成日時":"2025-02-14 09:30:00","更新日時":"2025-02-14 09:30:00","作成者":"山田花子","更新者":"山田花子"},{"受注明細ID":"rec-001","受注ID":"rec-order-0847","明細行番号":3,"商品ID":"rec-prod-2156","商品コード":"PRT-LED-24W-BL","商品名":"LED照明パネル 24W ブルーホワイト","数量":50,"単価":4800,"金額":240000,"税率":10,"税額":24000,"備考":"顧客仕様変更により色をナチュラルホワイトからブルーホワイトに変更、納期据置","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-22 14:15:00","作成者":"山田花子","更新者":"佐藤次郎"}],"仕入先マスタ":[{"仕入先ID":"rec-001","仕入先コード":"SUP-2024-001","仕入先名":"日本食品工業株式会社","仕入先名カナ":"ニホンショクヒンコウギョウカブシキガイシャ","住所":"東京都中央区日本橋2-1-1","電話番号":"03-1234-5678","メールアドレス":"procurement@nippon-food.co.jp","担当者名":"山田花子","支払条件":"翌月末払い","支払期日":31,"消費税区分":"課税","取引ステータス":"有効","備考":"月間定期仕入先、食用油・調味料の主要サプライヤー","作成日時":"2024-04-15T09:30:00Z","更新日時":"2024-12-10T14:22:00Z","作成者":"user-001","更新者":"user-003"},{"仕入先ID":"rec-001","仕入先コード":"BP-0847","仕入先名":"有限会社山田精密部品","仕入先名カナ":"ヤマダセイミツブヒン","住所":"栃木県宇都宮市平出工業団地2-15","電話番号":"028-645-3821","メールアドレス":"info@yamada-seimitsu.co.jp","担当者名":"山田次郎","支払条件":"現金払い","支払期日":0,"消費税区分":"非課税","取引ステータス":"有効","備考":"毎週月・木に納品。小ロット対応可能。現金は納品時に支払い。","作成日時":"2024-03-15T09:30:00","更新日時":"2024-11-22T14:15:00","作成者":"user-0012","更新者":"user-0012"},{"仕入先ID":"rec-001","仕入先コード":"IMP-0847","仕入先名":"グローバルトレード・シンガポール・ジャパン支店","仕入先名カナ":"グローバルトレードシンガポールジャパンシテン","住所":"東京都中央区日本橋2-1-1 グローバルビジネスセンター8階","電話番号":"03-1234-5678","メールアドレス":"procurement@globaltrade-sg.jp","担当者名":"山田健一","支払条件":"L/C決済（信用状決済）、船積み後60日手形","支払期日":60,"消費税区分":"免税","取引ステータス":"有効","備考":"シンガポール本社との直接取引、最小ロット5000ユニット、年間契約あり","作成日時":"2024-04-15T09:30:00Z","更新日時":"2024-12-20T14:15:00Z","作成者":"user-0156","更新者":"user-0156"},{"仕入先ID":"rec-001","仕入先コード":"SB-0001","仕入先名":"株式会社テクノロジー東京","仕入先名カナ":"テクノロジートウキョウ","住所":"東京都渋谷区道玄坂1-2-3 テックビル5階","電話番号":"03-1234-5678","メールアドレス":"procurement@techno-tokyo.co.jp","担当者名":"山田花子","支払条件":"翌々月末払い","支払期日":31,"消費税区分":"課税","取引ステータス":"有効","備考":"系列子会社。特別割引率5%適用。毎月定期発注あり。","作成日時":"2024-04-15T09:30:00","更新日時":"2025-01-20T14:45:00","作成者":"user-001","更新者":"user-003"},{"仕入先ID":"rec-001","仕入先コード":"ORS-0042","仕入先名":"山田青果卸売","仕入先名カナ":"ヤマダセイカオロシウリ","住所":"福岡県福岡市博多区吉塚3-15-8","電話番号":"092-641-3256","メールアドレス":"info@yamada-oroshi.jp","担当者名":"山田健一","支払条件":"調整中（試験的取引）","支払期日":31,"消費税区分":"課税","取引ステータス":"有効","備考":"地元卸売業者、新規開拓。支払条件・納期条件を協議中。初回発注予定あり。","作成日時":"2024-12-15T09:30:00+09:00","更新日時":"2024-12-15T09:30:00+09:00","作成者":"U0089","更新者":"U0089"},{"仕入先ID":"rec-001","仕入先コード":"VND-0047","仕入先名":"山田物産株式会社","仕入先名カナ":"ヤマダブッサン","住所":"大阪府大阪市中央区本町3-2-1 山田ビル5階","電話番号":"06-6123-4567","メールアドレス":"procurement@yamada-butssan.co.jp","担当者名":"佐藤健二","支払条件":"現金値引き適用（翌月末払い、2%割引）","支払期日":31,"消費税区分":"課税","取引ステータス":"有効","備考":"創業1952年、長年の信用取引実績。現金払いで2%割引適用。","作成日時":"2024-01-15T09:30:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者":"USR-0001","更新者":"USR-0008"},{"仕入先ID":"rec-001","仕入先コード":"WIN-2024-001","仕入先名":"株式会社ウィンターデコレーション","仕入先名カナ":"ウィンターデコレーション","住所":"東京都中央区日本橋2-4-1 ビジネスビル5階","電話番号":"03-1234-5678","メールアドレス":"sales@winter-deco.jp","担当者名":"鈴木美咲","支払条件":"翌月末払い","支払期日":"31","消費税区分":"課税","取引ステータス":"有効","備考":"冬季限定仕入先。11月〜2月のみ取引。クリスマス・正月装飾品専門。","作成日時":"2024-09-15T10:30:00Z","更新日時":"2024-10-20T14:15:00Z","作成者":"user-admin-001","更新者":"user-admin-001"},{"仕入先ID":"rec-001","仕入先コード":"SUP-2024-0847","仕入先名":"株式会社プレシジョン精密","仕入先名カナ":"カブシキガイシャプレシジョンセイミツ","住所":"神奈川県横浜市港北区新横浜3-18-1 プレシジョンビル5階","電話番号":"045-470-2156","メールアドレス":"procurement@precision-seimitsu.co.jp","担当者名":"山田隆一","支払条件":"翌月末払い","支払期日":31,"消費税区分":"課税","取引ステータス":"休止","備考":"品質基準逸脱により2024年11月より一時取引停止中。改善計画書提出待機中、2025年1月中に復帰判定予定。","作成日時":"2023-06-15T09:30:00","更新日時":"2024-11-20T14:45:00","作成者":"user-0521","更新者":"user-0892"},{"仕入先ID":"rec-001","仕入先コード":"SUP-2024-0847","仕入先名":"株式会社ナカムラ電子部品","仕入先名カナ":"ナカムラデンシブヒン","住所":"大阪府東大阪市高井田中3-2-15","電話番号":"06-6745-3829","メールアドレス":"info@nakamura-denshi.jp","担当者名":"中村健二","支払条件":"現金払い","支払期日":5,"消費税区分":"課税","取引ステータス":"廃止","備考":"2025年3月末廃業予定。2024年11月に最終在庫買い切り実施。今後取引なし。","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T14:22:00","作成者":"suzuki_taro","更新者":"yamamoto_hanako"},{"仕入先ID":"rec-001","仕入先コード":"SUP-2024-0847","仕入先名":"株式会社テクノロジーパーツ","仕入先名カナ":"テクノロジーパーツ","住所":"東京都渋谷区道玄坂1-2-3 テックビル5階","電話番号":"03-XXXX-5678","メールアドレス":"procurement@technoparts.co.jp","担当者名":"山田花子","支払条件":"翌月末払い","支払期日":31,"消費税区分":"課税","取引ステータス":"有効","備考":"旧システムからの移行対象。2024年度主要仕入先。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2025-01-20T14:15:00Z","作成者":"user-0012","更新者":"user-0045"}],"発注":[{"発注ID":"rec-001","発注番号":"PO-2024-00847","仕入先ID":"rec-sup-0234","受注ID":"rec-ord-5621","発注日":"2024-11-15T09:30:00","納期":"2024-12-10T00:00:00","ステータス":"確定","合計金額":385000,"税額":38500,"税込合計金額":423500,"備考":"受注PO-5621に基づく。納期厳守。検品後支払い。","作成日時":"2024-11-15T09:30:00","作成者":"田中太郎","更新日時":"2024-11-16T14:20:00","更新者":"佐藤花子"},{"発注ID":"rec-001","発注番号":"PO-2024-11-0847","仕入先ID":"rec-vendor-0523","受注ID":null,"発注日":"2024-11-15T09:30:00+09:00","納期":"2024-12-20T18:00:00+09:00","ステータス":"確定","合計金額":2850000,"税額":285000,"税込合計金額":3135000,"備考":"冬季需要予測に基づく先行発注。クリスマスシーズン向け季節商品（セーター・ニット類）。納期厳守必須。","作成日時":"2024-11-15T09:30:00+09:00","作成者":"田中太郎","更新日時":"2024-11-15T14:45:00+09:00","更新者":"佐藤花子"},{"発注ID":"rec-001","発注番号":"PO-2025-00847","仕入先ID":"rec-sup-012","受注ID":"rec-ord-156","発注日":"2025-01-15T09:30:00","納期":"2025-01-17T18:00:00","ステータス":"確定","合計金額":285000,"税額":28500,"税込合計金額":313500,"備考":"在庫切れのため緊急手配。納期厳守。配送先は東京営業所。","作成日時":"2025-01-15T09:32:15","作成者":"山田花子","更新日時":"2025-01-15T10:45:00","更新者":"佐藤次郎"},{"発注ID":"rec-001","発注番号":"PO-2025-001234","仕入先ID":"rec-sup-0087","受注ID":null,"発注日":"2025-01-15T09:30:00+09:00","納期":"2025-02-10T00:00:00+09:00","ステータス":"確定","合計金額":450000,"税額":45000,"税込合計金額":495000,"備考":"1月度月次定期発注。前月実績に基づく通常数量。","作成日時":"2025-01-15T09:32:15+09:00","作成者":"鈴木花子","更新日時":"2025-01-15T14:20:00+09:00","更新者":"山田太郎"},{"発注ID":"rec-001","発注番号":"PO-2024-08-0542","仕入先ID":"rec-vendor-0127","受注ID":"rec-order-0891","発注日":"2024-08-15T09:30:00+09:00","納期":"2024-09-10T00:00:00+09:00","ステータス":"キャンセル","合計金額":450000,"税額":45000,"税込合計金額":495000,"備考":"顧客からの受注キャンセル依頼に伴い、発注もキャンセル処理。仕入先へは電話で連絡済み。","作成日時":"2024-08-15T09:30:00+09:00","作成者":"佐藤花子","更新日時":"2024-08-16T14:45:00+09:00","更新者":"鈴木次郎"},{"発注ID":"rec-001","発注番号":"PO-2025-00847","仕入先ID":"rec-sup-042","受注ID":"rec-ord-156","発注日":"2025-01-15T10:30:00+09:00","納期":"2025-02-28T17:00:00+09:00","ステータス":"確定","合計金額":850000,"税額":85000,"税込合計金額":935000,"備考":"前回納期遅延（1月28日納入）のため再発注。納期厳守を仕入先に確認済み。","作成日時":"2025-01-15T10:32:15+09:00","作成者":"田中太郎","更新日時":"2025-01-15T14:45:00+09:00","更新者":"鈴木花子"},{"発注ID":"rec-001","発注番号":"PO-2024-12-0847","仕入先ID":"rec-sup-0156","受注ID":"rec-ord-0312,rec-ord-0315,rec-ord-0318","発注日":"2024-12-10T09:30:00+09:00","納期":"2024-12-28T17:00:00+09:00","ステータス":"確定","合計金額":1850000,"税額":185000,"税込合計金額":2035000,"備考":"複数受注をまとめた一括発注。納期厳守。検品後支払い。","作成日時":"2024-12-10T09:30:00+09:00","作成者":"田中太郎","更新日時":"2024-12-10T14:15:00+09:00","更新者":"鈴木花子"},{"発注ID":"rec-001","発注番号":"PO-2024-0847","仕入先ID":"rec-sup-156","受注ID":null,"発注日":"2024-11-15T09:30:00+09:00","納期":"2024-12-10T17:00:00+09:00","ステータス":"確定","合計金額":285000,"税額":28500,"税込合計金額":313500,"備考":"新規仕入先との品質確認用小ロット発注。納入後に品質検査を実施予定。","作成日時":"2024-11-15T09:45:00+09:00","作成者":"鈴木美咲","更新日時":"2024-11-16T14:20:00+09:00","更新者":"山田健一"},{"発注ID":"rec-001","発注番号":"PO-2025-00847","仕入先ID":"rec-sup-042","受注ID":"rec-ord-156","発注日":"2025-01-16T10:30:00+09:00","納期":"2025-01-23T17:00:00+09:00","ステータス":"確定","合計金額":185000,"税額":18500,"税込合計金額":203500,"備考":"受注ID rec-ord-156 の返品対応に伴う代替品発注。型番 MT-5500-BK ×3 台。納期厳守。","作成日時":"2025-01-16T10:32:15+09:00","作成者":"山田花子","更新日時":"2025-01-16T14:45:22+09:00","更新者":"佐藤次郎"},{"発注ID":"rec-001","発注番号":"PO-2024-11-0847","仕入先ID":"rec-sup-0023","受注ID":"rec-ord-0156","発注日":"2024-11-15T09:30:00Z","納期":"2024-12-20T18:00:00Z","ステータス":"確定","合計金額":2850000,"税額":285000,"税込合計金額":3135000,"備考":"年末年始需要対応。冬季セール向け大口注文。納期厳守。","作成日時":"2024-11-15T09:30:00Z","作成者":"田中太郎","更新日時":"2024-11-16T14:22:00Z","更新者":"鈴木花子"}],"発注明細":[{"発注明細ID":"rec-001","発注ID":"rec-po-2024-0847","商品コード":"SKU-4521-BLK","商品名":"OAチェア（黒）","発注数量":50,"単価":8500,"金額":425000,"納期":"2025-02-14 09:00:00","備考":"毎月定期発注分。納入先：東京本社倉庫。検収後支払い。","作成日時":"2025-01-20 14:35:22","更新日時":"2025-01-20 14:35:22","作成者":"佐藤花子"},{"発注明細ID":"rec-001","発注ID":"rec-po-2024-11-001","商品コード":"SKU-2024-XMAS-DECO-001","商品名":"クリスマスツリー装飾セット 180cm","発注数量":450,"単価":3200,"金額":1440000,"納期":"2024-10-28 09:00:00","備考":"販売ピーク期対応。早期納入希望。納入時に数量確認必須。","作成日時":"2024-09-15 14:30:00","更新日時":"2024-09-15 14:30:00","作成者":"佐藤美咲"},{"発注明細ID":"rec-001","発注ID":"rec-po-2025-0847","商品コード":"PRT-A4-500","商品名":"A4用紙 500枚パック 白色","発注数量":50,"単価":380,"金額":19000,"納期":"2025-01-16 14:00:00","備考":"システム障害による緊急対応のため翌日納入必須。午前中配送希望。","作成日時":"2025-01-15 09:23:45","更新日時":"2025-01-15 09:23:45","作成者":"佐藤花子"},{"発注明細ID":"rec-001","発注ID":"rec-po-2025-0247","商品コード":"FAN-2400-BK","商品名":"業務用天井扇 24インチ ブラック","発注数量":5,"単価":18500,"金額":92500,"納期":"2025-01-16 17:00:00","備考":"不良品返品（ロット20241225）の代替品。即日納入依頼済み","作成日時":"2025-01-16 09:23:45","更新日時":"2025-01-16 09:23:45","作成者":"山田花子"},{"発注明細ID":"rec-001","発注ID":"rec-po-20250115-001","商品コード":"NEW-LED-PANEL-55","商品名":"55インチLEDディスプレイパネル","発注数量":5,"単価":45000,"金額":225000,"納期":"2025-02-28 17:00:00","備考":"新商品導入試験用。納入後、品質検査および動作確認を実施予定。","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 09:30:00","作成者":"佐藤花子"},{"発注明細ID":"rec-001","発注ID":"rec-po-2024-0847","商品コード":"SKU-LED-100W-NW","商品名":"LED照明器具 100W 昼白色","発注数量":150,"単価":8500,"金額":1275000,"納期":"2025-02-14 09:00:00","備考":"東京拠点向け。納入先：渋谷営業所。検収時に点灯確認必須","作成日時":"2024-12-20 14:30:00","更新日時":"2024-12-20 14:30:00","作成者":"山田花子"},{"発注明細ID":"rec-001","発注ID":"rec-po-2024-0847","商品コード":"SKU-4521-BL","商品名":"オフィスチェア（ブルー）","発注数量":25,"単価":8500,"金額":212500,"納期":"2025-02-28 17:00:00","備考":"仕入先A社の2月値下げキャンペーン（10%割引適用）により通常の1.5倍数量で発注","作成日時":"2025-01-15 10:30:00","更新日時":"2025-01-15 10:30:00","作成者":"山田花子"},{"発注明細ID":"rec-001","発注ID":"rec-po-2024-1847","商品コード":"SUM-2024-BLU-L","商品名":"夏物Tシャツ ブルー Lサイズ","発注数量":150,"単価":280,"金額":42000,"納期":"2024-09-15 14:00:00","備考":"季節終了に伴う在庫処分。定価の60%での買取価格。返品不可。","作成日時":"2024-09-01 09:30:00","更新日時":"2024-09-01 09:30:00","作成者":"佐藤美咲"},{"発注明細ID":"rec-001","発注ID":"rec-po-2024-0847","商品コード":"MAT-5500-BK","商品名":"アルミニウム板材 5.0mm厚 黒色","発注数量":500,"単価":2800,"金額":1400000,"納期":"2025-02-15 09:00:00","備考":"通常仕入先の供給停止に伴う代替仕入先への初回発注。品質基準は既存仕入先同等を要求。","作成日時":"2025-01-20 14:30:00","更新日時":"2025-01-20 14:30:00","作成者":"佐藤花子"},{"発注明細ID":"rec-001","発注ID":"rec-order-2024-1127","商品コード":"SKU-45782-BLK","商品名":"高級革製ビジネスバッグ（黒）","発注数量":50,"単価":8500,"金額":425000,"納期":"2025-01-15 17:00:00","備考":"顧客指定の特別仕様（内ポケット追加）。納期厳守。検品後発送。","作成日時":"2024-11-27 10:30:00","更新日時":"2024-11-27 10:30:00","作成者":"山田花子"}],"納品":[{"納品ID":"rec-001","受注ID":"rec-0001","受注明細ID":"rec-0001-01","顧客ID":"rec-cust-0156","納品日":"2024-11-15T10:30:00+09:00","納品数量":50,"納品ステータス":"納品済","配送業者":"ヤマト運輸","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC株式会社 受付","備考":"指定日時通り配送完了。受け取り担当者：佐藤次郎","作成日時":"2024-11-14T14:20:00+09:00","更新日時":"2024-11-15T11:45:00+09:00","作成者":"田中太郎","更新者":"鈴木花子"},{"納品ID":"rec-001","受注ID":"rec-101","受注明細ID":"rec-201","顧客ID":"rec-301","納品日":"2024-11-15T10:30:00","納品数量":80,"納品ステータス":"部分納品","配送業者":"ヤマト運輸","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC商社ビル3階","備考":"受注数量100個のうち80個を納品。残20個は12月10日納品予定。","作成日時":"2024-11-15T09:00:00","更新日時":"2024-11-15T10:30:00","作成者":"山田太郎","更新者":"山田太郎"},{"納品ID":"rec-001","受注ID":"rec-0042","受注明細ID":"rec-0042-01","顧客ID":"rec-cust-0156","納品日":"2025-01-15T09:30:00Z","納品数量":50,"納品ステータス":"キャンセル","配送業者":"ヤマト運輸","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC株式会社 受付","備考":"顧客都合により納品前にキャンセル要請。配送業者に返送手配済み。","作成日時":"2025-01-10T14:20:00Z","更新日時":"2025-01-15T10:45:00Z","作成者":"鈴木花子","更新者":"佐藤次郎"},{"納品ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","納品日":"2025-01-15T14:30:00","納品数量":150,"納品ステータス":"納品済","配送業者":"佐川急便","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC ビル5階","備考":"港湾ストライキにより予定から21日遅延。顧客に事前通知済み。","作成日時":"2024-12-10T09:15:00","更新日時":"2025-01-15T15:45:00","作成者":"山田花子","更新者":"鈴木次郎"},{"納品ID":"rec-001","受注ID":"rec-0521","受注明細ID":"rec-0521-01","顧客ID":"rec-cust-0847","納品日":"2024-11-15T14:30:00","納品数量":150,"納品ステータス":"納品済","配送業者":"ヤマト運輸","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC商業ビル5階","備考":"受注明細3件分をまとめて配送。納品先企業の受け取り確認済み。","作成日時":"2024-11-14T09:15:00","更新日時":"2024-11-15T15:45:00","作成者":"田中太郎","更新者":"鈴木花子"},{"納品ID":"rec-001","受注ID":"rec-0521","受注明細ID":"rec-0521-01","顧客ID":"rec-cust-0847","納品日":"2024-11-15T14:30:00","納品数量":50,"納品ステータス":"納品済","配送業者":"ヤマト運輸","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂2-10-7新大宗ビル","備考":"配送業者の住所手配ミスで当初の渋谷区神宮前から変更。顧客確認済み。","作成日時":"2024-11-12T09:15:00","更新日時":"2024-11-15T15:45:00","作成者":"山田花子","更新者":"佐藤次郎"},{"納品ID":"rec-001","受注ID":"rec-101","受注明細ID":"rec-201","顧客ID":"rec-301","納品日":"2025-01-15T10:30:00","納品数量":50,"納品ステータス":"納品済","配送業者":"ヤマト運輸","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC ビル 5F","備考":"顧客からの納品先変更リクエストに対応し、当初予定の品川から渋谷に変更して納品完了","作成日時":"2025-01-10T14:20:00","更新日時":"2025-01-15T11:00:00","作成者":"山田花子","更新者":"佐藤次郎"},{"納品ID":"rec-001","受注ID":"rec-0234","受注明細ID":"rec-0234-02","顧客ID":"rec-cust-0156","納品日":"2025-01-15T10:30:00","納品数量":50,"納品ステータス":"部分納品","配送業者":"ヤマト運輸","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC商社ビル5階","備考":"初回納品時に配送中の破損により20個が不良品。再納品予定。","作成日時":"2025-01-10T09:15:00","更新日時":"2025-01-15T11:45:00","作成者":"山田花子","更新者":"佐藤次郎"},{"納品ID":"rec-001","受注ID":"rec-0521","受注明細ID":"rec-0521-02","顧客ID":"rec-cust-8847","納品日":"2024-11-15T09:30:00Z","納品数量":250,"納品ステータス":"納品済","配送業者":"FedEx International","追跡番号":"794617892345, 794617892346","納品先住所":"123 Business Avenue, Suite 500, New York, NY 10001, USA","備考":"国際配送のため追跡番号は日本発送分と米国到着分の2つ。顧客確認済み。","作成日時":"2024-11-08T14:22:00Z","更新日時":"2024-11-15T10:45:00Z","作成者":"田中太郎","更新者":"佐藤花子"},{"納品ID":"rec-001","受注ID":"rec-102","受注明細ID":"rec-103","顧客ID":"rec-201","納品日":"2024-11-15T14:30:00","納品数量":50,"納品ステータス":"未納品","配送業者":"佐川急便","追跡番号":"1234567890123","納品先住所":"東京都渋谷区道玄坂1-2-3 ABC商社ビル5階","備考":"システムエラーにより納品済みに更新されず。実際は11/15に納品完了。","作成日時":"2024-11-15T09:45:00","更新日時":"2024-11-15T14:35:00","作成者":"佐藤花子","更新者":"田中太郎"}],"納品明細":[{"納品明細ID":"rec-001","納品ID":"rec-nav-0042","発注明細ID":"rec-hattyuu-0156","商品コード":"SKU-2024-0847","商品名":"オフィスチェア（メッシュ、黒）","発注数量":50,"納品数量":50,"単価":8500,"金額":425000,"受け入れ状況":"検収完了","備考":"2024年12月15日納品。数量・品質ともに確認完了。","作成日時":"2024-12-15T09:30:00","更新日時":"2024-12-18T14:45:00"},{"納品明細ID":"rec-001","納品ID":"rec-nav-0847","発注明細ID":"rec-hot-2156","商品コード":"PRT-2024-0512","商品名":"A4用紙 白色 500枚/ream","発注数量":50,"納品数量":65,"単価":450,"金額":29250,"受け入れ状況":"検収中","備考":"発注数量50に対し65ream納品。過納品15ream。返品手続き待ち中","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T14:22:00"},{"納品明細ID":"rec-001","納品ID":"rec-noh-0847","発注明細ID":"rec-chumon-2341","商品コード":"SKU-4521-BLK","商品名":"オフィスチェア（黒）","発注数量":50,"納品数量":35,"単価":8500,"金額":297500,"受け入れ状況":"検収完了","備考":"納期短縮のため部分納品。残り15個は2月中旬納品予定","作成日時":"2025-02-03T09:15:00","更新日時":"2025-02-05T14:22:00"},{"納品明細ID":"rec-001","納品ID":"rec-nav-0847","発注明細ID":"rec-hot-2341","商品コード":"PRT-2024-5500","商品名":"ステンレス製ボルトM8×50mm","発注数量":1000,"納品数量":1000,"単価":45,"金額":45000,"受け入れ状況":"不良","備考":"納品数量1000個中、約50個にネジ山不良を確認。返品・交換対象。","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-16T14:22:00"},{"納品明細ID":"rec-001","納品ID":"rec-del-2024-0847","発注明細ID":"rec-ord-2024-5623","商品コード":"PRT-2024-08-001","商品名":"A4用紙 白色 500枚ケース","発注数量":50,"納品数量":50,"単価":450,"金額":22500,"受け入れ状況":"検収完了","備考":"納期予定2024年10月15日、実納品2024年10月28日（13日遅延）。数量・品質に問題なし。仕入先の製造遅延による。","作成日時":"2024-10-28T14:32:00+09:00","更新日時":"2024-10-29T10:15:00+09:00"},{"納品明細ID":"rec-001","納品ID":"rec-nav-0042","発注明細ID":"rec-hot-0156","商品コード":"PRT-2024-0847","商品名":"精密ベアリング φ25mm","発注数量":500,"納品数量":500,"単価":1200,"金額":600000,"受け入れ状況":"不良","備考":"全数検査で内輪の傷が確認。全量返品対象。仕入先に報告済み。","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-16 14:22:00"},{"納品明細ID":"rec-001","納品ID":"rec-002","発注明細ID":"rec-003","商品コード":"PRT-2024-0847","商品名":"A4用紙 白色 500枚/ream","発注数量":50,"納品数量":50,"単価":480,"金額":24000,"受け入れ状況":"未検収","備考":"2025年1月15日納品受け取り、検収待ち","作成日時":"2025-01-15T14:32:00","更新日時":"2025-01-15T14:32:00"},{"納品明細ID":"rec-001","納品ID":"rec-nav-0847","発注明細ID":"rec-hot-2156","商品コード":"SKU-45782","商品名":"ステンレス製ボルトM8×50mm","発注数量":500,"納品数量":500,"単価":18,"金額":9000,"受け入れ状況":"検収完了","備考":"発注時単価15円から18円に変更、金額を再計算して受け入れ完了","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-22 14:15:00"},{"納品明細ID":"rec-001","納品ID":"rec-nav-0047","発注明細ID":"rec-hat-0156","商品コード":"SKU-2024-08-001","商品名":"オフィスチェア（黒）","発注数量":50,"納品数量":30,"単価":8500,"金額":255000,"受け入れ状況":"検収完了","備考":"分割納品1回目。残り20脚は2月中旬納品予定","作成日時":"2025-02-03 09:15:00","更新日時":"2025-02-05 14:42:00"},{"納品明細ID":"rec-001","納品ID":"rec-002","発注明細ID":"rec-003","商品コード":"PD-2024-0847","商品名":"オフィスチェア（黒）","発注数量":50,"納品数量":50,"単価":12800,"金額":640000,"受け入れ状況":"検収完了","備考":"2024年11月の不良品返品分の交換納品。全数検査済み、問題なし。","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 14:45:00"}],"請求":[{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2025-00847","請求日":"2025-01-10T09:30:00Z","請求金額":5500000,"税額":500000,"支払期限":"2025-02-10T23:59:59Z","入金済み金額":5500000,"請求ステータス":"全額入金","摘要":"2025年1月分月次定期請求。2025年1月5日に全額入金確認済み。","作成日時":"2025-01-10T09:30:00Z","更新日時":"2025-01-06T14:22:00Z","作成者":"田中太郎","更新者":"佐藤花子"},{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2024-0001","請求日":"2024-12-15T09:30:00Z","請求金額":550000,"税額":50000,"支払期限":"2025-01-15T23:59:59Z","入金済み金額":0,"請求ステータス":"未送付","摘要":"新規顧客初回受注。請求書発行待ち。","作成日時":"2024-12-15T09:30:00Z","更新日時":"2024-12-15T09:30:00Z","作成者":"田中太郎","更新者":"田中太郎"},{"請求ID":"rec-001","受注ID":"rec-0421","顧客ID":"rec-0156","請求番号":"INV-2024-12-0847","請求日":"2024-12-15T09:30:00Z","請求金額":550000,"税額":50000,"支払期限":"2025-01-15T23:59:59Z","入金済み金額":275000,"請求ステータス":"一部入金","摘要":"システム導入サービス。初回分50%を12/20に受領、残金は1/15までの入金予定。","作成日時":"2024-12-15T09:30:00Z","更新日時":"2024-12-22T14:15:00Z","作成者":"山田花子","更新者":"佐藤次郎"},{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2024-001523","請求日":"2024-11-15T09:30:00Z","請求金額":550000,"税額":50000,"支払期限":"2024-12-15T23:59:59Z","入金済み金額":0,"請求ステータス":"キャンセル","摘要":"受注REC-002がキャンセルされたため請求を取消。顧客に取消通知済み。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-11-22T14:45:00Z","作成者":"田中太郎","更新者":"鈴木花子"},{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2024-12-0001","請求日":"2024-12-15T09:30:00Z","請求金額":550000,"税額":50000,"支払期限":"2025-01-15T23:59:59Z","入金済み金額":0,"請求ステータス":"送付済み","摘要":"分割払い契約（全5回）の初回請求。残金は月次で請求予定。","作成日時":"2024-12-15T09:30:00Z","更新日時":"2024-12-15T09:30:00Z","作成者":"田中太郎","更新者":"田中太郎"},{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2025-001847","請求日":"2025-01-15T09:30:00+09:00","請求金額":2750000,"税額":250000,"支払期限":"2025-02-28T23:59:59+09:00","入金済み金額":1375000,"請求ステータス":"一部入金","摘要":"納期遅延（12月末→1月中旬）に伴い請求日を変更。前払金1,375,000円を差し引いた残額の請求。","作成日時":"2025-01-15T09:30:00+09:00","更新日時":"2025-01-15T14:45:00+09:00","作成者":"山田花子","更新者":"山田花子"},{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2025-00847","請求日":"2025-01-15T09:30:00Z","請求金額":550000,"税額":50000,"支払期限":"2025-02-15T23:59:59Z","入金済み金額":550000,"請求ステータス":"全額入金","摘要":"初回請求額の計算誤りにより修正・再発行。前回請求分はキャンセル済み。","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者":"山田花子","更新者":"佐藤次郎"},{"請求ID":"rec-001","受注ID":"rec-0045","顧客ID":"rec-0128","請求番号":"INV-2024-001847","請求日":"2024-10-15T09:30:00Z","請求金額":385000,"税額":35000,"支払期限":"2024-11-30T23:59:59Z","入金済み金額":0,"請求ステータス":"未送付","摘要":"支払期限超過。督促メール未送信。","作成日時":"2024-10-15T09:30:00Z","更新日時":"2025-01-08T14:22:00Z","作成者":"鈴木花子","更新者":"佐藤次郎"},{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2024-00847","請求日":"2024-11-15T09:30:00","請求金額":275000,"税額":25000,"支払期限":"2024-12-15T23:59:59","入金済み金額":0,"請求ステータス":"送付済み","摘要":"返品対応による減額修正。商品コード SKU-4521 の返品分 ¥55,000 を控除","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T14:20:00","作成者":"山田花子","更新者":"佐藤次郎"},{"請求ID":"rec-001","受注ID":"rec-002","顧客ID":"rec-003","請求番号":"INV-2024-0847","請求日":"2024-11-15T09:30:00Z","請求金額":1450000,"税額":145000,"支払期限":"2024-12-31T23:59:59Z","入金済み金額":0,"請求ステータス":"送付済み","摘要":"USD換算レート1ドル=150円適用。海外顧客向け請求書。","作成日時":"2024-11-15T09:30:00Z","更新日時":"2024-11-15T10:15:00Z","作成者":"田中太郎","更新者":"田中太郎"}],"請求明細":[{"請求明細ID":"rec-001","請求ID":"rec-bill-2024-1205","受注明細ID":"rec-order-detail-2024-1128","発注明細ID":null,"商品コード":"PD-A001","商品名":"OAフィルム A4サイズ 100枚入り","数量":50,"単価":2800,"金額":140000,"税率":10,"税額":14000,"摘要":"毎月定期配送分（12月分）。前月比同数量。","作成日時":"2024-12-05T09:30:00","更新日時":"2024-12-05T09:30:00","作成者":"田中太郎"},{"請求明細ID":"rec-001","請求ID":"rec-req-0847","受注明細ID":"rec-ord-2341","発注明細ID":null,"商品コード":"PRT-2024-A5","商品名":"高機能プリンタ用トナーカートリッジ（ブラック）","数量":15,"単価":4800,"金額":72000,"税率":10,"税額":7200,"摘要":"小ロット追加注文分。納期2025年1月20日予定。","作成日時":"2024-12-15 14:32:00","更新日時":"2024-12-15 14:32:00","作成者":"鈴木花子"},{"請求明細ID":"rec-001","請求ID":"rec-bill-2024-0847","受注明細ID":"rec-order-detail-2024-1523","発注明細ID":null,"商品コード":"PRD-A0042","商品名":"オフィスチェア（メッシュ素材・黒）","数量":8,"単価":18500,"金額":148000,"税率":10,"税額":14800,"摘要":"返品2脚分を調整済み（元数量10脚→8脚）","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-20T14:22:00+09:00","作成者":"田中太郎"},{"請求明細ID":"rec-001","請求ID":"rec-002","受注明細ID":null,"発注明細ID":"rec-003","商品コード":"MAT-2024-0847","商品名":"アルミニウム板 t=2.0mm","数量":50,"単価":1200,"金額":60000,"税率":10,"税額":6000,"摘要":"2024年12月納品分、品質検査済み","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-15 09:30:00","作成者":"鈴木花子"},{"請求明細ID":"rec-001","請求ID":"rec-bill-0047","受注明細ID":"rec-order-0156","発注明細ID":null,"商品コード":"PRD-2024-0892","商品名":"業務用複合機 MFP-3500","数量":2,"単価":385000,"金額":770000,"税率":10,"税額":77000,"摘要":"納期2025年1月15日、設置・初期設定費用は別途見積","作成日時":"2024-12-20 14:32:15","更新日時":"2024-12-20 14:32:15","作成者":"鈴木花子"},{"請求明細ID":"rec-001","請求ID":"req-2024-0847","受注明細ID":"ord-2024-5632","発注明細ID":null,"商品コード":"PRD-8847-BK","商品名":"オフィスチェア エルゴノミクス仕様 ブラック","数量":5,"単価":28000,"金額":140000,"税率":10,"税額":14000,"摘要":"消費税率引き上げ前の駆け込み発注分。納期厳守で対応。","作成日時":"2024-03-28 14:32:15","更新日時":"2024-03-28 14:32:15","作成者":"佐藤花子"},{"請求明細ID":"rec-001","請求ID":"rec-bill-2024-0847","受注明細ID":"rec-order-2024-5623","発注明細ID":null,"商品コード":"SVC-WEB-001","商品名":"ウェブサイト保守運用サービス（月次）","数量":1,"単価":150000,"金額":150000,"税率":10,"税額":15000,"摘要":"2025年1月分のサーバー監視、セキュリティ更新、バックアップ対応を含む","作成日時":"2025-01-31 09:15:00","更新日時":"2025-01-31 09:15:00","作成者":"鈴木花子"},{"請求明細ID":"rec-001","請求ID":"rec-req-0847","受注明細ID":null,"発注明細ID":"rec-po-2156","商品コード":"MAT-2024-0512","商品名":"ステンレス製ボルト M10×50mm","数量":500,"単価":48,"金額":24000,"税率":10,"税額":2400,"摘要":"数量500個以上の購入で5%値引き適用済み","作成日時":"2024-12-15 09:30:00","更新日時":"2024-12-15 09:30:00","作成者":"山田花子"},{"請求明細ID":"rec-001","請求ID":"rec-002","受注明細ID":"rec-003","発注明細ID":null,"商品コード":"PRD-2024-001","商品名":"オフィスチェア（ハイバック）","数量":8,"単価":15000,"金額":120000,"税率":10,"税額":12000,"摘要":"当初10台の注文のうち2台分キャンセルにより数量調整","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者":"田中太郎"},{"請求明細ID":"rec-001","請求ID":"rec-req-2024-1501","受注明細ID":null,"発注明細ID":"rec-po-2024-8847","商品コード":"SKU-WIN-2024-001","商品名":"冬用ニット帽（黒）","数量":500,"単価":1200,"金額":600000,"税率":10,"税額":60000,"摘要":"2024年冬シーズン向け一括仕入。納期2024年9月30日。","作成日時":"2024-09-15 10:30:00","更新日時":"2024-09-15 10:30:00","作成者":"山田花子"}],"在庫":[{"在庫ID":"rec-001","商品ID":"prod-2024-0847","保管場所":"第1倉庫 A-3-15","現在庫数":450,"予約数":120,"発注待ち数":200,"最小在庫数":100,"最大在庫数":800,"単位":"個","最終入庫日時":"2025-01-15 09:30:00","最終出庫日時":"2025-01-14 16:45:00","作成日時":"2024-04-10 08:00:00","更新日時":"2025-01-15 09:35:00","作成者":"田中太郎","更新者":"鈴木花子"},{"在庫ID":"rec-001","商品ID":"prod-2847","保管場所":"A棟3階-冷蔵室B-棚12","現在庫数":45,"予約数":28,"発注待ち数":120,"最小在庫数":50,"最大在庫数":500,"単位":"個","最終入庫日時":"2024-11-15 14:30:00","最終出庫日時":"2025-01-08 09:15:00","作成日時":"2024-09-20 10:00:00","更新日時":"2025-01-08 09:20:00","作成者":"山田花子","更新者":"佐藤次郎"},{"在庫ID":"rec-001","商品ID":"prod-0847","保管場所":"A棟-2F-ラック15-段3","現在庫数":45,"予約数":12,"発注待ち数":80,"最小在庫数":30,"最大在庫数":150,"単位":"個","最終入庫日時":"2024-11-15 09:30:00","最終出庫日時":"2024-12-18 14:22:00","作成日時":"2024-10-01 08:00:00","更新日時":"2024-12-18 14:35:00","作成者":"佐藤花子","更新者":"鈴木健一"},{"在庫ID":"rec-001","商品ID":"prod-0847","保管場所":"東京倉庫A棟・2階・棚番号A-2-15","現在庫数":45,"予約数":38,"発注待ち数":20,"最小在庫数":30,"最大在庫数":100,"単位":"個","最終入庫日時":"2025-01-18 14:30:00","最終出庫日時":"2025-01-22 09:15:00","作成日時":"2024-06-10 08:00:00","更新日時":"2025-01-22 09:20:00","作成者":"山田花子","更新者":"佐藤次郎"},{"在庫ID":"rec-001","商品ID":"prod-00847","保管場所":"A倉庫-2階-棚番号A2-15","現在庫数":2800,"予約数":120,"発注待ち数":0,"最小在庫数":300,"最大在庫数":2500,"単位":"個","最終入庫日時":"2024-12-18 14:30:00","最終出庫日時":"2024-12-20 09:15:00","作成日時":"2023-08-10 10:45:00","更新日時":"2024-12-20 09:45:00","作成者":"山田花子","更新者":"佐藤次郎"},{"在庫ID":"rec-001","商品ID":"prod-047","保管場所":"第2倉庫・C-15棚","現在庫数":280,"予約数":0,"発注待ち数":0,"最小在庫数":50,"最大在庫数":500,"単位":"個","最終入庫日時":"2023-11-14 09:30:00","最終出庫日時":"2023-10-22 14:15:00","作成日時":"2023-09-01 10:00:00","更新日時":"2024-01-20 16:45:00","作成者":"山田太郎","更新者":"佐藤花子"},{"在庫ID":"rec-001","商品ID":"prod-00847","保管場所":"本社倉庫A棚-2段目","現在庫数":245,"予約数":38,"発注待ち数":100,"最小在庫数":50,"最大在庫数":500,"単位":"個","最終入庫日時":"2025-01-15 10:30:00","最終出庫日時":"2025-01-16 14:22:00","作成日時":"2024-06-01 09:00:00","更新日時":"2025-01-16 14:25:00","作成者":"鈴木花子","更新者":"佐藤次郎"},{"在庫ID":"rec-001","商品ID":"prod-0847","保管場所":"東京倉庫 A-3F 棚番号 A-12-05","現在庫数":45,"予約数":30,"発注待ち数":50,"最小在庫数":40,"最大在庫数":200,"単位":"個","最終入庫日時":"2025-01-08 14:30:00","最終出庫日時":"2025-01-15 09:15:00","作成日時":"2024-11-20 10:00:00","更新日時":"2025-01-15 09:20:00","作成者":"田中太郎","更新者":"鈴木花子"},{"在庫ID":"rec-001","商品ID":"prod-2024-0847","保管場所":"A棟-2階-棚12番","現在庫数":45,"予約数":8,"発注待ち数":0,"最小在庫数":30,"最大在庫数":200,"単位":"個","最終入庫日時":"2025-01-15 09:30:00","最終出庫日時":"2025-01-16 14:22:00","作成日時":"2025-01-15 09:30:00","更新日時":"2025-01-16 14:22:00","作成者":"佐藤花子","更新者":"鈴木健一"},{"在庫ID":"rec-001","商品ID":"prod-00847","保管場所":"東京物流センター A-3-15","現在庫数":287,"予約数":45,"発注待ち数":0,"最小在庫数":150,"最大在庫数":500,"単位":"個","最終入庫日時":"2025-01-16 14:32:00","最終出庫日時":"2025-01-14 09:18:00","作成日時":"2024-06-10 08:00:00","更新日時":"2025-01-16 14:35:00","作成者":"山田花子","更新者":"佐藤次郎"}],"在庫引当":[{"引当ID":"rec-001","受注ID":"rec-102","受注明細ID":"rec-201","在庫ID":"rec-301","引当数量":50,"引当状態":"引当中","引当日時":"2024-11-15 09:30:00","出荷日時":null,"キャンセル日時":null,"備考":"標準納期対応、倉庫A棚番号B-12に保管中","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者":"鈴木花子"},{"引当ID":"rec-001","受注ID":"rec-102","受注明細ID":"rec-203","在庫ID":"rec-304","引当数量":50,"引当状態":"出荷済","引当日時":"2024-11-15T09:30:00","出荷日時":"2024-11-18T14:45:00","キャンセル日時":null,"備考":"東京営業所への配送、予定通り出荷完了","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-18T14:45:00","作成者":"山田花子"},{"引当ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","在庫ID":"rec-004","引当数量":5,"引当状態":"キャンセル","引当日時":"2024-11-15T09:30:00","出荷日時":null,"キャンセル日時":"2024-11-18T14:20:00","備考":"顧客都合による受注キャンセルに伴い引当を解除","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-18T14:20:00","作成者":"鈴木花子"},{"引当ID":"rec-001","受注ID":"rec-202","受注明細ID":"rec-303","在庫ID":"rec-404","引当数量":150,"引当状態":"出荷済","引当日時":"2024-11-15T09:30:00","出荷日時":"2024-11-18T14:20:00","キャンセル日時":null,"備考":"ロットA(100個)とロットB(50個)から分割引当","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-18T14:20:00","作成者":"山田花子"},{"引当ID":"rec-001","受注ID":"rec-0521","受注明細ID":"rec-0521-01","在庫ID":"rec-inv-0847","引当数量":15,"引当状態":"引当中","引当日時":"2024-11-15 09:30:00","出荷日時":null,"キャンセル日時":null,"備考":"受注数50に対し在庫15のみ確保。残35は入荷待ち","作成日時":"2024-11-15 09:30:00","更新日時":"2024-11-15 09:30:00","作成者":"佐藤花子"},{"引当ID":"rec-001","受注ID":"rec-101","受注明細ID":"rec-201","在庫ID":"rec-301","引当数量":50,"引当状態":"出荷済","引当日時":"2025-01-15T09:30:00","出荷日時":"2025-01-15T14:45:00","キャンセル日時":null,"備考":"緊急受注案件のため優先引当。顧客納期1月16日午前指定","作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-15T14:45:00","作成者":"山田花子"},{"引当ID":"rec-001","受注ID":"rec-0042","受注明細ID":"rec-0156","在庫ID":"rec-0891","引当数量":5,"引当状態":"キャンセル","引当日時":"2024-11-15T09:30:00","出荷日時":"2024-11-18T14:20:00","キャンセル日時":"2024-12-02T11:45:00","備考":"顧客返品受領に伴う引当取消し。返品理由：商品不良","作成日時":"2024-11-15T09:30:00","更新日時":"2024-12-02T11:45:00","作成者":"佐藤花子"},{"引当ID":"rec-001","受注ID":"rec-101","受注明細ID":"rec-201","在庫ID":"rec-301","引当数量":50,"引当状態":"出荷済","引当日時":"2024-11-15T09:30:00+09:00","出荷日時":"2024-11-18T14:20:00+09:00","キャンセル日時":null,"備考":"同一受注明細の複数引当のうち第1弾。残り50個は別在庫から引当予定。","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-18T14:20:00+09:00","作成者":"田中太郎"},{"引当ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","在庫ID":"rec-004","引当数量":50,"引当状態":"出荷済","引当日時":"2025-01-15T09:30:00","出荷日時":"2025-01-18T14:20:00","キャンセル日時":null,"備考":"2025-01-14のシステムエラーにより初回引当失敗、翌日に再処理実施","作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-18T14:20:00","作成者":"鈴木花子"},{"引当ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","在庫ID":"rec-004","引当数量":50,"引当状態":"キャンセル","引当日時":"2024-08-15T10:30:00+09:00","出荷日時":null,"キャンセル日時":"2025-01-20T14:15:00+09:00","備考":"顧客都合により受注キャンセル、5ヶ月間保留後に解除","作成日時":"2024-08-15T10:30:00+09:00","更新日時":"2025-01-20T14:15:00+09:00","作成者":"山田花子"}],"販売フロー異常":[{"異常ID":"rec-001","受注ID":"rec-0521","異常タイプ":"在庫不足","異常ステータス":"対応中","発生箇所":"受注","商品ID":"rec-3847","顧客ID":"rec-2156","異常内容":"受注数量50個に対し現在庫は25個のため、納期までの製造対応が必要","対応内容":"顧客に納期延長を提案し、2025年1月15日での納品で合意取得","優先度":"高","発生日時":"2024-12-18 09:30:00","解決予定日":"2025-01-15 17:00:00","解決日時":null,"担当者":"鈴木花子","作成日時":"2024-12-18 09:45:00","更新日時":"2024-12-19 14:20:00","作成者":"田中太郎"},{"異常ID":"rec-001","受注ID":"rec-0521","異常タイプ":"納期遅延","異常ステータス":"対応中","発生箇所":"発注","商品ID":"rec-3847","顧客ID":"rec-2156","異常内容":"仕入先A社からの部品納入が予定より5日遅延。顧客への約束納期2025-02-15に間に合わない見込み。","対応内容":"仕入先に納期短縮を依頼中。同時に代替仕入先の手配を進行中。","優先度":"高","発生日時":"2025-02-03T09:30:00","解決予定日":"2025-02-12T17:00:00","解決日時":null,"担当者":"佐藤花子","作成日時":"2025-02-03T09:45:00","更新日時":"2025-02-05T14:20:00","作成者":"鈴木健一"},{"異常ID":"rec-001","受注ID":"rec-0542","異常タイプ":"品質問題","異常ステータス":"解決済み","発生箇所":"納品","商品ID":"rec-8721","顧客ID":"rec-3405","異常内容":"納入されたLED照明器具10台のうち3台で点灯不良が確認された。検品時に発見。","対応内容":"不良品3台を返品受け入れ、メーカーから交換品を取り寄せ。2024年12月20日に交換品を顧客に配送完了。","優先度":"高","発生日時":"2024-12-15T09:30:00","解決予定日":"2024-12-22T17:00:00","解決日時":"2024-12-20T14:15:00","担当者":"佐藤美咲","作成日時":"2024-12-15T10:05:00","更新日時":"2024-12-20T15:30:00","作成者":"鈴木健一"},{"異常ID":"rec-001","受注ID":"rec-0847","異常タイプ":"請求不一致","異常ステータス":"対応中","発生箇所":"請求","商品ID":"rec-5234","顧客ID":"rec-1092","異常内容":"請求書数量50個に対し実際出荷数量は45個。顧客より差額指摘のクレーム受領。","対応内容":"出荷記録を確認し数量誤りを確認。顧客と協議し請求書修正対応予定。","優先度":"高","発生日時":"2025-01-15T10:30:00","解決予定日":"2025-01-20T17:00:00","解決日時":null,"担当者":"山田花子","作成日時":"2025-01-15T11:05:00","更新日時":"2025-01-16T14:20:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","受注ID":"rec-002","異常タイプ":"仕様変更対応","異常ステータス":"対応中","発生箇所":"発注","商品ID":"rec-003","顧客ID":"rec-004","異常内容":"受注後に顧客から仕様変更要望があり、既に発注済みの部材の変更対応が必要となった","対応内容":"仕入先と協議し変更対応可否を確認中。追加費用は顧客負担で調整予定","優先度":"高","発生日時":"2024-11-15 10:30:00","解決予定日":"2024-11-22 17:00:00","解決日時":null,"担当者":"鈴木花子","作成日時":"2024-11-15 11:05:00","更新日時":"2024-11-16 14:20:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","受注ID":"rec-0521","異常タイプ":"在庫不足","異常ステータス":"対応中","発生箇所":"在庫","商品ID":"rec-2847","顧客ID":"rec-1204","異常内容":"受注番号REC-0521の複数商品発注で、商品コード SKU-4521の在庫が不足しており分割納品が必要","対応内容":"顧客に分割納品スケジュール（第1便：1月15日、第2便：1月22日）を提案し承認取得","優先度":"高","発生日時":"2025-01-08 09:30:00","解決予定日":"2025-01-22 17:00:00","解決日時":null,"担当者":"佐藤美咲","作成日時":"2025-01-08 09:45:00","更新日時":"2025-01-10 14:20:00","作成者":"鈴木健一"},{"異常ID":"rec-001","受注ID":"rec-002","異常タイプ":"納期遅延","異常ステータス":"対応中","発生箇所":"発注","商品ID":"rec-003","顧客ID":"rec-004","異常内容":"発注先から納期を3週間短縮するよう急遽要求され、現在のプロセス体制では対応困難","対応内容":"発注先と協議し段階的な納期短縮案を検討中、社内製造計画の前倒し調整を実施","優先度":"高","発生日時":"2024-11-15T09:30:00+09:00","解決予定日":"2024-11-22T17:00:00+09:00","解決日時":null,"担当者":"鈴木花子","作成日時":"2024-11-15T09:45:00+09:00","更新日時":"2024-11-18T14:20:00+09:00","作成者":"山田次郎"},{"異常ID":"rec-001","受注ID":"rec-0542","異常タイプ":"数量誤配","異常ステータス":"解決済み","発生箇所":"納品","商品ID":"rec-3821","顧客ID":"rec-0189","異常内容":"納品された商品の数量が受注数と異なり、指定数より2個少ないことが顧客より報告された。","対応内容":"差分2個を追送手配し、翌営業日に顧客に到着確認済み。","優先度":"高","発生日時":"2024-11-15 14:30:00","解決予定日":"2024-11-18 17:00:00","解決日時":"2024-11-16 11:20:00","担当者":"山田花子","作成日時":"2024-11-15 15:05:00","更新日時":"2024-11-16 11:25:00","作成者":"鈴木次郎"},{"異常ID":"rec-001","受注ID":"rec-0847","異常タイプ":"請求不一致","異常ステータス":"対応中","発生箇所":"請求","商品ID":"rec-5234","顧客ID":"rec-2156","異常内容":"2024年11月の返品処理で発行されたクレジットメモが請求相殺時に未反映。顧客への請求額が返品分を差し引いていない状態で発行された。","対応内容":"返品処理記録を確認し、クレジットメモとの紐付けを実施中。修正請求書の作成準備を進めている。","優先度":"高","発生日時":"2025-01-15T09:30:00","解決予定日":"2025-01-17T17:00:00","解決日時":null,"担当者":"山田花子","作成日時":"2025-01-15T10:05:00","更新日時":"2025-01-16T14:20:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","受注ID":"rec-0847","異常タイプ":"在庫不足","異常ステータス":"対応中","発生箇所":"在庫","商品ID":"rec-2341","顧客ID":"rec-5623","異常内容":"冬物セーターの需要予測が外れ、秋口の大量発注により過剰在庫が発生。シーズン終了に向けて処分対応が必要。","対応内容":"セール対象商品として定価の40%割引で販売促進を開始。残在庫はアウトレット店への移管検討中。","優先度":"高","発生日時":"2024-12-15T10:30:00+09:00","解決予定日":"2025-02-28T23:59:59+09:00","解決日時":null,"担当者":"山田花子","作成日時":"2024-12-15T11:15:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者":"佐藤次郎"}],"仕入フロー異常":[{"異常ID":"rec-001","発注ID":"rec-0521","納品ID":"rec-0847","請求ID":"rec-1203","仕入先ID":"rec-sup-0156","異常種別":"数量不一致","異常内容":"発注数量1000個に対し、納品数量が950個で50個の過少納品が発生","発生日時":"2024-11-15 09:30:00","ステータス":"解決済","対応内容":"仕入先に確認したところ、製造工程での不良品除外により50個減少。追加納品予定日は2024年11月22日に設定","対応完了日時":"2024-11-22 14:15:00","担当者":"山田花子","作成日時":"2024-11-15 10:05:00","更新日時":"2024-11-22 14:45:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","発注ID":"rec-0847","納品ID":"rec-2156","請求ID":"rec-3421","仕入先ID":"rec-sup-0234","異常種別":"品質不良","異常内容":"受け入れ検査時に納品された電子部品ロット内から基準外の不良品5個を検出","発生日時":"2025-01-15 10:30:00","ステータス":"解決済","対応内容":"仕入先に報告し、代替品の再納品を指示。不良品は返品手配完了","対応完了日時":"2025-01-22 14:45:00","担当者":"鈴木花子","作成日時":"2025-01-15 10:45:00","更新日時":"2025-01-22 14:50:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","発注ID":"rec-0247","納品ID":"rec-0892","請求ID":"rec-1156","仕入先ID":"rec-sup-0034","異常種別":"納期遅延","異常内容":"約束納期2025年1月15日に対し、実納品日が2025年1月20日となり5日間の遅延が発生","発生日時":"2025-01-20 14:30:00","ステータス":"対応中","対応内容":"仕入先に遅延理由確認済み。製造工程の機械トラブルが原因。今後の納期厳守について確認書を取得予定","対応完了日時":null,"担当者":"鈴木由美","作成日時":"2025-01-20 15:45:00","更新日時":"2025-01-21 10:20:00","作成者":"佐藤健一"},{"異常ID":"rec-001","発注ID":"rec-0342","納品ID":"rec-0891","請求ID":"rec-1205","仕入先ID":"rec-sup-0087","異常種別":"請求額相違","異常内容":"発注時の見積単価は1,200円/個でしたが、請求書では1,350円/個で請求されており、150円/個の差異が生じています。","発生日時":"2024-11-15 09:30:00","ステータス":"解決済","対応内容":"仕入先に確認したところ、9月の値上げが反映されていなかったとの誤りでした。見積単価の更新漏れが原因。請求書を修正いただき、差分2,250円の返金処理を実施。","対応完了日時":"2024-11-22 14:15:00","担当者":"山田花子","作成日時":"2024-11-15 10:05:00","更新日時":"2024-11-22 14:20:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","発注ID":"rec-0847","納品ID":"rec-0523","請求ID":"rec-0891","仕入先ID":"rec-sup-024","異常種別":"重複発注","異常内容":"LED照明パネル（型番LP-2400W）について、A電器とB電器から同時期に発注していたことが判明。在庫過剰となる可能性あり。","発生日時":"2024-11-15 09:30:00","ステータス":"対応中","対応内容":"B電器への発注をキャンセル手続き中。既納品分は返品交渉予定。","対応完了日時":null,"担当者":"山田花子","作成日時":"2024-11-15 09:35:00","更新日時":"2024-11-16 14:20:00","作成者":"鈴木健一"},{"異常ID":"rec-001","発注ID":"rec-0042","納品ID":"rec-0156","請求ID":"rec-0089","仕入先ID":"rec-0012","異常種別":"品質不良","異常内容":"納品されたロット番号LOT-2024-11-08-A が品質保証書のLOT-2024-11-07-Bと異なり、納品数量100個に対して品質保証書が50個のみの記載となっている","発生日時":"2024-11-15 09:30:00","ステータス":"対応中","対応内容":"仕入先に確認中。納品時の仕分け誤りの可能性を指摘し、正規品質保証書の再発行を依頼","対応完了日時":null,"担当者":"山田花子","作成日時":"2024-11-15 09:45:00","更新日時":"2024-11-16 14:20:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","発注ID":"rec-0847","納品ID":"rec-0523","請求ID":"rec-0412","仕入先ID":"rec-sup-0156","異常種別":"品質不良","異常内容":"返品対応中に返送予定商品（電子部品セット）の梱包を開封したところ、内部の基板が破損していることが判明。返送前の検品で見落とされていた。","発生日時":"2024-11-15 10:30:00","ステータス":"対応中","対応内容":"仕入先に破損状況を報告し、代替品の再納品を依頼。返送商品は当社で保管中。","対応完了日時":null,"担当者":"山田花子","作成日時":"2024-11-15 10:45:00","更新日時":"2024-11-16 14:20:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","発注ID":"rec-0451","納品ID":"rec-0892","請求ID":"rec-1203","仕入先ID":"rec-sup-0087","異常種別":"数量不一致","異常内容":"請求書受領後、仕入先より納品数量の訂正連絡。請求書では100個だが、実納品は95個との指摘。","発生日時":"2025-01-15 14:30:00","ステータス":"解決済","対応内容":"仕入先と協議し、請求額を訂正。差分5個分の返金手続きを実施。","対応完了日時":"2025-01-22 10:15:00","担当者":"鈴木花子","作成日時":"2025-01-15 14:35:00","更新日時":"2025-01-22 10:20:00","作成者":"鈴木花子"},{"異常ID":"rec-001","発注ID":"rec-102","納品ID":"rec-203","請求ID":"rec-304","仕入先ID":"rec-405","異常種別":"請求額相違","異常内容":"検収完了後に仕入先より追加請求書が到着。運送費（冷蔵輸送）¥45,000が別途請求されている。発注時の見積には含まれていない。","発生日時":"2024-11-15 14:30:00","ステータス":"解決済","対応内容":"仕入先と協議し、当初見積に運送費が未含であることを確認。追加請求は妥当と判断し、支払い承認。請求書を修正請求処理に回す。","対応完了日時":"2024-11-22 10:15:00","担当者":"鈴木花子","作成日時":"2024-11-15 14:35:00","更新日時":"2024-11-22 10:20:00","作成者":"佐藤次郎"},{"異常ID":"rec-001","発注ID":"rec-0847","納品ID":"rec-0523","請求ID":null,"仕入先ID":"rec-0156","異常種別":"納期遅延","異常内容":"納品予定日2025-01-15の前日に顧客からキャンセル要請が発生。既に仕入先から出荷済みの状態で対応が必要","発生日時":"2025-01-14 14:30:00","ステータス":"解決済","対応内容":"仕入先と協議し返品受け入れを確認。納品予定分の全量返品手配を実施","対応完了日時":"2025-01-16 10:15:00","担当者":"佐藤美咲","作成日時":"2025-01-14 14:35:00","更新日時":"2025-01-16 10:20:00","作成者":"鈴木健太"}],"異常通知ログ":[{"異常通知ログID":"rec-001","異常種別":"販売フロー異常","販売フロー異常ID":"rec-102","仕入フロー異常ID":null,"通知ステータス":"解決済み","通知内容":"受注番号SO-2024-08521の在庫不足によるキャンセル対応が必要です","重要度":"中","発生日時":"2024-11-15T14:32:00+09:00","通知日時":"2024-11-15T14:35:00+09:00","対応予定日時":"2024-11-15T16:00:00+09:00","対応完了日時":"2024-11-15T15:28:00+09:00","対応者":"yamada_hanako","対応コメント":"顧客に在庫状況を説明し、キャンセル手続きを完了しました。返金処理は翌営業日予定。","作成日時":"2024-11-15T14:35:00+09:00","更新日時":"2024-11-15T15:28:00+09:00","作成者":"system_auto"},{"異常通知ログID":"rec-001","異常種別":"販売フロー異常","販売フロー異常ID":"rec-102","仕入フロー異常ID":null,"通知ステータス":"対応中","通知内容":"顧客A社の信用限度額（500万円）を150万円超過したため出荷を保留中","重要度":"高","発生日時":"2024-11-15 14:32:00","通知日時":"2024-11-15 14:45:00","対応予定日時":"2024-11-16 10:00:00","対応完了日時":null,"対応者":"営業課_山田花子","対応コメント":"顧客に連絡済み。追加与信申請の手続き中","作成日時":"2024-11-15 14:45:00","更新日時":"2024-11-15 16:20:00","作成者":"システム_自動通知"},{"異常通知ログID":"rec-001","異常種別":"販売フロー異常","販売フロー異常ID":"rec-0521","仕入フロー異常ID":null,"通知ステータス":"解決済み","通知内容":"受注番号PO-2024-08451の納期が5日遅延し、顧客より品質クレームが発生","重要度":"高","発生日時":"2024-11-28 14:30:00","通知日時":"2024-11-28 15:45:00","対応予定日時":"2024-11-29 10:00:00","対応完了日時":"2024-12-02 16:20:00","対応者":"山田花子","対応コメント":"顧客先に直接訪問し謝罪、代替品を急配送で対応済み。今後納期管理体制を強化することで合意","作成日時":"2024-11-28 15:45:00","更新日時":"2024-12-02 16:25:00","作成者":"佐藤次郎"},{"異常通知ログID":"rec-001","異常種別":"仕入フロー異常","販売フロー異常ID":null,"仕入フロー異常ID":"rec-101","通知ステータス":"対応中","通知内容":"仕入先A社からの部品納期が予定より5日遅延する見込み","重要度":"高","発生日時":"2024-11-15 10:30:00","通知日時":"2024-11-15 11:45:00","対応予定日時":"2024-11-16 09:00:00","対応完了日時":null,"対応者":"鈴木花子","対応コメント":"仕入先に確認済み。代替品調達を検討中","作成日時":"2024-11-15 11:45:00","更新日時":"2024-11-15 14:20:00","作成者":"佐藤次郎"},{"異常通知ログID":"rec-001","異常種別":"仕入フロー異常","販売フロー異常ID":null,"仕入フロー異常ID":"rec-002","通知ステータス":"解決済み","通知内容":"受入検査時に納入品の一部に傷・変形が確認され、メーカー仕様を満たさないため返品対応が必要","重要度":"高","発生日時":"2024-11-15T09:30:00","通知日時":"2024-11-15T10:15:00","対応予定日時":"2024-11-20T17:00:00","対応完了日時":"2024-11-18T14:45:00","対応者":"山田花子","対応コメント":"仕入先に連絡し、不良品15個の返品を手配。代替品は11月22日納入予定で確認済み","作成日時":"2024-11-15T10:15:00","更新日時":"2024-11-18T14:45:00","作成者":"佐藤次郎"},{"異常通知ログID":"rec-001","異常種別":"販売フロー異常","販売フロー異常ID":"rec-sf-0847","仕入フロー異常ID":null,"通知ステータス":"解決済み","通知内容":"請求書No.INV-2024-15623の合計金額が過大計上されていました。消費税計算時に数量を重複カウント。","重要度":"高","発生日時":"2024-11-18T14:32:00+09:00","通知日時":"2024-11-18T15:05:00+09:00","対応予定日時":"2024-11-19T10:00:00+09:00","対応完了日時":"2024-11-19T09:45:00+09:00","対応者":"佐藤花子","対応コメント":"請求書を修正発行し、顧客に差額返金手続き完了。システムの消費税計算ロジックを検証済み。","作成日時":"2024-11-18T15:05:00+09:00","更新日時":"2024-11-19T09:45:00+09:00","作成者":"山田次郎"},{"異常通知ログID":"rec-001","異常種別":"仕入フロー異常","販売フロー異常ID":null,"仕入フロー異常ID":"rec-102","通知ステータス":"対応中","通知内容":"仕入単価が契約条件の上限を3.2%超過","重要度":"中","発生日時":"2024-11-15 14:23:00","通知日時":"2024-11-15 15:05:00","対応予定日時":"2024-11-18 17:00:00","対応完了日時":null,"対応者":"山田花子","対応コメント":"仕入先に確認中。契約書と発注書の相違を調査予定","作成日時":"2024-11-15 15:05:00","更新日時":"2024-11-16 10:30:00","作成者":"システム管理者"},{"異常通知ログID":"rec-001","異常種別":"販売フロー異常","販売フロー異常ID":"rec-0521","仕入フロー異常ID":null,"通知ステータス":"解決済み","通知内容":"配送業者による配達不可報告。受取人不在のため返送予定。","重要度":"中","発生日時":"2024-11-15 14:30:00","通知日時":"2024-11-15 15:45:00","対応予定日時":"2024-11-16 10:00:00","対応完了日時":"2024-11-16 09:30:00","対応者":"山田花子","対応コメント":"顧客に連絡し再配達日時を2024-11-17 10:00に設定。配送業者に指示完了。","作成日時":"2024-11-15 15:45:00","更新日時":"2024-11-16 09:30:00","作成者":"佐藤次郎"},{"異常通知ログID":"rec-001","異常種別":"仕入フロー異常","販売フロー異常ID":null,"仕入フロー異常ID":"rec-002","通知ステータス":"対応中","通知内容":"発注予定数量15,000個が現在の在庫キャパシティ12,000個を超過しています","重要度":"中","発生日時":"2024-11-15T09:30:00","通知日時":"2024-11-15T10:15:00","対応予定日時":"2024-11-18T17:00:00","対応完了日時":null,"対応者":"山田花子","対応コメント":"倉庫A棟の増設スペース活用で対応予定。メーカーに納期調整を依頼中","作成日時":"2024-11-15T10:15:00","更新日時":"2024-11-16T14:20:00","作成者":"佐藤次郎"}],"代替仕入先候補":[{"代替仕入先候補ID":"rec-001","商品ID":"rec-prod-2847","仕入先ID":"rec-supplier-156","優先順位":1,"リードタイム日数":5,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"主要仕入先の納期遅延時の第一次代替。東京近郊で緊急対応可能","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2025-01-08T14:22:00+09:00","作成者":"山田花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-prod-2847","仕入先ID":"rec-sup-0156","優先順位":2,"リードタイム日数":14,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"冬季需要ピーク時の増産対応用。既存仕入先の納期遅延リスク軽減。","作成日時":"2024-08-15T09:30:00","更新日時":"2024-11-22T14:15:00","作成者":"佐藤花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-prod-0847","仕入先ID":"rec-supplier-0312","優先順位":2,"リードタイム日数":14,"最小発注数量":500,"単価":"¥1,280/個","有効フラグ":true,"備考":"既存仕入先比15%コスト削減、品質同等、納期安定","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T09:30:00","作成者":"山田花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-p-0847","仕入先ID":"rec-s-0312","優先順位":2,"リードタイム日数":14,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"主仕入先の生産能力不足時の代替候補。品質安定性が高く納期も確実。","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T09:30:00+09:00","作成者":"佐藤花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-prod-0847","仕入先ID":"rec-sup-0312","優先順位":1,"リードタイム日数":14,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"海外仕入先（タイ）の45日リードタイム対応。国内在庫補充用の第一候補。品質は同等で納期短縮メリット大。","作成日時":"2024-11-15T10:30:00+09:00","更新日時":"2025-01-08T14:22:00+09:00","作成者":"鈴木美咲"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-prod-0847","仕入先ID":"rec-sup-0312","優先順位":2,"リードタイム日数":5,"最小発注数量":50,"単価":"¥2,840/個","有効フラグ":true,"備考":"主要先の最小ロット500個では対応困難な場合の補完。小ロット対応可能で納期も短い。","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T09:30:00","作成者":"佐藤花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-prod-0847","仕入先ID":"rec-sup-0312","優先順位":1,"リードタイム日数":14,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"既存仕入先との交渉決裂のため急遽登録。品質実績あり、納期対応可能。","作成日時":"2025-01-15T09:30:00Z","更新日時":"2025-01-15T09:30:00Z","作成者":"山田花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-002","仕入先ID":"rec-003","優先順位":1,"リードタイム日数":14,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"顧客品質要求対応のため、ISO9001認証済みの高級グレード対応仕入先として新規採用","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T09:30:00","作成者":"山田花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-prod-0847","仕入先ID":"rec-vendor-0312","優先順位":2,"リードタイム日数":14,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"東北地域の供給リスク分散目的。既存仕入先の代替候補として認定。","作成日時":"2024-11-15T10:30:00+09:00","更新日時":"2025-01-22T14:15:00+09:00","作成者":"山田花子"},{"代替仕入先候補ID":"rec-001","商品ID":"rec-002","仕入先ID":"rec-003","優先順位":1,"リードタイム日数":14,"最小発注数量":500,"単価":"¥2,850/個","有効フラグ":true,"備考":"型番BX-2410廃番に伴い、互換性確認済みの後継品を供給可能。既取引実績あり。","作成日時":"2024-11-15T09:30:00","更新日時":"2024-11-15T09:30:00","作成者":"山田花子"}],"納期調整案":[{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":1,"提案納期":"2025-02-14T17:00:00","理由":"部品調達遅延により製造工程が1週間遅延","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2025-02-03T10:30:00","作成者":"山田花子","更新日時":"2025-02-03T10:30:00","更新者":"山田花子"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":2,"提案納期":"2025-02-15T00:00:00Z","理由":"顧客からの前倒し要望に対し、生産スケジュール調整による複数納期オプションを提案","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2024-12-10T09:30:00Z","作成者":"山田花子","更新日時":"2024-12-10T09:30:00Z","更新者":"山田花子"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":1,"提案納期":"2025-02-28T00:00:00Z","理由":"主要部品サプライヤーの納期遅延により、当初予定の2025年2月14日から2週間の延期が必要","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2025-01-15T10:30:00Z","作成者":"山田花子","更新日時":"2025-01-15T10:30:00Z","更新者":"山田花子"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":1,"提案納期":"2025-03-15T00:00:00Z","理由":"顧客の予算確保が遅れているため、納期を30日延期する必要があります","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2025-01-20T09:30:00Z","作成者":"山田太郎","更新日時":"2025-01-20T09:30:00Z","更新者":"山田太郎"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":2,"提案納期":"2025-02-28T00:00:00Z","理由":"年末年始の季節需要ピークにより生産能力が逼迫。当初納期1月15日は困難のため、2月末での納品を提案。","ステータス":"承認済","顧客承認日時":"2024-12-20T14:30:00Z","顧客承認者":"鈴木花子","却下理由":null,"作成日時":"2024-12-18T09:15:00Z","作成者":"佐藤次郎","更新日時":"2024-12-20T14:31:00Z","更新者":"佐藤次郎"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":1,"提案納期":"2025-02-28T00:00:00Z","理由":"品質検査で寸法不良が判明。再製造に14日間必要","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2025-01-20T09:30:00Z","作成者":"山田花子","更新日時":"2025-01-20T09:30:00Z","更新者":"山田花子"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":1,"提案納期":"2025-02-28T00:00:00Z","理由":"主要運送業者の車両不足により当初納期での配送手配が困難","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2025-01-15T10:30:00Z","作成者":"鈴木花子","更新日時":"2025-01-15T10:30:00Z","更新者":"鈴木花子"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":1,"提案納期":"2025-02-14T00:00:00Z","理由":"追加注文による生産スケジュール圧縮のため、短納期対応の可能性を検討","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2025-01-20T09:30:00Z","作成者":"山田花子","更新日時":"2025-01-20T09:30:00Z","更新者":"山田花子"},{"納期調整案ID":"rec-001","受注ID":"rec-002","受注明細ID":"rec-003","顧客ID":"rec-004","調整案番号":1,"提案納期":"2025-03-15T09:00:00","理由":"当社工場の定期メンテナンス期間（2月中旬～下旬）を避けるため","ステータス":"承認済","顧客承認日時":"2025-01-28T14:30:00","顧客承認者":"佐藤花子","却下理由":null,"作成日時":"2025-01-20T10:15:00","作成者":"鈴木健一","更新日時":"2025-01-28T14:35:00","更新者":"鈴木健一"},{"納期調整案ID":"rec-002","受注ID":"rec-order-0847","受注明細ID":"rec-detail-2156","顧客ID":"rec-cust-0312","調整案番号":2,"提案納期":"2025-03-15T09:00:00","理由":"前案の部品調達遅延を解消し、製造工程を短縮することで実現可能な納期","ステータス":"提案中","顧客承認日時":null,"顧客承認者":null,"却下理由":null,"作成日時":"2025-01-22T14:30:00","作成者":"山田花子","更新日時":"2025-01-22T14:30:00","更新者":"山田花子"}],"ユーザー":[{"ユーザーID":"rec-001","ユーザー名":"admin_tanaka","メールアドレス":"tanaka.admin@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","氏名":"田中太郎","部門":"システム管理部","ロール":"管理者","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:45Z","作成日時":"2024-04-01T08:00:00Z","更新日時":"2025-01-10T14:22:30Z","作成者":"rec-001","更新者":"rec-001"},{"ユーザーID":"rec-001","ユーザー名":"tanaka.taro","メールアドレス":"tanaka.taro@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","氏名":"田中太郎","部門":"営業部","ロール":"販売担当","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-admin-001","更新者":"rec-admin-001"},{"ユーザーID":"rec-001","ユーザー名":"suzuki_procurement","メールアドレス":"suzuki.yuki@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ","氏名":"鈴木勇気","部門":"仕入部門","ロール":"調達担当","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-admin-001","更新者":"rec-admin-001"},{"ユーザーID":"rec-001","ユーザー名":"tanaka.hanako","メールアドレス":"tanaka.hanako@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNO","氏名":"田中花子","部門":"経理部","ロール":"経理担当","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-admin-001","更新者":"rec-admin-001"},{"ユーザーID":"rec-001","ユーザー名":"tanaka_taro","メールアドレス":"tanaka.taro@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","氏名":"田中太郎","部門":"営業部","ロール":"営業部長","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-04-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-admin-001","更新者":"rec-admin-001"},{"ユーザーID":"rec-001","ユーザー名":"yamada.shiro","メールアドレス":"yamada.shiro@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr","氏名":"山田四郎","部門":"営業部","ロール":"研修生","ステータス":"有効","最終ログイン日時":"2025-01-15T09:30:00+09:00","作成日時":"2024-12-01T10:00:00+09:00","更新日時":"2025-01-10T14:20:00+09:00","作成者":"rec-admin-001","更新者":"rec-admin-001"},{"ユーザーID":"rec-001","ユーザー名":"tanaka.taro","メールアドレス":"tanaka.taro@company.jp","パスワードハッシュ":"$2b$12$8kL9mN2pQ5rS7tU9vW0xX.yZ1aB2cD3eF4gH5iJ6kL7mN8oP9qR0s","氏名":"田中太郎","部門":"営業部","ロール":"販売担当","ステータス":"無効","最終ログイン日時":"2025-01-15 14:32:00","作成日時":"2023-04-10 09:00:00","更新日時":"2025-02-28 10:15:00","作成者":"rec-admin-001","更新者":"rec-admin-002"},{"ユーザーID":"rec-001","ユーザー名":"yamada.hanako","メールアドレス":"yamada.hanako@company.jp","パスワードハッシュ":"$2b$12$kR8vN9pL2mQ5xZ1yW3uT4eS6dF7gH8jI9kL0mN1oP2qR3sT4uV5w","氏名":"山田花子","部門":"営業部","ロール":"販売担当","ステータス":"休止","最終ログイン日時":"2024-12-20T17:45:30+09:00","作成日時":"2023-04-15T09:00:00+09:00","更新日時":"2024-12-21T10:30:00+09:00","作成者":"rec-admin-001","更新者":"rec-admin-002"},{"ユーザーID":"rec-001","ユーザー名":"suzuki.taro@supplier","メールアドレス":"suzuki.taro@abc-logistics.co.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRS","氏名":"鈴木太郎","部門":"ABC物流 仕入部門","ロール":"仕入担当","ステータス":"有効","最終ログイン日時":"2025-01-15 09:30:00","作成日時":"2024-06-20 14:15:00","更新日時":"2025-01-10 11:45:00","作成者":"rec-admin-001","更新者":"rec-admin-001"},{"ユーザーID":"rec-001","ユーザー名":"audit_yamada","メールアドレス":"yamada.hanako@company.jp","パスワードハッシュ":"$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQR","氏名":"山田花子","部門":"監査部門","ロール":"権限監視・操作ログ確認担当","ステータス":"有効","最終ログイン日時":"2025-01-15 09:30:00","作成日時":"2024-04-01 10:00:00","更新日時":"2025-01-10 14:20:00","作成者":"rec-admin-001","更新者":"rec-admin-001"}],"操作履歴":[{"操作履歴ID":"rec-001","ユーザーID":"rec-u-0042","操作種別":"作成","対象テーブル":"販売注文","対象レコードID":"rec-so-2024-0891","操作内容":"新規顧客（株式会社テクノソリューション）の販売注文を作成","変更前値":null,"変更後値":"注文番号: SO-2024-0891、顧客ID: rec-c-5127、商品: システム開発サービス、数量: 1式、金額: 2,500,000円、納期: 2025-02-28","操作日時":"2024-11-15 10:23:45","IPアドレス":"192.168.1.105","セッションID":"sess-a7f9e2c1d4b6","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-042","操作種別":"更新","対象テーブル":"請求書","対象レコードID":"rec-inv-2024-0847","操作内容":"仕入先からの請求書の内容を修正・確定","変更前値":"金額: 1,250,000円、税率: 8%、ステータス: 下書き","変更後値":"金額: 1,250,000円、税率: 10%、ステータス: 確定","操作日時":"2024-12-15 14:32:18","IPアドレス":"192.168.10.45","セッションID":"sess-20241215-8f4a2c","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-002","操作種別":"削除","対象テーブル":"商品マスタ","対象レコードID":"rec-003","操作内容":"SKU:PM-2024-0847の商品レコードを削除。誤登録商品（重複商品）の削除作業","変更前値":"商品名:プリンタトナーカートリッジ(互換品),SKU:PM-2024-0847,単価:3200円,在庫数:150個","変更後値":null,"操作日時":"2024-11-15 14:32:47","IPアドレス":"192.168.1.105","セッションID":"sess-a7f2k9m1b3","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-0042","操作種別":"ログイン","対象テーブル":"ユーザー","対象レコードID":"rec-u-0042","操作内容":"ユーザーがシステムにログインしました","変更前値":null,"変更後値":null,"操作日時":"2024-11-15 09:23:47","IPアドレス":"192.168.1.105","セッションID":"sess_a7f3b2c9e1d4f8a6","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-042","操作種別":"更新","対象テーブル":"商品在庫","対象レコードID":"rec-p-8765","操作内容":"商品コード SKU-2024-001 の在庫数を手作業で修正","変更前値":"150","変更後値":"145","操作日時":"2024-12-15 14:32:18","IPアドレス":"192.168.1.105","セッションID":"sess-20241215-a7f2e9d1","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-0042","操作種別":"更新","対象テーブル":"見積","対象レコードID":"rec-q-1205","操作内容":"見積内容を修正し顧客に再提示","変更前値":"合計金額: 850,000円、納期: 2025年2月28日","変更後値":"合計金額: 780,000円、納期: 2025年3月15日","操作日時":"2025-01-16 14:32:18","IPアドレス":"192.168.1.105","セッションID":"sess-7f3e2b1c9a4d6e5f","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-042","操作種別":"参照","対象テーブル":"売上レポート","対象レコードID":"rec-sr-2025-01","操作内容":"2025年1月度の売上レポートを参照","変更前値":null,"変更後値":null,"操作日時":"2025-02-03T14:25:47+09:00","IPアドレス":"192.168.1.105","セッションID":"sess-8f3e2d1c9a4b7e6f","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-user-0847","操作種別":"ログイン","対象テーブル":"ユーザー","対象レコードID":"rec-user-0847","操作内容":"ログイン試行時にデータベース接続エラーが発生","変更前値":null,"変更後値":null,"操作日時":"2024-11-15 09:23:47","IPアドレス":"192.168.1.105","セッションID":"sess-8b4c2d91e5f6","ステータス":"失敗","エラーメッセージ":"データベース接続タイムアウト: 認証サーバーへの接続に失敗しました"},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-0847","操作種別":"ログアウト","対象テーブル":"セッション","対象レコードID":"rec-s-5392","操作内容":"セッションタイムアウトによる自動ログアウト","変更前値":"アクティブ","変更後値":"終了","操作日時":"2024-12-15 14:23:47","IPアドレス":"192.168.1.105","セッションID":"sess_8f2c9e1b7d4a6c","ステータス":"成功","エラーメッセージ":null},{"操作履歴ID":"rec-001","ユーザーID":"rec-u-042","操作種別":"更新","対象テーブル":"顧客マスタ","対象レコードID":"rec-c-1205","操作内容":"顧客住所を更新","変更前値":"東京都渋谷区道玄坂1-2-3","変更後値":"東京都渋谷区道玄坂1-2-3-505","操作日時":"2024-11-15T14:32:47+09:00","IPアドレス":"192.168.1.105","セッションID":"sess-20241115-8a7f2c9e","ステータス":"成功","エラーメッセージ":null}]};
+window.AIVIC_PAGE_SCREEN_ID = "scr-1794401324626";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) { console.log('Screen initialized: scr-1794401324626'); }";
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<nav data-aivic-system-switcher style="position:sticky;top:0;z-index:2147483000;display:flex;align-items:center;overflow-x:auto;background:var(--top-bar-bg);color:var(--top-bar-text);border-bottom:1px solid var(--top-bar-border,var(--border));padding:0 12px;height:40px;flex-shrink:0;"><span data-aivic-app-name style="padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.02em;color:var(--top-bar-text);white-space:nowrap;">新EES</span><a href="./scr-1794401382374.html" data-aivic-nav-system="itg-2" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">顧客取引履歴・見積管理システム</a><a href="./scr-1794401466084.html" data-aivic-nav-system="itg-3" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:0.72;border-bottom:2px solid transparent;font-weight:400;">顧客ポータル・ベンダー評価システム</a><a href="./scr-1794401278547.html" data-aivic-nav-system="itg-1" style="padding:6px 14px;text-decoration:none;font-size:13px;white-space:nowrap;color:var(--top-bar-text);opacity:1;border-bottom:2px solid currentColor;font-weight:600;">販売・仕入統合管理システム</a></nav>
+  <div data-aivic-shell-pattern="sidebar" data-aivic-nav-position="left" data-aivic-density="compact">
+    <header class="shell-top-bar">
+      <div class="shell-logo">
+        <div class="shell-logo-icon">E</div>
+        <span>新EES</span>
+      </div>
+      <div class="shell-user-area">
+        <div class="shell-user-avatar">U</div>
+        <div class="shell-user-name">ユーザー</div>
+        <a href="./login.html" class="shell-logout">ログアウト</a>
+      </div>
+    </header>
+
+    <aside class="shell-sidebar shell-scrollbar">
+      <nav class="shell-nav">
+        <a class="shell-nav-item aivic-active" data-aivic-nav="scr-1794401324626" href="./scr-1794401324626.html">ダッシュボード</a>
+        <a class="shell-nav-item" data-aivic-nav="scr-1794401278547" href="./scr-1794401278547.html">受注・在庫・納期管理</a>
+        <a class="shell-nav-item" data-aivic-nav="scr-1794401289797" href="./scr-1794401289797.html">発注・仕入先管理</a>
+        <a class="shell-nav-item" data-aivic-nav="scr-1794401301091" href="./scr-1794401301091.html">受注・納品・請求整合性</a>
+        <a class="shell-nav-item" data-aivic-nav="scr-1794401312360" href="./scr-1794401312360.html">販売・仕入フロー異常</a>
+      </nav>
+    </aside>
+
+    <main class="content-area shell-scrollbar">
+      <div data-aivic-panel="scr-1794401324626" style="display:block">
+    <div class="panel-header">
+      <h1 class="panel-title">ダッシュボード・進捗管理画面</h1>
+    </div>
+
+    <!-- Top Row: KPIs -->
+    <div class="dashboard-grid">
+      <!-- Sales Dashboard -->
+      <div class="card kpi-card">
+        <div class="card-title">販売進捗</div>
+        <div class="kpi-number">245</div>
+        <div class="kpi-label">本日受注件数</div>
+      </div>
+
+      <div class="card kpi-card">
+        <div class="card-title">販売進捗</div>
+        <div class="kpi-number">128</div>
+        <div class="kpi-label">本日納品件数</div>
+      </div>
+
+      <!-- Purchasing Dashboard -->
+      <div class="card kpi-card">
+        <div class="card-title">仕入進捗</div>
+        <div class="kpi-number">89</div>
+        <div class="kpi-label">確定発注件数</div>
+      </div>
+
+      <div class="card kpi-card">
+        <div class="card-title">仕入進捗</div>
+        <div class="kpi-number">156</div>
+        <div class="kpi-label">納入待ち件数</div>
+      </div>
+    </div>
+
+    <!-- Second Row: Progress Summary -->
+    <div class="dashboard-grid">
+      <div class="card">
+        <div class="card-title">本日進捗率</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-bar-fill" style="width: 68%;"></div>
+          </div>
+          <div class="progress-percent">68%</div>
+        </div>
+        <div style="font-size: 10px; color: var(--text-muted);">123 / 180件</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">今週進捗率</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-bar-fill" style="width: 52%;"></div>
+          </div>
+          <div class="progress-percent">52%</div>
+        </div>
+        <div style="font-size: 10px; color: var(--text-muted);">650 / 1,250件</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">今月進捗率</div>
+        <div class="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-bar-fill" style="width: 78%;"></div>
+          </div>
+          <div class="progress-percent">78%</div>
+        </div>
+        <div style="font-size: 10px; color: var(--text-muted);">4,200 / 5,380件</div>
+      </div>
+
+      <div class="card kpi-card">
+        <div class="card-title">キャッシュフロー</div>
+        <div class="kpi-number">12.5M</div>
+        <div class="kpi-label">今月予測売上</div>
+      </div>
+    </div>
+
+    <!-- Third Row: Lists -->
+    <div class="full-width-row">
+      <!-- Unbilled Items -->
+      <div class="card">
+        <div class="card-title">未請求案件一覧 (23件)</div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>受注番号</th>
+                <th>顧客</th>
+                <th>金額</th>
+                <th>納品日</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>RO-0234</td>
+                <td>顧客A</td>
+                <td>¥100,000</td>
+                <td>2026-11-10</td>
+              </tr>
+              <tr>
+                <td>RO-0235</td>
+                <td>顧客B</td>
+                <td>¥250,000</td>
+                <td>2026-11-11</td>
+              </tr>
+              <tr>
+                <td>RO-0236</td>
+                <td>顧客C</td>
+                <td>¥75,000</td>
+                <td>2026-11-11</td>
+              </tr>
+              <tr>
+                <td>RO-0237</td>
+                <td>顧客A</td>
+                <td>¥180,000</td>
+                <td>2026-11-09</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-primary" onclick="console.log('extract-unbilled')">未請求案件自動抽出</button>
+      </div>
+
+      <!-- Payment Pending Items -->
+      <div class="card">
+        <div class="card-title">入金待ち案件一覧 (17件)</div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>請求番号</th>
+                <th>顧客</th>
+                <th>金額</th>
+                <th>期限</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>INV-0891</td>
+                <td>顧客A</td>
+                <td>¥100,000</td>
+                <td><span class="badge badge-danger">期限超過</span></td>
+              </tr>
+              <tr>
+                <td>INV-0892</td>
+                <td>顧客B</td>
+                <td>¥250,000</td>
+                <td><span class="badge badge-warning">3日以内</span></td>
+              </tr>
+              <tr>
+                <td>INV-0893</td>
+                <td>顧客C</td>
+                <td>¥75,000</td>
+                <td><span class="badge badge-success">10日以上</span></td>
+              </tr>
+              <tr>
+                <td>INV-0894</td>
+                <td>顧客D</td>
+                <td>¥180,000</td>
+                <td><span class="badge badge-warning">5日以内</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-primary" onclick="console.log('extract-pending')">入金待ち案件自動抽出</button>
+      </div>
+    </div>
+
+    <!-- Fourth Row: Alerts & Notifications -->
+    <div class="full-width-row">
+      <!-- Anomalies -->
+      <div class="card">
+        <div class="card-title">異常アラート (12件)</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-unit); margin-bottom: var(--space-unit); font-size: 11px;">
+          <div style="background-color: #fee2e2; padding: var(--space-unit); border-radius: var(--radius-control); text-align: center;">
+            <div style="color: #991b1b; font-weight: 600; font-size: 16px;">5</div>
+            <div style="color: #7f1d1d; font-size: 10px;">販売異常</div>
+          </div>
+          <div style="background-color: #fef3c7; padding: var(--space-unit); border-radius: var(--radius-control); text-align: center;">
+            <div style="color: #b45309; font-weight: 600; font-size: 16px;">7</div>
+            <div style="color: #92400e; font-size: 10px;">仕入異常</div>
+          </div>
+        </div>
+        <div style="font-size: 11px;">
+          <div style="margin-bottom: var(--space-unit);">
+            <strong>種別別:</strong><br>
+            在庫不足: 3件 | 納期遅延: 5件 | 請求不一致: 4件
+          </div>
+          <div>
+            <strong>優先度別:</strong><br>
+            <span class="badge badge-danger">高: 4件</span>
+            <span class="badge badge-warning">中: 5件</span>
+            <span class="badge badge-info">低: 3件</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Log -->
+      <div class="card">
+        <div class="card-title">異常通知ログ（最新20件）</div>
+        <div style="overflow-y: auto; flex: 1;">
+          <div class="alert-item critical">
+            <div class="alert-item-title">⚠ 納期遅延リスク</div>
+            <div class="alert-item-detail">仕入先Aの納期が受注納期に間に合いません - 2026-11-11 10:15</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-item-title">在庫不足</div>
+            <div class="alert-item-detail">商品Bの在庫が最小値に達しました - 2026-11-11 09:45</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-item-title">請求不一致</div>
+            <div class="alert-item-detail">RO-0040の受注額と請求額が相違 - 2026-11-11 08:30</div>
+          </div>
+          <div class="alert-item critical">
+            <div class="alert-item-title">⚠ 納期遅延確定</div>
+            <div class="alert-item-detail">仕入先Cの納入が3日遅延 - 2026-11-10 16:20</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fifth Row: Recommendations -->
+    <div class="full-width-row">
+      <!-- Alternative Suppliers -->
+      <div class="card">
+        <div class="card-title">代替仕入先候補 (5件)</div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>商品</th>
+                <th>代替仕入先</th>
+                <th>リード</th>
+                <th>単価</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>商品A</td>
+                <td>仕入先B</td>
+                <td>5日</td>
+                <td>¥1,050</td>
+              </tr>
+              <tr>
+                <td>商品B</td>
+                <td>仕入先D</td>
+                <td>7日</td>
+                <td>¥850</td>
+              </tr>
+              <tr>
+                <td>商品C</td>
+                <td>仕入先E</td>
+                <td>3日</td>
+                <td>¥2,200</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Delivery Adjustment Proposals -->
+      <div class="card">
+        <div class="card-title">納期調整案 (3件)</div>
+        <div style="padding: var(--space-unit); background-color: #f9fafb; border-radius: var(--radius-control); margin-bottom: var(--space-unit);">
+          <div style="margin-bottom: var(--space-unit); font-size: 11px;">
+            <strong><span class="badge badge-info">提案中</span> 2件</strong><br>
+            <div style="margin-top: calc(var(--space-unit) * 0.5); color: var(--text-muted); font-size: 10px;">
+              RO-0038: 2026-11-20 → 2026-11-25<br>
+              RO-0039: 2026-11-22 → 2026-11-27
+            </div>
+          </div>
+          <div style="font-size: 11px;">
+            <strong><span class="badge badge-success">承認済</span> 1件</strong><br>
+            <div style="margin-top: calc(var(--space-unit) * 0.5); color: var(--text-muted); font-size: 10px;">
+              RO-0037: 承認済（2026-11-18）
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <div data-aivic-panel="scr-1794401278547" style="display:none"></div>
+      <div data-aivic-panel="scr-1794401289797" style="display:none"></div>
+      <div data-aivic-panel="scr-1794401301091" style="display:none"></div>
+      <div data-aivic-panel="scr-1794401312360" style="display:none"></div>
+    </main>
+  </div>
+
+  
+<script>
+(function() {
+  var TABLE_DEFS = window.AIVIC_TABLES || [];
+  var PRESET_SEED = window.AIVIC_PRESET_SEED || {};
+  var SYSTEM_NAME = window.AIVIC_SYSTEM_NAME || "";
+  var APP_ID = window.AIVIC_APP_ID || "";
+  var API_URL = (window.AIVIC_API_URL && window.AIVIC_API_URL !== "REPLACE_WITH_API_URL")
+    ? window.AIVIC_API_URL : window.location.origin;
+
+  // 通知 helper ( SPA 版と同じ )
+  window.aivicNotify = (function() {
+    function ensureContainer() {
+      var c = document.getElementById("aivic-toast-container");
+      if (c) return c;
+      c = document.createElement("div");
+      c.id = "aivic-toast-container";
+      c.style.cssText = "position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:360px;";
+      document.body.appendChild(c);
+      return c;
+    }
+    function show(msg, type) {
+      var c = ensureContainer();
+      var el = document.createElement("div");
+      el.textContent = msg;
+      el.style.cssText = "padding:10px 16px;border-radius:8px;font-size:13px;line-height:1.4;pointer-events:auto;color:#fff;background:" + (type === "error" ? "#dc2626" : "#d97706");
+      c.appendChild(el);
+      setTimeout(function() {
+        el.style.transition = "opacity .3s";
+        el.style.opacity = "0";
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+      }, type === "error" ? 6000 : 4500);
+    }
+    return {
+      error: function(msg) { show("❌ " + msg, "error"); },
+      warn:  function(msg) { show("⚠️ " + msg, "warn"); },
+    };
+  })();
+
+  // CRUD API ( SPA 版と同じ )
+  window.aivicApi = (function() {
+    function dbErr(op) { window.aivicNotify.error("データベースエラー ( " + op + " ): APIサーバーに接続できません。"); }
+    function newId() { return typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2); }
+    function q(i) {
+      var t = TABLE_DEFS[i];
+      var dbP = (window.AIVIC_DB_TYPE && window.AIVIC_DB_TYPE !== "dynamodb") ? "&db=" + encodeURIComponent(window.AIVIC_DB_TYPE) : "";
+      return "?app=" + encodeURIComponent(APP_ID) + "&system=" + encodeURIComponent(SYSTEM_NAME) + "&table=" + encodeURIComponent(t ? t.tableName : "table" + i) + dbP;
+    }
+    return {
+      list: async function(tableIndex) {
+        if (!API_URL) return [];
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex)); var d = await r.json(); return Array.isArray(d) ? d : (d.items || []); }
+        catch(e) { dbErr("データ取得"); return []; }
+      },
+      save: async function(tableIndex, item) {
+        if (!API_URL) { dbErr("保存"); return null; }
+        var now = new Date().toISOString();
+        var rec = Object.assign({}, item, { id: item.id || newId(), createdAt: item.createdAt || now, updatedAt: now });
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + q(tableIndex), { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(rec) }); return await r.json(); }
+        catch(e) { dbErr("保存"); return null; }
+      },
+      update: async function(tableIndex, id, changes) {
+        if (!API_URL) { dbErr("更新"); return null; }
+        try { var r = await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.assign({}, changes, {updatedAt: new Date().toISOString()})) }); return await r.json(); }
+        catch(e) { dbErr("更新"); return null; }
+      },
+      delete: async function(tableIndex, id) {
+        if (!API_URL) { dbErr("削除"); return {deleted:false}; }
+        try { await fetch(API_URL + "/api/" + tableIndex + "/" + id + q(tableIndex), {method:"DELETE"}); return {deleted:true}; }
+        catch(e) { dbErr("削除"); return {deleted:false}; }
+      },
+    };
+  })();
+
+  // showScreen はマルチページ構成ではページ遷移として動く。
+  var _aivicNavLastTime = 0;
+  var _aivicNavLastTarget = "";
+  var _aivicReady = false;
+  window.showScreen = function(screenId) {
+    if (!screenId) return;
+    if (screenId === window.AIVIC_PAGE_SCREEN_ID) return;
+    var targetPath = './' + encodeURIComponent(screenId) + '.html';
+    var currentName = (window.location.pathname.split('/').pop() || '');
+    if (currentName === (encodeURIComponent(screenId) + '.html') ||
+        currentName === (screenId + '.html')) {
+      return;
+    }
+    var now = Date.now();
+    if (_aivicNavLastTarget === targetPath && (now - _aivicNavLastTime) < 100) {
+      console.warn('[aivic] showScreen 連続呼び出し検知。 無限ループ防止のため抑制:', screenId);
+      return;
+    }
+    if (!_aivicReady) {
+      console.warn('[aivic] DOMContentLoaded 前の showScreen 呼び出し。 抑制:', screenId);
+      return;
+    }
+    _aivicNavLastTime = now;
+    _aivicNavLastTarget = targetPath;
+    window.location.href = targetPath;
+  };
+
+  function seedAllIfEmpty() {
+    if (!API_URL) return Promise.resolve();
+    return Promise.all(TABLE_DEFS.map(function(t, i) {
+      var preset = PRESET_SEED[t.tableName];
+      if (!Array.isArray(preset) || preset.length === 0) return Promise.resolve();
+      return window.aivicApi.list(i).then(function(existing) {
+        if (existing && existing.length > 0) return;
+        return Promise.all(preset.map(function(row) { return window.aivicApi.save(i, row); }));
+      }).catch(function() {});
+    }));
+  }
+
+  // ── 初期表示: このページ専用の panel に initFn を実行 ──
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() { _aivicReady = true; }, 1500);
+    var pageScreenId = window.AIVIC_PAGE_SCREEN_ID;
+    if (!pageScreenId) return;
+
+    // AI シェルが SPA 用の初期表示処理を持っていても、マルチページでは
+    // このファイルに割り当てられた画面だけを表示する。
+    document.querySelectorAll('[data-aivic-panel]').forEach(function(panel) {
+      var isCurrent = panel.getAttribute('data-aivic-panel') === pageScreenId;
+      panel.style.display = isCurrent ? 'block' : 'none';
+    });
+
+    document.querySelectorAll('[data-aivic-nav]').forEach(function(btn) {
+      var isActive = btn.getAttribute("data-aivic-nav") === pageScreenId;
+      btn.classList.toggle("aivic-active", isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    var container = document.querySelector('[data-aivic-panel="' + pageScreenId + '"]');
+    if (!container) return;
+
+    // content 要素の hidden 強制除去 ( 2026-05-24 Playwright 大量 fail 対応 )
+    var isModalLike = function(el) {
+      if (!el || !el.classList) return false;
+      var cn = String(el.className || "");
+      if (/\bmodal\b|\bdialog\b|\boverlay\b|\bpopup\b|\bdropdown\b|\btooltip\b/i.test(cn)) return true;
+      var role = el.getAttribute && el.getAttribute("role");
+      if (role === "dialog" || role === "alertdialog" || role === "tooltip" || role === "menu") return true;
+      if (el.hasAttribute && (el.hasAttribute("data-modal") || el.hasAttribute("data-dropdown") || el.hasAttribute("data-popup") || el.hasAttribute("data-aivic-overlay"))) return true;
+      // 【2026-06-25】 class/role が無くても inline で画面を覆う overlay ( position:fixed ) は modal 扱いにして、
+      //  content 強制可視化が誤ってダイアログをロード時に表示してしまわないようにする。
+      if (el.style && el.style.position === "fixed") return true;
+      return false;
+    };
+    var unhideContentElements = function(root) {
+      var all = root.querySelectorAll('.hidden, [hidden], [style*="display:none"], [style*="display: none"]');
+      for (var k = 0; k < all.length; k++) {
+        var el = all[k];
+        if (isModalLike(el)) continue;
+        var p = el.parentElement;
+        var insideModal = false;
+        while (p && p !== root) {
+          if (isModalLike(p)) { insideModal = true; break; }
+          p = p.parentElement;
+        }
+        if (insideModal) continue;
+        el.classList.remove('hidden');
+        el.removeAttribute('hidden');
+        if (el.style && el.style.display === 'none') el.style.display = '';
+      }
+    };
+    try { unhideContentElements(container); } catch (e) { console.warn('[aivic] unhideContent failed:', e); }
+
+    var initJsSource = window.AIVIC_PAGE_INIT_JS;
+    if (!initJsSource) {
+      seedAllIfEmpty();
+      return;
+    }
+    var initFn = null;
+    try {
+      initFn = (new Function("return (" + initJsSource + ")"))();
+    } catch (e) {
+      console.error("[aivic] initJs compile error:", pageScreenId, e);
+      return;
+    }
+    if (typeof initFn !== "function") return;
+
+    seedAllIfEmpty().then(function() {
+      return Promise.all(TABLE_DEFS.map(function(t, i) {
+        return window.aivicApi.list(i)
+          .then(function(records) { return Object.assign({}, t, { records: records }); })
+          .catch(function() { return Object.assign({}, t, { records: [] }); });
+      }));
+    }).then(function(tables) {
+      try { initFn(container, API_URL, tables); } catch (e) { console.error("[aivic] initFn error:", pageScreenId, e); }
+      _aivicReady = true;
+    });
+  });
+
+  // 【2026-06-27 強化・必ず閉じられる保証】 モーダル/ダイアログを確実に閉じる安全網。
+  //  旧版は Esc のみ + セレクタ .overlay が class="modal-overlay" にマッチせず ( クラストークンが別 )
+  //  閉じられなかった ( ユーザー報告 2026-06-27: ダイアログが閉じない ) 。 ① Esc ② オーバーレイ背景クリック
+  //  ③ 閉じる系ボタン の 3 経路で閉じる。 セレクタは複合クラスも拾うよう [class*="overlay"] を含む。
+  //  閉じ方は「開クラス ( active/open/show 等 ) があれば外す ( 再オープン可 ) 、 無ければ inline display:none」。
+  //  modal-header 等の sub-part を誤って隠さないため [class*="modal"] は使わない。
+  var AIVIC_OVERLAY_SELECTOR = '[class*="overlay"],[data-aivic-overlay],[data-modal],[role="dialog"],[role="alertdialog"]';
+  var aivicCloseOverlay = function(el) {
+    if (!el || !el.classList) return;
+    var openClasses = ["active", "open", "show", "visible", "is-open", "is-active", "show-modal"];
+    var removed = false;
+    for (var c = 0; c < openClasses.length; c++) {
+      if (el.classList.contains(openClasses[c])) { el.classList.remove(openClasses[c]); removed = true; }
+    }
+    if (!removed && el.style) el.style.display = "none";
+  };
+  document.addEventListener("keydown", function(e) {
+    if (e.key !== "Escape" && e.keyCode !== 27) return;
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  });
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.closest) {
+      var closer = t.closest('.modal-close,[data-modal-close],[data-close],[data-dismiss]');
+      if (closer) {
+        var oc = closer.closest(AIVIC_OVERLAY_SELECTOR);
+        if (oc) { aivicCloseOverlay(oc); return; }
+      }
+    }
+    // 背景 ( オーバーレイ要素そのもの ) を直接クリックした時のみ閉じる ( モーダル本体クリックでは閉じない ) 。
+    if (t.matches && t.matches(AIVIC_OVERLAY_SELECTOR) && t === e.target) {
+      aivicCloseOverlay(t);
+    }
+  });
+  // 【2026-06-28 強化・ロード時に必ず閉じる】 生成 AI が overlay を初期 display:none にし忘れた場合でも、
+  //  ロード直後にダイアログが画面を覆って操作不能になる事故 ( ユーザー報告 2026-06-28: ダイアログが常に表示され
+  //  閉じられない ) を防ぐ。 認識可能な overlay/dialog セレクタに該当する要素はロード時に必ず閉じる
+  //  ( 開クラス除去 or display:none ) 。 真にロード時表示すべき業務コンテンツは overlay セレクタに該当しないため
+  //  影響しない ( パネルコンテナは data-aivic-panel で別管理 ) 。
+  var aivicHideOverlaysOnLoad = function() {
+    var ov = document.querySelectorAll(AIVIC_OVERLAY_SELECTOR);
+    for (var i = 0; i < ov.length; i++) aivicCloseOverlay(ov[i]);
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aivicHideOverlaysOnLoad);
+  } else {
+    aivicHideOverlaysOnLoad();
+  }
+})();
+
+</script>
+</body>
+</html>

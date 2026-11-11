@@ -1,0 +1,77 @@
+name: AIVIC Auto Test
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # 4 分割した shard 1 個分なので timeout-minutes は短くて済む。安全マージン込みで 30 分。
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        # --legacy-peer-deps: 2026-05-25 追加（Jest-only モードと同じ理由）
+        run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+      - name: Run Jest unit tests
+        id: jest
+        # Jest は単体テストなので 1 shard でだけ実行（重複実行を避ける）。
+        # --passWithNoTests: tests/unit/ が空のワークショップでは Jest 単体テストが
+        # 一切無いことが正常状態（業務ロジック非依存の UI のみのアプリ等）。0 件で
+        # exit 1 を返すのは「正常状態を異常扱い」する誤った挙動なのでフラグで修正する。
+        # 出力先は test-results-jest に分離する。Playwright が実行時に test-results を
+        # 初期化するため、同じ場所に書くと単体テストの集計 XML が消える。
+        if: ${{ matrix.shard == 1 }}
+        run: npx jest --ci --passWithNoTests --reporters=default --reporters=jest-junit
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./test-results-jest
+          JEST_JUNIT_OUTPUT_NAME: jest-junit.xml
+          NODE_OPTIONS: --unhandled-rejections=warn
+        continue-on-error: true
+      - name: Run Playwright E2E tests (shard ${{ matrix.shard }}/4)
+        id: playwright
+        # reporter を line,junit の併用にする。
+        # - line: stdout に進捗（pass: . / fail: F / 末尾サマリ）を出して
+        #   GHA のライブログで進捗を観測できる（テストが何件目で詰まっているか分かる）
+        # - junit: PLAYWRIGHT_JUNIT_OUTPUT_FILE に XML を書く（qa-handler の解析用）
+        # junit のみの場合 stdout に何も出ず、長時間 run でハングしているか
+        # 進行中か区別できなかった。list より line が CI 向き（行ごとに flush）。
+        run: npx playwright test --shard=${{ matrix.shard }}/4 --reporter=line,junit
+        env:
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: ./test-results/playwright-junit-${{ matrix.shard }}.xml
+          PLAYWRIGHT_BASE_URL: http://localhost:3000
+        continue-on-error: true
+      - name: Upload test results (shard ${{ matrix.shard }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-shard-${{ matrix.shard }}
+          path: |
+            test-results/
+            test-results-jest/
+          retention-days: 7
+      - name: Determine overall status
+        if: always()
+        run: |
+          jest_outcome="${{ steps.jest.outcome }}"
+          playwright_outcome="${{ steps.playwright.outcome }}"
+          echo "shard=${{ matrix.shard }} / Jest: $jest_outcome / Playwright: $playwright_outcome"
+          # Jest は shard 1 でしか動かない（他 shard は "skipped"）。skipped は許容する。
+          if [ "$jest_outcome" != "success" ] && [ "$jest_outcome" != "skipped" ]; then
+            echo "::error::Jest failed in shard ${{ matrix.shard }} (jest=$jest_outcome)"
+            exit 1
+          fi
+          if [ "$playwright_outcome" != "success" ]; then
+            echo "::error::Playwright failed in shard ${{ matrix.shard }} (playwright=$playwright_outcome)"
+            exit 1
+          fi
