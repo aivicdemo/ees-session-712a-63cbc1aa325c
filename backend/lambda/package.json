@@ -1,0 +1,10 @@
+{
+  "name": "aivic-backend-lambda",
+  "version": "1.0.0",
+  "description": "AIVIC Backend Lambda — 販売・仕入統合管理システム",
+  "main": "handler.js",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/lib-dynamodb": "^3.0.0"
+  }
+}

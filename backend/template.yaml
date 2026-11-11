@@ -1,0 +1,530 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Description: >
+  AIVIC Backend — 販売・仕入統合管理システム
+  DynamoDB + Lambda + API Gateway
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs20.x
+    Environment:
+      Variables:
+        NODE_ENV: production
+
+Parameters:
+  StageName:
+    Type: String
+    Default: prod
+    Description: API Gateway stage name
+
+Resources:
+  # ── DynamoDB テーブル ──────────────────────────────────────────
+
+  DynamoDBTable0:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table0"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "0"
+        - Key: TableName
+          Value: "受注"
+
+  DynamoDBTable1:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table1"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "1"
+        - Key: TableName
+          Value: "受注明細"
+
+  DynamoDBTable2:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table2"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "2"
+        - Key: TableName
+          Value: "仕入先マスタ"
+
+  DynamoDBTable3:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table3"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "3"
+        - Key: TableName
+          Value: "発注"
+
+  DynamoDBTable4:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table4"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "4"
+        - Key: TableName
+          Value: "発注明細"
+
+  DynamoDBTable5:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table5"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "5"
+        - Key: TableName
+          Value: "納品"
+
+  DynamoDBTable6:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table6"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "6"
+        - Key: TableName
+          Value: "納品明細"
+
+  DynamoDBTable7:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table7"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "7"
+        - Key: TableName
+          Value: "請求"
+
+  DynamoDBTable8:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table8"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "8"
+        - Key: TableName
+          Value: "請求明細"
+
+  DynamoDBTable9:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table9"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "9"
+        - Key: TableName
+          Value: "在庫"
+
+  DynamoDBTable10:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table10"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "10"
+        - Key: TableName
+          Value: "在庫引当"
+
+  DynamoDBTable11:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table11"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "11"
+        - Key: TableName
+          Value: "販売フロー異常"
+
+  DynamoDBTable12:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table12"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "12"
+        - Key: TableName
+          Value: "仕入フロー異常"
+
+  DynamoDBTable13:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table13"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "13"
+        - Key: TableName
+          Value: "異常通知ログ"
+
+  DynamoDBTable14:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table14"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "14"
+        - Key: TableName
+          Value: "代替仕入先候補"
+
+  DynamoDBTable15:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table15"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "15"
+        - Key: TableName
+          Value: "納期調整案"
+
+  DynamoDBTable16:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table16"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "16"
+        - Key: TableName
+          Value: "ユーザー"
+
+  DynamoDBTable17:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-table17"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      Tags:
+        - Key: System
+          Value: 販売・仕入統合管理システム
+        - Key: TableIndex
+          Value: "17"
+        - Key: TableName
+          Value: "操作履歴"
+
+  # ── Lambda 関数 ───────────────────────────────────────────────
+  AivicApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-api"
+      CodeUri: lambda/
+      Handler: handler.handler
+      Description: "AIVIC CRUD API for 販売・仕入統合管理システム"
+      Environment:
+        Variables:
+        AIVIC_TABLE_0: !Ref DynamoDBTable0
+        AIVIC_TABLE_1: !Ref DynamoDBTable1
+        AIVIC_TABLE_2: !Ref DynamoDBTable2
+        AIVIC_TABLE_3: !Ref DynamoDBTable3
+        AIVIC_TABLE_4: !Ref DynamoDBTable4
+        AIVIC_TABLE_5: !Ref DynamoDBTable5
+        AIVIC_TABLE_6: !Ref DynamoDBTable6
+        AIVIC_TABLE_7: !Ref DynamoDBTable7
+        AIVIC_TABLE_8: !Ref DynamoDBTable8
+        AIVIC_TABLE_9: !Ref DynamoDBTable9
+        AIVIC_TABLE_10: !Ref DynamoDBTable10
+        AIVIC_TABLE_11: !Ref DynamoDBTable11
+        AIVIC_TABLE_12: !Ref DynamoDBTable12
+        AIVIC_TABLE_13: !Ref DynamoDBTable13
+        AIVIC_TABLE_14: !Ref DynamoDBTable14
+        AIVIC_TABLE_15: !Ref DynamoDBTable15
+        AIVIC_TABLE_16: !Ref DynamoDBTable16
+        AIVIC_TABLE_17: !Ref DynamoDBTable17
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Scan
+                - dynamodb:Query
+              Resource:
+            - !GetAtt DynamoDBTable0.Arn
+            - !GetAtt DynamoDBTable1.Arn
+            - !GetAtt DynamoDBTable2.Arn
+            - !GetAtt DynamoDBTable3.Arn
+            - !GetAtt DynamoDBTable4.Arn
+            - !GetAtt DynamoDBTable5.Arn
+            - !GetAtt DynamoDBTable6.Arn
+            - !GetAtt DynamoDBTable7.Arn
+            - !GetAtt DynamoDBTable8.Arn
+            - !GetAtt DynamoDBTable9.Arn
+            - !GetAtt DynamoDBTable10.Arn
+            - !GetAtt DynamoDBTable11.Arn
+            - !GetAtt DynamoDBTable12.Arn
+            - !GetAtt DynamoDBTable13.Arn
+            - !GetAtt DynamoDBTable14.Arn
+            - !GetAtt DynamoDBTable15.Arn
+            - !GetAtt DynamoDBTable16.Arn
+            - !GetAtt DynamoDBTable17.Arn
+      Events:
+        ApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AivicApi
+            Path: /api/{tableIndex}
+            Method: ANY
+        ApiItem:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AivicApi
+            Path: /api/{tableIndex}/{id}
+            Method: ANY
+        ApiOptions:
+          Type: Api
+          Properties:
+            RestApiId: !Ref AivicApi
+            Path: /api/{proxy+}
+            Method: OPTIONS
+
+  # ── API Gateway ───────────────────────────────────────────────
+  AivicApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub "${AWS::StackName}-api"
+      StageName: !Ref StageName
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+        AllowOrigin: "'*'"
+
+Outputs:
+  ApiBaseUrl:
+    Description: "API Gateway base URL (config.js に設定してください)"
+    Value: !Sub "https://${AivicApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}"
+
+  Table0Name:
+    Description: "DynamoDB table name for 受注"
+    Value: !Ref DynamoDBTable0
+
+  Table1Name:
+    Description: "DynamoDB table name for 受注明細"
+    Value: !Ref DynamoDBTable1
+
+  Table2Name:
+    Description: "DynamoDB table name for 仕入先マスタ"
+    Value: !Ref DynamoDBTable2
+
+  Table3Name:
+    Description: "DynamoDB table name for 発注"
+    Value: !Ref DynamoDBTable3
+
+  Table4Name:
+    Description: "DynamoDB table name for 発注明細"
+    Value: !Ref DynamoDBTable4
+
+  Table5Name:
+    Description: "DynamoDB table name for 納品"
+    Value: !Ref DynamoDBTable5
+
+  Table6Name:
+    Description: "DynamoDB table name for 納品明細"
+    Value: !Ref DynamoDBTable6
+
+  Table7Name:
+    Description: "DynamoDB table name for 請求"
+    Value: !Ref DynamoDBTable7
+
+  Table8Name:
+    Description: "DynamoDB table name for 請求明細"
+    Value: !Ref DynamoDBTable8
+
+  Table9Name:
+    Description: "DynamoDB table name for 在庫"
+    Value: !Ref DynamoDBTable9
+
+  Table10Name:
+    Description: "DynamoDB table name for 在庫引当"
+    Value: !Ref DynamoDBTable10
+
+  Table11Name:
+    Description: "DynamoDB table name for 販売フロー異常"
+    Value: !Ref DynamoDBTable11
+
+  Table12Name:
+    Description: "DynamoDB table name for 仕入フロー異常"
+    Value: !Ref DynamoDBTable12
+
+  Table13Name:
+    Description: "DynamoDB table name for 異常通知ログ"
+    Value: !Ref DynamoDBTable13
+
+  Table14Name:
+    Description: "DynamoDB table name for 代替仕入先候補"
+    Value: !Ref DynamoDBTable14
+
+  Table15Name:
+    Description: "DynamoDB table name for 納期調整案"
+    Value: !Ref DynamoDBTable15
+
+  Table16Name:
+    Description: "DynamoDB table name for ユーザー"
+    Value: !Ref DynamoDBTable16
+
+  Table17Name:
+    Description: "DynamoDB table name for 操作履歴"
+    Value: !Ref DynamoDBTable17
