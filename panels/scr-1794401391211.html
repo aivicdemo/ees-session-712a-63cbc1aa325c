@@ -216,7 +216,7 @@ window.AIVIC_SYSTEM_NAME = "顧客取引履歴・見積管理システム";
 window.AIVIC_TABLES = [{"tableName":"顧客マスタ","purpose":"顧客情報を一元管理し、販売・仕入取引の相手先として機能する基本マスタテーブル","columns":[{"name":"顧客ID","type":"uuid","required":true,"description":"顧客を一意に識別するプライマリキー"},{"name":"顧客コード","type":"varchar(100)","required":true,"description":"顧客の業務用識別コード、ユーザーが参照・検索する際に使用"},{"name":"顧客名","type":"varchar(100)","required":true,"description":"顧客の正式名称"},{"name":"顧客名カナ","type":"varchar(100)","required":false,"description":"顧客名のカナ表記、検索・ソート用"},{"name":"顧客区分","type":"varchar(100)","required":true,"description":"顧客の分類（得意先/仕入先/両方等）、フィルタリング・集計に使用"},{"name":"郵便番号","type":"varchar(100)","required":false,"description":"顧客の郵便番号"},{"name":"住所","type":"text","required":false,"description":"顧客の住所"},{"name":"電話番号","type":"varchar(100)","required":false,"description":"顧客の電話番号"},{"name":"メールアドレス","type":"varchar(100)","required":false,"description":"顧客のメールアドレス"},{"name":"担当者名","type":"varchar(100)","required":false,"description":"顧客の担当者名"},{"name":"支払条件","type":"varchar(100)","required":false,"description":"売上時の支払条件（現金/月末締め等）"},{"name":"納期","type":"varchar(100)","required":false,"description":"仕入時の納期条件"},{"name":"与信限度額","type":"integer","required":false,"description":"顧客に対する与信限度額"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"顧客の状態（有効/休止/廃止等）、取引可否の判定に使用"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"レコード作成者のユーザーID"},{"name":"更新者","type":"varchar(100)","required":false,"description":"レコード最終更新者のユーザーID"}]},{"tableName":"商品マスタ","purpose":"商品の基本情報を一元管理し、受注・仕入・在庫・請求などの各業務で参照される商品の定義情報を保持する","columns":[{"name":"商品ID","type":"uuid","required":true,"description":"商品を一意に識別するプライマリキー"},{"name":"商品コード","type":"varchar(100)","required":true,"description":"業務で使用する商品の一意なコード、受注・仕入・在庫管理で検索・フィルタリングに使用"},{"name":"商品名","type":"varchar(100)","required":true,"description":"商品の名称、受注票・請求書などの帳票に表示"},{"name":"商品説明","type":"text","required":false,"description":"商品の詳細説明"},{"name":"カテゴリ","type":"varchar(100)","required":false,"description":"商品の分類、フィルタリングや集計に使用"},{"name":"単位","type":"varchar(100)","required":true,"description":"商品の数量単位（個、箱、kg等）、受注・仕入・在庫で使用"},{"name":"標準売価","type":"integer","required":true,"description":"商品の標準的な売価、受注時の初期値として使用"},{"name":"標準仕入価","type":"integer","required":true,"description":"商品の標準的な仕入価、発注時の初期値として使用"},{"name":"在庫管理対象","type":"boolean","required":true,"description":"在庫管理の対象とするかどうか、在庫テーブルへの登録判定に使用"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"商品の状態（有効、廃止等）、受注・仕入時のフィルタリングに使用"},{"name":"作成日時","type":"timestamp","required":true,"description":"商品マスタレコードの作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"商品マスタレコードの最終更新日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"商品マスタレコードを作成したユーザー"},{"name":"更新者","type":"varchar(100)","required":false,"description":"商品マスタレコードを最後に更新したユーザー"}]},{"tableName":"取引履歴","purpose":"顧客との取引内容を記録し、見積から受注・納品・請求までの一連のプロセスを管理するトランザクションテーブル","columns":[{"name":"取引ID","type":"uuid","required":true,"description":"取引履歴の一意識別子"},{"name":"顧客ID","type":"uuid","required":true,"description":"顧客マスタへの外部キー参照"},{"name":"取引日","type":"timestamp","required":true,"description":"取引が発生した日時"},{"name":"取引種別","type":"varchar(100)","required":true,"description":"見積/受注/納品/請求などの取引タイプ"},{"name":"取引金額","type":"integer","required":true,"description":"取引の合計金額（税抜き）"},{"name":"税額","type":"integer","required":false,"description":"取引に対する消費税額"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"取引の現在ステータス（未処理/処理中/完了/キャンセル等）"},{"name":"備考","type":"text","required":false,"description":"取引に関する補足情報やコメント"},{"name":"作成日時","type":"timestamp","required":true,"description":"レコード作成日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"レコード最終更新日時"},{"name":"作成者","type":"varchar(100)","required":true,"description":"レコード作成者のユーザーID"}]}];
 window.AIVIC_PRESET_SEED = {"顧客マスタ":[{"顧客ID":"rec-001","顧客コード":"C-20240015","顧客名":"株式会社トヨタ自動車工業","顧客名カナ":"トヨタジドウシャコウギョウ","顧客区分":"得意先","郵便番号":"471-8571","住所":"愛知県豊田市トヨタ町1番地","電話番号":"0565-28-2121","メールアドレス":"procurement@toyota.co.jp","担当者名":"佐藤次郎","支払条件":"月末締め翌月末払い","納期":"該当なし","与信限度額":500000000,"ステータス":"有効","作成日時":"2024-04-15T09:30:00","更新日時":"2025-01-20T14:45:00","作成者":"user-0001","更新者":"user-0003"},{"顧客ID":"rec-001","顧客コード":"SUP-0847","顧客名":"株式会社東海物流センター","顧客名カナ":"トウカイブツリュウセンター","顧客区分":"仕入先","郵便番号":"460-0008","住所":"愛知県名古屋市中区栄2丁目3番1号","電話番号":"052-201-5847","メールアドレス":"procurement@tokaibussan.co.jp","担当者名":"山田健一","支払条件":"現金払い","納期":"毎週月曜・木曜納品","与信限度額":2500000,"ステータス":"有効","作成日時":"2024-03-15T09:30:00","更新日時":"2024-12-10T14:22:00","作成者":"user-0012","更新者":"user-0012"},{"顧客ID":"rec-001","顧客コード":"RT-20250115-001","顧客名":"株式会社ファミリーマート田中","顧客名カナ":"ファミリーマートタナカ","顧客区分":"得意先","郵便番号":"150-0001","住所":"東京都渋谷区神宮前1-2-3","電話番号":"03-1234-5678","メールアドレス":"tanaka.hiroshi@familymart-tanaka.jp","担当者名":"田中洋","支払条件":"月末締め翌月末払い","納期":"指定なし","与信限度額":500000,"ステータス":"有効","作成日時":"2025-01-15T10:30:00","更新日時":"2025-01-15T10:30:00","作成者":"user-0001","更新者":"user-0001"},{"顧客ID":"rec-001","顧客コード":"GRP-0521","顧客名":"株式会社グローバルテック関西","顧客名カナ":"グローバルテックカンサイ","顧客区分":"両方","郵便番号":"530-0001","住所":"大阪府大阪市北区梅田1-3-1 グランドビル15階","電話番号":"06-6345-2100","メールアドレス":"procurement@globaltech-kansai.co.jp","担当者名":"山田健一","支払条件":"月末締め翌々月払い","納期":"注文後10営業日","与信限度額":50000000,"ステータス":"有効","作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者":"user-admin","更新者":"user-sales-01"},{"顧客ID":"rec-001","顧客コード":"C-0001234","顧客名":"株式会社トップ電子","顧客名カナ":"トップデンシ","顧客区分":"得意先","郵便番号":"108-0023","住所":"東京都港区芝浦4-12-8","電話番号":"03-XXXX-5678","メールアドレス":"sales@top-denshi.co.jp","担当者名":"佐藤健一","支払条件":"月末締め翌月末払い","納期":"受注後10営業日","与信限度額":50000000,"ステータス":"有効","作成日時":"2020-06-15T09:30:00","更新日時":"2025-01-20T14:15:00","作成者":"user-admin","更新者":"user-yamada"},{"顧客ID":"rec-001","顧客コード":"C00847","顧客名":"株式会社山田建設","顧客名カナ":"ヤマダケンセツ","顧客区分":"得意先","郵便番号":"150-0001","住所":"東京都渋谷区神宮前1-2-3","電話番号":"03-1234-5678","メールアドレス":"info@yamada-kensetsu.co.jp","担当者名":"佐藤次郎","支払条件":"月末締め翌月末払い","納期":"指定納期対応","与信限度額":5000000,"ステータス":"休止","作成日時":"2022-03-15 10:30:00","更新日時":"2024-06-20 14:45:00","作成者":"user-0012","更新者":"user-0045"},{"顧客ID":"rec-001","顧客コード":"OS-AG-2024-001","顧客名":"アジア流通パートナーズ株式会社","顧客名カナ":"アジアリュウツウパートナーズ","顧客区分":"仕入先","郵便番号":"100-0005","住所":"東京都千代田区丸の内1-1-1 ビジネスビル5階","電話番号":"03-XXXX-5678","メールアドレス":"procurement@asia-partners.co.jp","担当者名":"佐藤健一","支払条件":"L/C決済（信用状）","納期":"FOB上海港、リードタイム60日、最小ロット500単位","与信限度額":50000000,"ステータス":"有効","作成日時":"2024-03-15T09:30:00","更新日時":"2025-01-20T14:45:00","作成者":"user-0001","更新者":"user-0015"},{"顧客ID":"550e8400-e29b-41d4-a716-446655440000","顧客コード":"C-2019-0847","顧客名":"株式会社フジ電機工業","顧客名カナ":"フジデンキコウギョウ","顧客区分":"仕入先","郵便番号":"430-0906","住所":"静岡県浜松市中央区住吉1丁目15-8","電話番号":"053-461-2847","メールアドレス":"order@fuji-denki.co.jp","担当者名":"山田次郎","支払条件":"月末締め翌月末払い","納期":"受注後14日以内","与信限度額":5000000,"ステータス":"廃止","作成日時":"2019-06-15T09:30:00+09:00","更新日時":"2024-11-20T14:15:00+09:00","作成者":"U-001","更新者":"U-008"},{"顧客ID":"rec-001","顧客コード":"C-2024-0847","顧客名":"株式会社トヨタ流通サービス","顧客名カナ":"トヨタリュウツウサービス","顧客区分":"得意先","郵便番号":"471-8501","住所":"愛知県豊田市トヨタ町1番地","電話番号":"0565-29-3000","メールアドレス":"procurement@toyota-logistics.co.jp","担当者名":"山田次郎","支払条件":"月末締め翌月末払い","納期":"指定納期対応","与信限度額":50000000,"ステータス":"有効","作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者":"user-0123","更新者":"user-0456"},{"顧客ID":"rec-001","顧客コード":"SUP20250115001","顧客名":"株式会社山田電子部品","顧客名カナ":"ヤマダデンシブヒン","顧客区分":"仕入先","郵便番号":"1430016","住所":"東京都大田区大森北1丁目2番3号","電話番号":"0336571234","メールアドレス":"info@yamada-denshi.co.jp","担当者名":"佐藤次郎","支払条件":"該当なし","納期":"協議中","与信限度額":5000000,"ステータス":"有効","作成日時":"2025-01-15T09:30:00","更新日時":"2025-01-15T09:30:00","作成者":"USR0001","更新者":"USR0001"}],"商品マスタ":[{"商品ID":"rec-001","商品コード":"PD-2024-0847","商品名":"高性能LEDデスクライト","商品説明":"目に優しいLED照明、調光・調色機能付き、USB充電対応","カテゴリ":"照明器具","単位":"個","標準売価":8500,"標準仕入価":4200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-04-15 09:30:00","更新日時":"2025-01-20 14:15:00","作成者":"田中太郎","更新者":"佐藤花子"},{"商品ID":"rec-001","商品コード":"SKU-2024-XMAS-001","商品名":"クリスマスケーキ（ショコラ）","商品説明":"12月限定の高級チョコレートケーキ。ベルギー産ダークチョコを使用。","カテゴリ":"季節商品","単位":"個","標準売価":5800,"標準仕入価":2900,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-09-15T10:30:00","更新日時":"2024-11-20T14:15:00","作成者":"山田花子","更新者":"佐藤次郎"},{"商品ID":"rec-001","商品コード":"PRD-2024-0847","商品名":"A4用紙 上質紙 500枚","商品説明":"高品質なA4上質紙。かつて主力商品だったが、デジタル化により需要減少のため廃止。","カテゴリ":"紙製品","単位":"箱","標準売価":1200,"標準仕入価":750,"在庫管理対象":true,"ステータス":"廃止","作成日時":"2023-06-15T09:30:00+09:00","更新日時":"2024-11-20T14:15:00+09:00","作成者":"田中太郎","更新者":"佐藤花子"},{"商品ID":"rec-001","商品コード":"SVC-MAINT-001","商品名":"システム保守サービス（年間契約）","商品説明":"業務システムの定期メンテナンス、トラブル対応、アップデート管理を含む年間保守契約","カテゴリ":"保守・サポートサービス","単位":"式","標準売価":480000,"標準仕入価":0,"在庫管理対象":false,"ステータス":"有効","作成日時":"2024-04-15T09:30:00","更新日時":"2024-11-20T14:15:00","作成者":"鈴木花子","更新者":"佐藤次郎"},{"商品ID":"rec-001","商品コード":"LOT-2024-0847","商品名":"コピー用紙A4 500枚×5冊パック","商品説明":"高白色コピー用紙。オフィス向けロット販売商品。","カテゴリ":"事務用品","単位":"箱","標準売価":2800,"標準仕入価":1650,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-06-15 09:30:00","更新日時":"2024-12-20 14:15:00","作成者":"田中太郎","更新者":"鈴木花子"},{"商品ID":"rec-001","商品コード":"MAT-2024-0847","商品名":"ステンレス鋼製ベアリング φ20mm","商品説明":"精密機械部品用の高精度ベアリング、耐食性に優れたステンレス鋼製","カテゴリ":"機械部品","単位":"個","標準売価":2800,"標準仕入価":1200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-03-15T09:30:00+09:00","更新日時":"2024-11-20T14:45:00+09:00","作成者":"佐藤花子","更新者":"鈴木健一"},{"商品ID":"rec-001","商品コード":"CS-0001","商品名":"ボールペン黒 0.7mm","商品説明":"油性ボールペン、黒インク、軽い書き心地で事務作業に最適","カテゴリ":"文具・消耗品","単位":"個","標準売価":80,"標準仕入価":35,"在庫管理対象":false,"ステータス":"有効","作成日時":"2024-04-15T09:30:00","更新日時":"2024-11-20T14:15:00","作成者":"田中太郎","更新者":"鈴木花子"},{"商品ID":"rec-001","商品コード":"CST-MACH-2024-001","商品名":"精密加工カスタム治具","商品説明":"顧客仕様に基づく高精度な金属加工治具。図面支給による完全カスタム対応。","カテゴリ":"カスタム製造","単位":"個","標準売価":850000,"標準仕入価":520000,"在庫管理対象":false,"ステータス":"有効","作成日時":"2024-06-15T09:30:00","更新日時":"2025-01-20T14:15:00","作成者":"佐藤花子","更新者":"鈴木一郎"},{"商品ID":"rec-001","商品コード":"KG-2024-001","商品名":"北海道産小麦粉 強力粉 25kg","商品説明":"北海道産の高品質強力粉。パン製造に最適な蛋白質含有量。","カテゴリ":"穀類・粉類","単位":"kg","標準売価":4500,"標準仕入価":3200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-03-15T09:30:00","更新日時":"2024-11-20T14:22:00","作成者":"田中太郎","更新者":"佐藤花子"},{"商品ID":"rec-001","商品コード":"PRD-2024-0847","商品名":"高機能LEDデスクライト","商品説明":"USB充電対応、調光機能付きの省エネLEDデスクライト","カテゴリ":"オフィス機器","単位":"個","標準売価":8500,"標準仕入価":4200,"在庫管理対象":true,"ステータス":"有効","作成日時":"2024-11-15T10:30:00","更新日時":"2024-11-15T10:30:00","作成者":"佐藤花子","更新者":"佐藤花子"}],"取引履歴":[{"取引ID":"rec-001","顧客ID":"cust-20250115-001","取引日":"2025-01-15T10:30:00+09:00","取引種別":"見積","取引金額":450000,"税額":45000,"ステータス":"未処理","備考":"新規顧客。営業担当者による初回訪問後の見積依頼。納期は2月末希望。","作成日時":"2025-01-15T10:35:00+09:00","更新日時":"2025-01-15T10:35:00+09:00","作成者":"yamada-taro"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T09:30:00+09:00","取引種別":"受注","取引金額":850000,"税額":85000,"ステータス":"完了","備考":"見積書rec-est-0847-001承認済み。納期2024年12月20日。","作成日時":"2024-11-15T09:35:22+09:00","更新日時":"2024-11-15T10:12:45+09:00","作成者":"suzuki_hanako"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T10:30:00+09:00","取引種別":"納品","取引金額":450000,"税額":45000,"ステータス":"完了","備考":"受注番号PO-2024-1103の部分納品（1/3回目）。商品コード：LED照明セット×15台納品。残納品予定：12月上旬、1月中旬。","作成日時":"2024-11-15T10:35:22+09:00","更新日時":"2024-11-15T14:20:15+09:00","作成者":"佐藤花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2025-01-28T14:30:00+09:00","取引種別":"納品","取引金額":450000,"税額":45000,"ステータス":"完了","備考":"受注番号PO-2024-1156の最終納品（3回納品の最終回）","作成日時":"2025-01-28T14:35:22+09:00","更新日時":"2025-01-28T16:20:15+09:00","作成者":"佐藤花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T09:30:00+09:00","取引種別":"請求","取引金額":850000,"税額":85000,"ステータス":"完了","備考":"納品完了に伴う請求書発行。納品日2024-11-12。支払期限2024-12-15。","作成日時":"2024-11-15T09:30:00+09:00","更新日時":"2024-11-15T14:22:00+09:00","作成者":"鈴木花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T10:30:00+09:00","取引種別":"受注","取引金額":450000,"税額":45000,"ステータス":"キャンセル","備考":"顧客都合により2024-12-10にキャンセル申請。納期前の中止要望に対応。","作成日時":"2024-11-15T10:35:22+09:00","更新日時":"2024-12-10T14:20:15+09:00","作成者":"山田花子"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T10:30:00Z","取引種別":"受注","取引金額":450000,"税額":45000,"ステータス":"処理中","備考":"前回納品分の追加注文。納期は12月10日希望。","作成日時":"2024-11-15T10:30:00Z","更新日時":"2024-11-15T14:20:00Z","作成者":"田中太郎"},{"取引ID":"rec-001","顧客ID":"cust-0847","取引日":"2024-11-15T09:30:00+09:00","取引種別":"請求","取引金額":450000,"税額":45000,"ステータス":"完了","備考":"10月分サービス利用料。銀行振込で11/20に全額入金確認済み","作成日時":"2024-11-15T10:15:00+09:00","更新日時":"2024-11-22T14:45:00+09:00","作成者":"山田花子"},{"取引ID":"rec-001","顧客ID":"cust-00547","取引日":"2025-01-15T14:30:00+09:00","取引種別":"返品","取引金額":-45000,"税額":-4500,"ステータス":"完了","備考":"納品商品の不具合により返品受付。代替品は1月22日に再納品予定。","作成日時":"2025-01-15T14:35:22+09:00","更新日時":"2025-01-16T09:15:47+09:00","作成者":"田中太郎"},{"取引ID":"rec-001","顧客ID":"cust-2024-0847","取引日":"2025-01-31T15:30:00Z","取引種別":"請求","取引金額":2850000,"税額":285000,"ステータス":"完了","備考":"2025年1月分月次まとめ請求。受注5件分を集計。支払期限は2025年2月28日。","作成日時":"2025-02-01T09:15:00Z","更新日時":"2025-02-01T09:15:00Z","作成者":"田中太郎"}]};
 window.AIVIC_PAGE_SCREEN_ID = "scr-1794401391211";
-window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  const quantityInputs = container.querySelectorAll('.quantity-input');\n  const productTable = container.querySelector('#productTable tbody');\n  const previewBtn = container.querySelector('#previewBtn');\n  const downloadBtn = container.querySelector('#downloadBtn');\n  const newQuoteBtn = container.querySelector('#newQuoteBtn');\n  const quoteListRows = container.querySelectorAll('#quoteListTable tbody tr');\n\n  function updateTotals() {\n    let subtotal = 0;\n    const rows = productTable.querySelectorAll('tr');\n    rows.forEach(row => {\n      const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;\n      const priceText = row.querySelectorAll('.price-display')[0].textContent;\n      const price = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;\n      subtotal += quantity * price;\n    });\n    const tax = Math.floor(subtotal * 0.1);\n    const total = subtotal + tax;\n    const totalsSection = container.querySelector('.totals-section');\n    const totalRows = totalsSection.querySelectorAll('.total-row');\n    if (totalRows.length >= 3) {\n      totalRows[0].querySelector('.total-value').textContent = '¥' + subtotal.toLocaleString();\n      totalRows[1].querySelector('.total-value').textContent = '¥' + tax.toLocaleString();\n      totalRows[2].querySelector('.total-value').textContent = '¥' + total.toLocaleString();\n    }\n  }\n\n  quantityInputs.forEach(input => {\n    input.addEventListener('change', updateTotals);\n  });\n\n  previewBtn.addEventListener('click', () => {\n    const previewArea = container.querySelector('#previewArea');\n    previewArea.innerHTML = '<div style=\"padding: 16px; font-size: 12px; color: var(--text);\"><strong>見積書</strong><br>顧客: 顧客A<br>見積日: ' + new Date().toLocaleDateString('ja-JP') + '<br>商品明細: 2品目<br>合計: ¥220,000</div>';\n  });\n\n  downloadBtn.addEventListener('click', () => {\n    alert('PDF出力機能（実装予定）');\n  });\n\n  newQuoteBtn.addEventListener('click', () => {\n    container.querySelector('#customerSelect').value = '';\n    container.querySelector('#quoteDate').value = '';\n    container.querySelector('#quoteRemark').value = '';\n    quantityInputs.forEach(input => input.value = input.defaultValue || 1);\n    updateTotals();\n  });\n\n  quoteListRows.forEach(row => {\n    row.addEventListener('click', () => {\n      const quoteId = row.dataset.quoteId;\n      container.querySelector('#customerSelect').value = 'cust-001';\n      updateTotals();\n    });\n  });\n}";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) { var qtyInputs = container.querySelectorAll('.product-row input.qty-input'); var productRows = container.querySelectorAll('.product-row'); var calculateTotals = function() { var subtotal = 0; productRows.forEach(function(row) { var qtyInput = row.querySelector('input.qty-input'); var priceText = row.querySelectorAll('td')[4].textContent; var price = parseInt(priceText.replace(/[^0-9]/g, '')) || 0; var qty = parseInt(qtyInput.value) || 0; var rowTotal = price * qty; row.querySelector('.subtotal').textContent = '¥' + rowTotal.toLocaleString('ja-JP'); subtotal += rowTotal; }); var taxAmount = Math.floor(subtotal * 0.1); var total = subtotal + taxAmount; container.getElementById('subtotal').textContent = '¥' + subtotal.toLocaleString('ja-JP'); container.getElementById('taxAmount').textContent = '¥' + taxAmount.toLocaleString('ja-JP'); container.getElementById('totalAmount').textContent = total.toLocaleString('ja-JP'); }; qtyInputs.forEach(function(input) { input.addEventListener('change', calculateTotals); input.addEventListener('input', calculateTotals); }); var quoteListRows = container.querySelectorAll('.quote-list-row'); quoteListRows.forEach(function(row) { row.addEventListener('click', function() { container.querySelectorAll('.quote-list-row').forEach(function(r) { r.classList.remove('selected'); }); this.classList.add('selected'); }); }); var previewBtn = container.getElementById('previewBtn'); if(previewBtn) { previewBtn.addEventListener('click', function() { var previewArea = container.getElementById('previewArea'); var custName = container.getElementById('customerSelect').options[container.getElementById('customerSelect').selectedIndex].text || '未選択'; previewArea.textContent = '見積書プレビュー: 顧客=' + custName + ', 見積日=' + container.getElementById('quoteDate').value + ', 有効期限=' + container.getElementById('expiryDate').value + ', 合計金額=¥' + container.getElementById('totalAmount').textContent; }); } var saveQuoteBtn = container.getElementById('saveQuoteBtn'); if(saveQuoteBtn) { saveQuoteBtn.addEventListener('click', function() { console.log('見積を保存しました'); }); } var exportPdfBtn = container.getElementById('exportPdfBtn'); if(exportPdfBtn) { exportPdfBtn.addEventListener('click', function() { console.log('PDF出力を実行しました'); }); } var clearBtn = container.getElementById('clearBtn'); if(clearBtn) { clearBtn.addEventListener('click', function() { container.getElementById('customerSelect').value = ''; container.getElementById('quoteDate').value = ''; container.getElementById('expiryDate').value = ''; container.getElementById('remarks').value = ''; qtyInputs.forEach(function(input) { input.value = '1'; }); calculateTotals(); }); } calculateTotals(); }";
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -244,161 +244,580 @@ window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  const quan
 
     <main class="content-area shell-scrollbar">
       <div data-aivic-panel="scr-1794401382374" style="display:none"></div>
-      <div data-aivic-panel="scr-1794401391211" style="display:block">
-    <div class="page-header">
-      <div>
-        <div class="breadcrumb">
-          <span>見積管理</span>
-          <span>></span>
-          <span>見積作成・管理</span>
-        </div>
-        <div class="page-title">見積作成・管理</div>
-      </div>
+      <div data-aivic-panel="scr-1794401391211"><style>
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --border: #e2e8f0;
+  --border-width: 1px;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --top-bar-bg: #1e293b;
+  --top-bar-border: #0f172a;
+  --top-bar-text: #f1f5f9;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --space-unit: 8px;
+  --control-height: 36px;
+  --radius-card: 6px;
+  --radius-control: 4px;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --motion-duration: 200ms;
+  --surface-texture: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(226, 232, 240, 0) 100%);
+  --surface-texture-size: 100% 100%;
+  --surface-texture-position: 0 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+  color: var(--text);
+  background-color: var(--bg-main);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-aivic-shell-pattern="sidebar"] {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.shell-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: var(--top-bar-bg);
+  border-bottom: var(--border-width) solid var(--top-bar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--space-unit) * 2);
+  z-index: 100;
+  box-shadow: var(--shadow-card);
+}
+
+.shell-logo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--top-bar-text);
+}
+
+.shell-logo-icon {
+  width: 28px;
+  height: 28px;
+  background-color: var(--primary);
+  border-radius: var(--radius-control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.shell-user-area {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+}
+
+.shell-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.shell-user-name {
+  font-size: 13px;
+  color: var(--top-bar-text);
+}
+
+.shell-logout {
+  font-size: 12px;
+  color: var(--top-bar-text);
+  text-decoration: none;
+  transition: color var(--motion-duration);
+}
+
+.shell-logout:hover {
+  color: var(--primary);
+}
+
+.shell-sidebar {
+  position: fixed;
+  left: 0;
+  top: 56px;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  border-right: var(--border-width) solid var(--border);
+  overflow-y: auto;
+  padding: calc(var(--space-unit) * 2) 0;
+  z-index: 99;
+}
+
+.shell-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.shell-nav-item {
+  display: block;
+  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-duration), color var(--motion-duration);
+  border-left: 3px solid transparent;
+}
+
+.shell-nav-item:hover {
+  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--primary);
+}
+
+.shell-nav-item.aivic-active {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+.content-area {
+  margin-left: 240px;
+  margin-top: 56px;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--bg-main);
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+  background-position: var(--surface-texture-position);
+}
+
+[data-aivic-panel] {
+  width: 100%;
+  min-height: 100%;
+}
+
+.shell-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.3) transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 3px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.5);
+}
+
+[data-aivic-panel="scr-1794401391211"] {
+  padding: calc(var(--space-unit) * 2);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: calc(var(--space-unit) * 2);
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: calc(var(--space-unit) * 2);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-card);
+  padding: calc(var(--space-unit) * 1.5);
+  box-shadow: var(--shadow-card);
+  margin-bottom: calc(var(--space-unit) * 2);
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: calc(var(--space-unit) * 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 0 calc(var(--space-unit) * -1.5);
+  padding: 0 calc(var(--space-unit) * 1.5);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table th {
+  height: var(--control-height);
+  background-color: #f1f5f9;
+  border-bottom: var(--border-width) solid var(--border);
+  text-align: left;
+  padding: 0 calc(var(--space-unit) * 1);
+  font-weight: 600;
+  color: var(--text);
+  position: sticky;
+  top: 0;
+}
+
+.table td {
+  height: var(--control-height);
+  border-bottom: var(--border-width) solid var(--border);
+  padding: 0 calc(var(--space-unit) * 1);
+  color: var(--text);
+}
+
+.table tbody tr:hover {
+  background-color: #f8fafc;
+  cursor: pointer;
+}
+
+.table tbody tr.selected {
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+.form-group {
+  margin-bottom: calc(var(--space-unit) * 1);
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: calc(var(--space-unit) * 0.5);
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  height: var(--control-height);
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--radius-control);
+  padding: calc(var(--space-unit) * 0.75) calc(var(--space-unit) * 1);
+  font-size: 13px;
+  font-family: var(--font-family);
+  color: var(--text);
+  background-color: var(--bg-card);
+  transition: border-color var(--motion-duration);
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--space-unit) * 1);
+}
+
+.btn {
+  height: var(--control-height);
+  padding: 0 calc(var(--space-unit) * 1.5);
+  font-size: 13px;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition: background-color var(--motion-duration), color var(--motion-duration);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text);
+  border: var(--border-width) solid var(--border);
+}
+
+.btn-secondary:hover {
+  background-color: #f1f5f9;
+}
+
+.btn-group {
+  display: flex;
+  gap: calc(var(--space-unit) * 1);
+  justify-content: flex-end;
+  margin-top: calc(var(--space-unit) * 1.5);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px calc(var(--space-unit) * 0.75);
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge-warning {
+  background-color: #fef08a;
+  color: #92400e;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: calc(var(--space-unit) * 0.75) 0;
+  font-size: 13px;
+  border-bottom: var(--border-width) solid var(--border);
+}
+
+.summary-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.summary-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.summary-total {
+  border-bottom: none;
+  padding-top: calc(var(--space-unit) * 1);
+  margin-top: calc(var(--space-unit) * 1);
+  border-top: 2px solid var(--border);
+}
+
+.preview-placeholder {
+  height: 200px;
+  background-color: #f1f5f9;
+  border-radius: var(--radius-control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: calc(var(--space-unit) * 1) 0;
+}
+
+.qty-input {
+  width: 80px;
+  text-align: center;
+}
+
+.price-text {
+  text-align: right;
+}
+
+@media (max-width: 1200px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
+
+  <div class="breadcrumb">
+    見積管理 > 見積作成・管理
+  </div>
+
+  <h1 class="page-title">見積作成・管理</h1>
+
+  <div class="card">
+    <div class="card-title">
+      見積依頼一覧
+      <button class="btn btn-primary" id="newQuoteBtn" style="margin: 0;">見積依頼登録</button>
     </div>
-
-    <div class="main-container">
-      <!-- 見積依頼一覧 -->
-      <div>
-        <h3 class="section-title">見積依頼一覧</h3>
-        <div class="quote-list-container">
-          <div class="scrollable-table">
-            <table id="quoteListTable">
-              <thead>
-                <tr>
-                  <th>見積ID</th>
-                  <th>顧客名</th>
-                  <th>見積日</th>
-                  <th>ステータス</th>
-                  <th>見積金額</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-quote-id="qt-001">
-                  <td>QT-001</td>
-                  <td>顧客A</td>
-                  <td>2026-11-10</td>
-                  <td>新規</td>
-                  <td>¥1,200,000</td>
-                </tr>
-                <tr data-quote-id="qt-002">
-                  <td>QT-002</td>
-                  <td>顧客B</td>
-                  <td>2026-11-08</td>
-                  <td>発行済</td>
-                  <td>¥800,000</td>
-                </tr>
-                <tr data-quote-id="qt-003">
-                  <td>QT-003</td>
-                  <td>顧客C</td>
-                  <td>2026-11-05</td>
-                  <td>失効</td>
-                  <td>¥2,500,000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div style="padding: calc(var(--space-unit) * 1.5); background-color: var(--bg-card); border: var(--border-width) solid var(--border); border-top: none; border-radius: 0 0 var(--radius-card) var(--radius-card);">
-          <button class="button button-primary" id="newQuoteBtn" style="width: 100%;">見積依頼登録</button>
-        </div>
-      </div>
-
-      <!-- 見積作成フォーム -->
-      <div>
-        <h3 class="section-title">見積作成フォーム</h3>
-        <div class="form-section">
-          <div class="form-row">
-            <div class="form-group" style="flex: 1;">
-              <label class="form-label">顧客選択 *</label>
-              <select class="form-select" id="customerSelect">
-                <option value="">顧客を選択してください</option>
-                <option value="cust-001">顧客A（C-001）</option>
-                <option value="cust-002">顧客B（C-002）</option>
-                <option value="cust-003">顧客C（C-003）</option>
-              </select>
-            </div>
-            <div class="form-group" style="flex: 1;">
-              <label class="form-label">見積依頼日付 *</label>
-              <input type="date" class="form-input" id="quoteDate">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">見積依頼内容（備考）</label>
-              <textarea class="form-textarea" id="quoteRemark" placeholder="見積に関する特記事項があればご入力ください"></textarea>
-            </div>
-          </div>
-
-          <h3 class="section-title" style="margin-top: calc(var(--space-unit) * 2);">商品選択</h3>
-          <div class="table-container">
-            <div class="scrollable-table-250">
-              <table id="productTable">
-                <thead>
-                  <tr>
-                    <th>商品コード</th>
-                    <th>商品名</th>
-                    <th>単位</th>
-                    <th>数量</th>
-                    <th>単価</th>
-                    <th>小計</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr data-product-id="prod-001">
-                    <td>PD-001</td>
-                    <td>商品A</td>
-                    <td>個</td>
-                    <td><input type="number" class="form-input quantity-input" value="10" min="1"></td>
-                    <td class="price-display">¥10,000</td>
-                    <td class="price-display">¥100,000</td>
-                  </tr>
-                  <tr data-product-id="prod-002">
-                    <td>PD-002</td>
-                    <td>商品B</td>
-                    <td>箱</td>
-                    <td><input type="number" class="form-input quantity-input" value="5" min="1"></td>
-                    <td class="price-display">¥20,000</td>
-                    <td class="price-display">¥100,000</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- 小計・税額・合計 -->
-        <div class="totals-section">
-          <div class="total-row">
-            <div class="total-label">小計（税抜き）</div>
-            <div class="total-value">¥200,000</div>
-          </div>
-          <div class="total-row">
-            <div class="total-label">消費税（10%）</div>
-            <div class="total-value">¥20,000</div>
-          </div>
-          <div class="total-row" style="border-top: var(--border-width) solid var(--border); padding-top: calc(var(--space-unit) * 1);">
-            <div class="total-label">見積合計金額</div>
-            <div class="total-value" style="font-size: 16px;">¥220,000</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 見積書プレビュー -->
-      <div>
-        <h3 class="section-title">見積書プレビュー</h3>
-        <div class="preview-section">
-          <div class="preview-placeholder" id="previewArea">
-            プレビュー表示エリア
-          </div>
-          <div class="button-group">
-            <button class="button button-secondary" id="previewBtn" style="flex: 1;">見積書プレビュー</button>
-            <button class="button button-primary" id="downloadBtn" style="flex: 1;">PDF出力</button>
-          </div>
-        </div>
-      </div>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>見積ID</th>
+            <th>顧客名</th>
+            <th>見積日</th>
+            <th>ステータス</th>
+            <th>見積金額</th>
+          </tr>
+        </thead>
+        <tbody id="quoteListTable">
+          <tr class="quote-list-row" data-quote-id="q-001">
+            <td>Q-2025-001</td>
+            <td>ABC株式会社</td>
+            <td>2025-01-15</td>
+            <td><span class="badge badge-success">作成済</span></td>
+            <td>¥950,000</td>
+          </tr>
+          <tr class="quote-list-row" data-quote-id="q-002">
+            <td>Q-2025-002</td>
+            <td>XYZ商事</td>
+            <td>2025-01-10</td>
+            <td><span class="badge badge-warning">審査中</span></td>
+            <td>¥650,000</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-title">見積作成フォーム</div>
+
+    <div class="form-group">
+      <label class="form-label">顧客選択</label>
+      <select class="form-select" id="customerSelect">
+        <option value="">-- 顧客を選択 --</option>
+        <option value="cust-001">ABC株式会社</option>
+        <option value="cust-002">XYZ商事</option>
+        <option value="cust-003">テック株式会社</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">見積日</label>
+        <input type="date" class="form-input" id="quoteDate" value="2025-01-15">
+      </div>
+      <div class="form-group">
+        <label class="form-label">有効期限</label>
+        <input type="date" class="form-input" id="expiryDate" value="2025-02-14">
+      </div>
+    </div>
+
+    <div style="margin-bottom: calc(var(--space-unit) * 1.5);">
+      <label class="form-label">備考</label>
+      <input type="text" class="form-input" id="remarks" placeholder="備考があれば入力">
+    </div>
+
+    <div style="margin-bottom: calc(var(--space-unit) * 1.5); overflow-x: auto;">
+      <label class="form-label">商品選択</label>
+      <table class="table" style="margin: 0;">
+        <thead>
+          <tr>
+            <th>商品コード</th>
+            <th>商品名</th>
+            <th>単位</th>
+            <th>数量</th>
+            <th>単価</th>
+            <th>小計</th>
+          </tr>
+        </thead>
+        <tbody id="productTable">
+          <tr class="product-row" data-product-id="p-001">
+            <td>SKU-001</td>
+            <td>LED電球 60W</td>
+            <td>個</td>
+            <td><input type="number" class="qty-input" value="100" min="1"></td>
+            <td class="price-text">¥280</td>
+            <td class="price-text subtotal">¥28,000</td>
+          </tr>
+          <tr class="product-row" data-product-id="p-002">
+            <td>SKU-002</td>
+            <td>27インチLEDパネル</td>
+            <td>個</td>
+            <td><input type="number" class="qty-input" value="5" min="1"></td>
+            <td class="price-text">¥48,000</td>
+            <td class="price-text subtotal">¥240,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="background-color: #f1f5f9; padding: calc(var(--space-unit) * 1); border-radius: var(--radius-control);">
+      <div class="summary-row">
+        <span class="summary-label">小計（税抜き）</span>
+        <span class="summary-value" id="subtotal">¥268,000</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">消費税（10%）</span>
+        <span class="summary-value" id="taxAmount">¥26,800</span>
+      </div>
+      <div class="summary-row summary-total">
+        <span class="summary-label">合計金額（税込み）</span>
+        <span class="summary-value" style="font-size: 16px;">¥<span id="totalAmount">294,800</span></span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-secondary" id="clearBtn">クリア</button>
+      <button class="btn btn-primary" id="previewBtn">見積書プレビュー</button>
+      <button class="btn btn-primary" id="saveQuoteBtn">見積保存</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">見積書プレビュー</div>
+    <div class="preview-placeholder" id="previewArea">
+      見積書プレビューはここに表示されます
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" id="exportPdfBtn">PDF出力</button>
+    </div>
+  </div>
+</div>
     </main>
   </div>
 

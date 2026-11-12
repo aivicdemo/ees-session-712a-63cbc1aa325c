@@ -66,100 +66,77 @@
     body {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      padding: var(--space-unit) * 2;
+      padding: calc(var(--space-unit) * 2);
     }
 
     .login-container {
       width: 100%;
       max-width: 420px;
-      display: flex;
-      flex-direction: column;
-      gap: calc(var(--space-unit) * 3);
-    }
-
-    .login-header {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: calc(var(--space-unit) * 1.5);
-    }
-
-    .login-logo {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
-      border-radius: calc(var(--radius-control) * 2);
-      margin: 0 auto;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-    }
-
-    .login-logo svg {
-      width: 32px;
-      height: 32px;
-      color: white;
-    }
-
-    .login-title {
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: -0.5px;
-      color: var(--text);
-    }
-
-    .login-subtitle {
-      font-size: 14px;
-      color: var(--text-muted);
-      font-weight: 400;
-      line-height: 1.5;
     }
 
     .login-card {
       background-color: var(--bg-card);
       border: var(--border-width) solid var(--border);
       border-radius: var(--radius-card);
-      padding: calc(var(--space-unit) * 3);
+      padding: calc(var(--space-unit) * 6);
       box-shadow: var(--shadow-card);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .login-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--surface-texture);
+      background-image: var(--surface-texture);
       background-size: var(--surface-texture-size);
       background-position: var(--surface-texture-position);
-      pointer-events: none;
-      opacity: 0.5;
+    }
+
+    .login-header {
+      margin-bottom: calc(var(--space-unit) * 4);
+      text-align: center;
+    }
+
+    .login-logo {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+      border-radius: calc(var(--radius-control) * 2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 24px;
+      margin-bottom: calc(var(--space-unit) * 2);
+    }
+
+    .login-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: calc(var(--space-unit) * 1);
+      letter-spacing: -0.5px;
+    }
+
+    .login-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 400;
     }
 
     .login-form {
-      position: relative;
-      z-index: 1;
       display: flex;
       flex-direction: column;
-      gap: calc(var(--space-unit) * 2);
+      gap: calc(var(--space-unit) * 3);
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: calc(var(--space-unit) * 0.75);
+      gap: calc(var(--space-unit) * 1.5);
     }
 
     .form-label {
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text);
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -167,30 +144,25 @@
 
     .form-input {
       height: var(--control-height);
-      padding: 0 calc(var(--space-unit) * 1.25);
+      padding: 0 calc(var(--space-unit) * 2);
       border: var(--border-width) solid var(--border);
       border-radius: var(--radius-control);
-      font-size: 14px;
-      font-family: inherit;
+      background-color: var(--bg-card);
       color: var(--text);
-      background-color: #fafbfc;
+      font-size: 14px;
+      font-family: var(--font-family);
       transition: all var(--motion-duration) ease;
       outline: none;
     }
 
-    .form-input::placeholder {
-      color: var(--text-muted);
-    }
-
-    .form-input:hover {
-      border-color: #cbd5e1;
-      background-color: #ffffff;
-    }
-
     .form-input:focus {
       border-color: var(--primary);
-      background-color: #ffffff;
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      background-color: var(--bg-card);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
     }
 
     .login-button {
@@ -201,99 +173,74 @@
       border-radius: var(--radius-control);
       font-size: 14px;
       font-weight: 600;
+      font-family: var(--font-family);
       cursor: pointer;
       transition: all var(--motion-duration) ease;
-      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-top: calc(var(--space-unit) * 1);
     }
 
     .login-button:hover {
       background-color: var(--primary-hover);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
       transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
     .login-button:active {
       transform: translateY(0);
-      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
-    }
-
-    .login-button:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
     }
 
     .login-footer {
+      margin-top: calc(var(--space-unit) * 4);
+      padding-top: calc(var(--space-unit) * 3);
+      border-top: var(--border-width) solid var(--border);
       text-align: center;
       font-size: 12px;
       color: var(--text-muted);
       line-height: 1.6;
-      margin-top: calc(var(--space-unit) * 1);
-    }
-
-    .login-footer-note {
-      display: inline-block;
-      padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
-      background-color: #fef3c7;
-      border: var(--border-width) solid #fcd34d;
-      border-radius: var(--radius-control);
-      color: #92400e;
-      font-size: 12px;
-      font-weight: 500;
-      margin-top: calc(var(--space-unit) * 2);
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: calc(var(--space-unit) * 1.5);
-      }
-
-      .login-container {
-        gap: calc(var(--space-unit) * 2);
+      .login-card {
+        padding: calc(var(--space-unit) * 4);
       }
 
       .login-title {
         font-size: 24px;
       }
 
-      .login-card {
-        padding: calc(var(--space-unit) * 2);
-      }
-
-      .login-logo {
-        width: 48px;
-        height: 48px;
-      }
-
-      .login-logo svg {
-        width: 28px;
-        height: 28px;
+      .login-container {
+        max-width: 100%;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+      .form-input,
+      .login-button {
+        transition: none;
+      }
+
+      .login-button:hover {
+        transform: none;
+      }
+
+      .login-button:active {
+        transform: none;
       }
     }
   </style>
 </head>
 <body>
   <div class="login-container">
-    <div class="login-header">
-      <div class="login-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"></path>
-          <path d="M10 17l-3-3 1.41-1.41L10 14.17l5.59-5.59L17 10l-7 7z"></path>
-        </svg>
-      </div>
-      <h1 class="login-title" data-testid="login-title">新EES</h1>
-      <p class="login-subtitle">販売・仕入統合管理システムへようこそ</p>
-    </div>
-
     <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">新</div>
+        <h1 class="login-title" data-testid="login-title">新EES</h1>
+        <p class="login-subtitle">販売・仕入統合管理システム</p>
+      </div>
+
       <form class="login-form" data-testid="login-form" novalidate>
         <div class="form-group">
           <label class="form-label" for="username">ユーザー名</label>
@@ -321,19 +268,13 @@
           >
         </div>
 
-        <button
-          class="login-button"
-          type="submit"
-          data-testid="login-button"
-        >
+        <button class="login-button" type="submit" data-testid="login-button">
           ログイン
         </button>
       </form>
 
       <div class="login-footer">
-        <div class="login-footer-note">
-          ℹ️ サンプル実装ではどの入力でもログインできます
-        </div>
+        <p>サンプル実装ではどの入力でもログインできます</p>
       </div>
     </div>
   </div>

@@ -216,7 +216,7 @@ window.AIVIC_SYSTEM_NAME = "顧客ポータル・ベンダー評価システム"
 window.AIVIC_TABLES = [{"tableName":"ベンダー","purpose":"顧客ポータルにおけるベンダー情報の一元管理と評価スコア、ステータス追跡を行うマスタテーブル","columns":[{"name":"ベンダーID","type":"uuid","required":true,"description":"ベンダーを一意に識別するプライマリキー"},{"name":"ベンダー名","type":"varchar(100)","required":true,"description":"ベンダーの正式名称"},{"name":"説明","type":"text","required":false,"description":"ベンダーの事業内容や特徴に関する詳細説明"},{"name":"ステータス","type":"varchar(100)","required":true,"description":"ベンダーの現在のステータス(有効/無効/審査中等)"},{"name":"評価スコア","type":"integer","required":false,"description":"顧客による総合評価スコア(0-100等)"},{"name":"評価件数","type":"integer","required":false,"description":"受けた評価の総件数"},{"name":"連絡先メールアドレス","type":"varchar(100)","required":false,"description":"ベンダーの公式連絡先メールアドレス"},{"name":"連絡先電話番号","type":"varchar(100)","required":false,"description":"ベンダーの公式連絡先電話番号"},{"name":"ウェブサイトURL","type":"varchar(100)","required":false,"description":"ベンダーの公式ウェブサイトURL"},{"name":"作成日時","type":"timestamp","required":true,"description":"ベンダー情報がシステムに登録された日時"},{"name":"更新日時","type":"timestamp","required":true,"description":"ベンダー情報が最後に更新された日時"},{"name":"作成者","type":"varchar(100)","required":false,"description":"ベンダー情報を登録したユーザーまたはシステムの識別子"}]}];
 window.AIVIC_PRESET_SEED = {"ベンダー":[{"ベンダーID":"rec-001","ベンダー名":"株式会社デジタルソリューション","説明":"エンタープライズシステム構築・運用保守を専門とする大手SIer。クラウド移行やDX推進支援の実績多数。","ステータス":"有効","評価スコア":92,"評価件数":47,"連絡先メールアドレス":"contact@digital-solution.co.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.digital-solution.co.jp","作成日時":"2023-06-15T10:30:00+09:00","更新日時":"2025-01-20T14:45:00+09:00","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"クラウドテック・ジャパン株式会社","説明":"AWS・Azure・GCP等のクラウドインフラ構築・運用・最適化サービスを提供。中堅企業向けのコスト削減とセキュリティ強化を専門とする。","ステータス":"審査中","評価スコア":0,"評価件数":0,"連絡先メールアドレス":"inquiry@cloudtech-japan.co.jp","連絡先電話番号":"03-xxxx-xxxx","ウェブサイトURL":"https://www.cloudtech-japan.co.jp","作成日時":"2025-01-15T10:30:00Z","更新日時":"2025-01-15T10:30:00Z","作成者":"鈴木花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社グローバルロジスティクス","説明":"国内外の物流・配送サービスを提供。近年サービス品質低下により顧客満足度が減少傾向。","ステータス":"契約更新検討中","評価スコア":42,"評価件数":87,"連絡先メールアドレス":"contact@global-logistics.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.global-logistics.jp","作成日時":"2023-06-15T10:30:00Z","更新日時":"2025-01-20T14:45:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"セキュアテック保守サービス株式会社","説明":"ISO27001認証取得、24時間対応のシステム保守・運用管理専門業者。金融機関向けインフラ保守実績15年以上。","ステータス":"有効","評価スコア":94,"評価件数":287,"連絡先メールアドレス":"support@securetech-maint.co.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.securetech-maint.co.jp","作成日時":"2023-11-15T09:30:00Z","更新日時":"2025-01-22T14:45:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社イノベーティブソリューション","説明":"クラウドベースのSaaS型業務効率化ツールを提供する新興企業。中小企業向けの導入支援も実施。","ステータス":"有効","評価スコア":78,"評価件数":12,"連絡先メールアドレス":"contact@innovative-solution.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.innovative-solution.jp","作成日時":"2024-08-15T10:30:00Z","更新日時":"2025-01-22T14:15:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社テックサポート東京","説明":"システム保守・技術サポート業務を提供していましたが、対応品質低下により契約解除に至りました。","ステータス":"無効","評価スコア":32,"評価件数":47,"連絡先メールアドレス":"support@techsupport-tokyo.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.techsupport-tokyo.jp","作成日時":"2023-06-15 10:30:00","更新日時":"2024-11-22 14:15:00","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社テクノロジーソリューション","説明":"企業向けクラウドシステムの開発・導入・保守を専門とする大手IT企業。複数業界での豊富な実績を持つ。","ステータス":"有効","評価スコア":92,"評価件数":47,"連絡先メールアドレス":"contact@techsol.co.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.techsol.co.jp","作成日時":"2023-11-15T09:30:00Z","更新日時":"2025-01-20T14:22:00Z","作成者":"山田花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社地域サポート関西","説明":"大阪・兵庫・京都を中心とした地域密着型の施設管理・清掃サービス提供企業","ステータス":"有効","評価スコア":78,"評価件数":24,"連絡先メールアドレス":"contact@chikisupport-kansai.jp","連絡先電話番号":"06-XXXX-5678","ウェブサイトURL":"https://www.chikisupport-kansai.jp","作成日時":"2024-03-15T10:30:00Z","更新日時":"2025-01-08T14:22:00Z","作成者":"佐藤花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社テックソリューション","説明":"旧システムで登録された重複ベンダー。現在の正規ベンダー『テックソリューション・ジャパン』に統合予定。","ステータス":"無効","評価スコア":72,"評価件数":24,"連絡先メールアドレス":"info@tech-solution-old.jp","連絡先電話番号":"03-1234-5678","ウェブサイトURL":"https://www.tech-solution-old.jp","作成日時":"2022-06-15T10:30:00Z","更新日時":"2024-11-20T14:45:00Z","作成者":"佐藤花子"},{"ベンダーID":"rec-001","ベンダー名":"株式会社デジタルソリューション東京","説明":"2024年度システム統合プロジェクト終了に伴い一時休止中。クラウドインフラ構築およびデータ移行サービスを提供していた。","ステータス":"休止中","評価スコア":82,"評価件数":24,"連絡先メールアドレス":"contact@digital-solution-tokyo.jp","連絡先電話番号":"03-XXXX-5678","ウェブサイトURL":"https://www.digital-solution-tokyo.jp","作成日時":"2024-02-15T10:30:00+09:00","更新日時":"2024-12-20T14:45:00+09:00","作成者":"山田花子"}]};
 window.AIVIC_PAGE_SCREEN_ID = "scr-1794401466084";
-window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  const vendorRows = container.querySelectorAll('.vendor-row');\n  const detailPanel = container.querySelector('#detailContent');\n  const detailTitle = container.querySelector('#detailTitle');\n  const historyList = container.querySelector('#historyList');\n  const searchInput = container.querySelector('#searchInput');\n  const searchButton = container.querySelector('#searchButton');\n  const compareButton = container.querySelector('#compareButton');\n  const historyTabs = container.querySelectorAll('.history-tab');\n  const alertItems = container.querySelectorAll('.alert-item');\n\n  const vendorData = {\n    v001: {\n      name: 'Tech Supplies Ltd',\n      description: '精密機器・電子部品の専門供給業者。高品質と納期厳守で定評がある。',\n      contact: 'contact@techsupplies.com',\n      phone: '+81-90-1234-5678',\n      website: 'https://www.techsupplies.com',\n      evaluationCount: 48,\n      history: [\n        { date: '2026-11-10', score: 92, evaluator: '山田太郎', comment: '全項目で優秀。継続推奨。' },\n        { date: '2026-10-15', score: 91, evaluator: '田中花子', comment: '納期達成率が95%と優良。' },\n        { date: '2026-09-20', score: 90, evaluator: '田中花子', comment: '安定した品質を維持。' }\n      ]\n    },\n    v002: {\n      name: 'Global Parts Inc',\n      description: '汎用部品・消耗品の大手流通業者。品揃えが豊富。',\n      contact: 'sales@globalparts.com',\n      phone: '+81-90-2345-6789',\n      website: 'https://www.globalparts.com',\n      evaluationCount: 35,\n      history: [\n        { date: '2026-11-09', score: 78, evaluator: '山田太郎', comment: '品質低下の傾向。改善要請中。' },\n        { date: '2026-10-14', score: 80, evaluator: '鈴木次郎', comment: '対応スピード改善が課題。' },\n        { date: '2026-09-18', score: 77, evaluator: '田中花子', comment: '不良率が上昇傾向。' }\n      ]\n    },\n    v003: {\n      name: 'Premium Equipment Co',\n      description: 'プレミアム機器・設備の専門業者。カスタマイズ対応が可能。',\n      contact: 'info@premiumequip.com',\n      phone: '+81-90-3456-7890',\n      website: 'https://www.premiumequip.com',\n      evaluationCount: 28,\n      history: [\n        { date: '2026-11-08', score: 88, evaluator: '山田太郎', comment: '安定した高品質。推奨ベンダー。' },\n        { date: '2026-10-12', score: 87, evaluator: '鈴木次郎', comment: '対応が丁寧で信頼できる。' },\n        { date: '2026-09-15', score: 85, evaluator: '田中花子', comment: '価格帯は高いが品質が良い。' }\n      ]\n    },\n    v004: {\n      name: 'Standard Distributor',\n      description: '標準的な部品・消耗品を供給。コスト削減重視。',\n      contact: 'support@standarddist.com',\n      phone: '+81-90-4567-8901',\n      website: 'https://www.standarddist.com',\n      evaluationCount: 42,\n      history: [\n        { date: '2026-11-07', score: 65, evaluator: '山田太郎', comment: '納期遅延が頻発。改善計画の提出要求。' },\n        { date: '2026-10-10', score: 68, evaluator: '鈴木次郎', comment: '応答が遅い。追跡困難。' },\n        { date: '2026-09-12', score: 63, evaluator: '田中花子', comment: '品質問題が多発。警告レベル。' }\n      ]\n    },\n    v005: {\n      name: 'Express Logistics Ltd',\n      description: '高速配送・物流に特化。緊急対応が得意。',\n      contact: 'orders@expresslog.com',\n      phone: '+81-90-5678-9012',\n      website: 'https://www.expresslog.com',\n      evaluationCount: 31,\n      history: [\n        { date: '2026-11-06', score: 85, evaluator: '山田太郎', comment: 'スピード配送で実績あり。' },\n        { date: '2026-10-11', score: 84, evaluator: '鈴木次郎', comment: '緊急案件への対応が優秀。' },\n        { date: '2026-09-14', score: 83, evaluator: '田中花子', comment: '価格は中程度。納期は確実。' }\n      ]\n    }\n  };\n\n  let currentVendorId = null;\n  let currentMonth = 11;\n\n  vendorRows.forEach(row => {\n    row.addEventListener('click', function() {\n      vendorRows.forEach(r => r.classList.remove('active'));\n      this.classList.add('active');\n      currentVendorId = this.getAttribute('data-vendor-id');\n      updateDetailPanel(currentVendorId);\n      updateHistoryList(currentVendorId, currentMonth);\n    });\n  });\n\n  function updateDetailPanel(vendorId) {\n    const vendor = vendorData[vendorId];\n    if (!vendor) return;\n    \n    detailTitle.textContent = vendor.name;\n    detailContent.innerHTML = `\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">説明</div>\n        <div class=\"detail-value\">${vendor.description}</div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">メールアドレス</div>\n        <div class=\"detail-value\"><a href=\"mailto:${vendor.contact}\" class=\"detail-link\">${vendor.contact}</a></div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">電話番号</div>\n        <div class=\"detail-value\"><a href=\"tel:${vendor.phone}\" class=\"detail-link\">${vendor.phone}</a></div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">ウェブサイト</div>\n        <div class=\"detail-value\"><a href=\"${vendor.website}\" class=\"detail-link\" target=\"_blank\">${vendor.website}</a></div>\n      </div>\n      <div class=\"detail-row\">\n        <div class=\"detail-label\">評価件数</div>\n        <div class=\"detail-value\">${vendor.evaluationCount}件</div>\n      </div>\n    `;\n  }\n\n  function updateHistoryList(vendorId, month) {\n    const vendor = vendorData[vendorId];\n    if (!vendor) return;\n    \n    const filtered = vendor.history.filter(h => {\n      const hMonth = new Date(h.date).getMonth() + 1;\n      return hMonth === month;\n    });\n\n    if (filtered.length === 0) {\n      historyList.innerHTML = `<div class=\"empty-state\">${month}月の評価履歴はありません</div>`;\n      return;\n    }\n\n    historyList.innerHTML = filtered.map(h => `\n      <div class=\"history-item\">\n        <div class=\"history-date\">${h.date}</div>\n        <div class=\"history-score\">スコア: ${h.score}</div>\n        <div class=\"history-comment\">評価者: ${h.evaluator}</div>\n        <div class=\"history-comment\">コメント: ${h.comment}</div>\n      </div>\n    `).join('');\n  }\n\n  historyTabs.forEach(tab => {\n    tab.addEventListener('click', function() {\n      historyTabs.forEach(t => t.classList.remove('active'));\n      this.classList.add('active');\n      currentMonth = parseInt(this.getAttribute('data-month'));\n      if (currentVendorId) {\n        updateHistoryList(currentVendorId, currentMonth);\n      }\n    });\n  });\n\n  searchButton.addEventListener('click', function() {\n    const keyword = searchInput.value.trim();\n    if (keyword) {\n      alert(`「${keyword}」の検索を実行: フルシステムでは検索結果一覧を表示します`);\n    }\n  });\n\n  compareButton.addEventListener('click', function() {\n    alert('複数ベンダー比較: フルシステムではモーダルで比較表を表示します');\n  });\n\n  alertItems.forEach(alert => {\n    alert.addEventListener('click', function() {\n      alert('アラート詳細: フルシステムではツールチップまたは詳細ペインを表示します');\n    });\n  });\n}";
+window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  const vendorTableRows = container.querySelectorAll('#vendorTable tbody tr');\n  const historicalMonths = container.querySelectorAll('.month-tab');\n  const detailPanel = container.querySelector('.detail-panel');\n  const searchBtn = container.querySelector('#searchBtn');\n  const compareBtn = container.querySelector('#compareBtn');\n  const vendorSearchInput = container.querySelector('#vendorSearchInput');\n  const selectedVendorCheckboxes = container.querySelectorAll('input[name=\"vendorCompare\"]');\n  \n  let selectedRowEl = null;\n  let selectedVendors = [];\n  \n  vendorTableRows.forEach(row => {\n    row.addEventListener('click', () => {\n      if (selectedRowEl) selectedRowEl.classList.remove('active');\n      selectedRowEl = row;\n      row.classList.add('active');\n      const vendorName = row.querySelector('td:nth-child(2)').textContent;\n      const vendorId = row.getAttribute('data-vendor-id');\n      updateDetailPanel(vendorName, vendorId);\n    });\n  });\n  \n  historicalMonths.forEach(tab => {\n    tab.addEventListener('click', () => {\n      container.querySelectorAll('.month-tab').forEach(t => t.classList.remove('active'));\n      tab.classList.add('active');\n      const month = tab.getAttribute('data-month');\n      filterHistoryByMonth(month);\n    });\n  });\n  \n  if (searchBtn) {\n    searchBtn.addEventListener('click', () => {\n      const searchTerm = vendorSearchInput.value.toLowerCase();\n      filterVendorTable(searchTerm);\n    });\n    vendorSearchInput.addEventListener('keydown', (e) => {\n      if (e.key === 'Enter') searchBtn.click();\n    });\n  }\n  \n  if (compareBtn) {\n    compareBtn.addEventListener('click', () => {\n      selectedVendors = [];\n      selectedVendorCheckboxes.forEach(cb => {\n        if (cb.checked) selectedVendors.push(cb.value);\n      });\n      if (selectedVendors.length > 0) {\n        showComparisonModal(selectedVendors);\n      }\n    });\n  }\n  \n  function updateDetailPanel(vendorName, vendorId) {\n    const detailContent = container.querySelector('.detail-content');\n    if (detailContent) {\n      detailContent.innerHTML = '<div class=\"detail-info\"><div class=\"detail-row\"><label>ベンダー名</label><span>' + vendorName + '</span></div><div class=\"detail-row\"><label>ステータス</label><span>有効</span></div><div class=\"detail-row\"><label>評価件数</label><span>--</span></div><div class=\"detail-row\"><label>連絡先</label><span>--</span></div></div>';\n    }\n  }\n  \n  function filterVendorTable(searchTerm) {\n    vendorTableRows.forEach(row => {\n      const vendorName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();\n      row.style.display = vendorName.includes(searchTerm) ? '' : 'none';\n    });\n  }\n  \n  function filterHistoryByMonth(month) {\n    const historyRows = container.querySelectorAll('#evaluationHistoryTable tbody tr');\n    historyRows.forEach(row => {\n      const rowMonth = row.getAttribute('data-month');\n      row.style.display = rowMonth === month ? '' : 'none';\n    });\n  }\n  \n  function showComparisonModal(vendorIds) {\n    alert('比較機能: ' + vendorIds.join(', ') + ' を比較します');\n  }\n}";
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -242,166 +242,837 @@ window.AIVIC_PAGE_INIT_JS = "function(container, apiUrl, tables) {\n  const vend
     </aside>
 
     <main class="content-area shell-scrollbar">
-      <div data-aivic-panel="scr-1794401466084" style="display:block">
-    <!-- Left Pane: Vendor List -->
-    <div class="pane-left">
-      <div class="vendor-list-title">ベンダー評価スコア一覧</div>
-      <div class="vendor-list-container">
-        <table class="vendor-list-table">
-          <thead>
-            <tr>
-              <th style="width: 40%">ベンダー名</th>
-              <th style="width: 15%">総合スコア</th>
-              <th style="width: 15%">納期達成率</th>
-              <th style="width: 15%">対応スピード</th>
-              <th style="width: 15%">品質</th>
-            </tr>
-          </thead>
-          <tbody id="vendorList">
-            <tr class="vendor-row" data-vendor-id="v001">
-              <td class="vendor-name">Tech Supplies Ltd</td>
-              <td><span class="score-good">92</span></td>
-              <td><span class="score-good">95%</span></td>
-              <td><span class="score-good">88</span></td>
-              <td><span class="score-good">91</span></td>
-            </tr>
-            <tr class="vendor-row" data-vendor-id="v002">
-              <td class="vendor-name">Global Parts Inc</td>
-              <td><span class="score-medium">78</span></td>
-              <td><span class="score-medium">82%</span></td>
-              <td><span class="score-medium">75</span></td>
-              <td><span class="score-medium">76</span></td>
-            </tr>
-            <tr class="vendor-row" data-vendor-id="v003">
-              <td class="vendor-name">Premium Equipment Co</td>
-              <td><span class="score-good">88</span></td>
-              <td><span class="score-good">90%</span></td>
-              <td><span class="score-medium">85</span></td>
-              <td><span class="score-good">87</span></td>
-            </tr>
-            <tr class="vendor-row" data-vendor-id="v004">
-              <td class="vendor-name">Standard Distributor</td>
-              <td><span class="score-poor">65</span></td>
-              <td><span class="score-poor">68%</span></td>
-              <td><span class="score-poor">62</span></td>
-              <td><span class="score-poor">65</span></td>
-            </tr>
-            <tr class="vendor-row" data-vendor-id="v005">
-              <td class="vendor-name">Express Logistics Ltd</td>
-              <td><span class="score-good">85</span></td>
-              <td><span class="score-good">88%</span></td>
-              <td><span class="score-good">82</span></td>
-              <td><span class="score-medium">80</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div data-aivic-panel="scr-1794401466084" style="display:block"><style>
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --border: #e2e8f0;
+  --border-width: 1px;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --top-bar-bg: #1e293b;
+  --top-bar-border: #0f172a;
+  --top-bar-text: #f1f5f9;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --space-unit: 8px;
+  --control-height: 36px;
+  --radius-card: 6px;
+  --radius-control: 4px;
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --motion-duration: 200ms;
+  --surface-texture: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(226, 232, 240, 0) 100%);
+  --surface-texture-size: 100% 100%;
+  --surface-texture-position: 0 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+  color: var(--text);
+  background-color: var(--bg-main);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-aivic-shell-pattern="sidebar"] {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.shell-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: var(--top-bar-bg);
+  border-bottom: var(--border-width) solid var(--top-bar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--space-unit) * 2);
+  z-index: 100;
+  box-shadow: var(--shadow-card);
+}
+
+.shell-logo {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--top-bar-text);
+}
+
+.shell-logo-icon {
+  width: 28px;
+  height: 28px;
+  background-color: var(--primary);
+  border-radius: var(--radius-control);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.shell-user-area {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-unit) * 1.5);
+}
+
+.shell-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.shell-user-name {
+  font-size: 13px;
+  color: var(--top-bar-text);
+}
+
+.shell-logout {
+  font-size: 12px;
+  color: var(--top-bar-text);
+  text-decoration: none;
+  transition: color var(--motion-duration);
+}
+
+.shell-logout:hover {
+  color: var(--primary);
+}
+
+.shell-sidebar {
+  position: fixed;
+  left: 0;
+  top: 56px;
+  bottom: 0;
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  border-right: var(--border-width) solid var(--border);
+  overflow-y: auto;
+  padding: calc(var(--space-unit) * 2) 0;
+  z-index: 99;
+}
+
+.shell-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.shell-nav-item {
+  display: block;
+  padding: calc(var(--space-unit) * 1.5) calc(var(--space-unit) * 2);
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-duration), color var(--motion-duration);
+  border-left: 3px solid transparent;
+}
+
+.shell-nav-item:hover {
+  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--primary);
+}
+
+.shell-nav-item.aivic-active {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+.content-area {
+  margin-left: 240px;
+  margin-top: 56px;
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--bg-main);
+  background-image: var(--surface-texture);
+  background-size: var(--surface-texture-size);
+  background-position: var(--surface-texture-position);
+}
+
+[data-aivic-panel] {
+  width: 100%;
+  min-height: 100%;
+}
+
+.shell-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.3) transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 3px;
+}
+
+.shell-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.5);
+}
+  </style>
+
+    <style>
+      [data-aivic-panel="scr-1794401466084"] {
+        padding: calc(var(--space-unit) * 3);
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 3);
+      }
+
+      .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 1);
+      }
+
+      .page-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .breadcrumb {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .breadcrumb span:not(:last-child)::after {
+        content: " ";
+      }
+
+      .main-container {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr 0.8fr;
+        gap: calc(var(--space-unit) * 2);
+      }
+
+      .left-pane {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 2);
+      }
+
+      .search-section {
+        background: var(--bg-card);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-card);
+        padding: calc(var(--space-unit) * 2);
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 1.5);
+      }
+
+      .search-group {
+        display: flex;
+        gap: calc(var(--space-unit) * 1);
+        align-items: flex-end;
+      }
+
+      .form-group {
+        flex: 1;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: calc(var(--space-unit) * 0.5);
+      }
+
+      .form-input {
+        width: 100%;
+        height: var(--control-height);
+        padding: calc(var(--space-unit) * 0.75) calc(var(--space-unit) * 1);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-control);
+        font-size: 13px;
+        background: var(--bg-card);
+        color: var(--text);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .button {
+        height: var(--control-height);
+        padding: calc(var(--space-unit) * 0.75) calc(var(--space-unit) * 1.5);
+        border: none;
+        border-radius: var(--radius-control);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--motion-duration);
+        white-space: nowrap;
+      }
+
+      .button-primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .button-primary:hover {
+        background: var(--primary-hover);
+      }
+
+      .button-secondary {
+        background: var(--bg-card);
+        color: var(--text);
+        border: var(--border-width) solid var(--border);
+      }
+
+      .button-secondary:hover {
+        background: rgba(37, 99, 235, 0.08);
+        border-color: var(--primary);
+      }
+
+      .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: calc(var(--space-unit) * 1);
+      }
+
+      .table-container {
+        background: var(--bg-card);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-card);
+        overflow: hidden;
+        box-shadow: var(--shadow-card);
+      }
+
+      .scrollable-table {
+        overflow-y: auto;
+        max-height: 400px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      thead {
+        background: rgba(37, 99, 235, 0.05);
+        position: sticky;
+        top: 0;
+      }
+
+      th {
+        padding: calc(var(--space-unit) * 1);
+        text-align: left;
+        font-weight: 600;
+        color: var(--text);
+        border-bottom: var(--border-width) solid var(--border);
+      }
+
+      td {
+        padding: calc(var(--space-unit) * 1);
+        border-bottom: var(--border-width) solid var(--border);
+        color: var(--text);
+      }
+
+      tbody tr {
+        cursor: pointer;
+        transition: background-color var(--motion-duration);
+      }
+
+      tbody tr:hover {
+        background-color: rgba(37, 99, 235, 0.05);
+      }
+
+      tbody tr.active {
+        background-color: rgba(37, 99, 235, 0.12);
+      }
+
+      .middle-pane {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 2);
+      }
+
+      .card-group {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: calc(var(--space-unit) * 2);
+      }
+
+      .card {
+        background: var(--bg-card);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-card);
+        padding: calc(var(--space-unit) * 2);
+        box-shadow: var(--shadow-card);
+      }
+
+      .metric-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: calc(var(--space-unit) * 1.5);
+      }
+
+      .metric-card {
+        background: var(--bg-card);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-card);
+        padding: calc(var(--space-unit) * 1.5);
+        text-align: center;
+        box-shadow: var(--shadow-card);
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-bottom: calc(var(--space-unit) * 0.5);
+        font-weight: 500;
+      }
+
+      .metric-value {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .metric-unit {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: calc(var(--space-unit) * 0.25);
+      }
+
+      .chart-container {
+        width: 100%;
+        height: 300px;
+        background: rgba(37, 99, 235, 0.05);
+        border: var(--border-width) dashed var(--border);
+        border-radius: var(--radius-control);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .alert-section {
+        background: var(--bg-card);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-card);
+        padding: calc(var(--space-unit) * 2);
+        box-shadow: var(--shadow-card);
+      }
+
+      .alert-list {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 1);
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .alert-item {
+        padding: calc(var(--space-unit) * 1);
+        border-left: 4px solid #dc2626;
+        background: rgba(220, 38, 38, 0.05);
+        border-radius: var(--radius-control);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color var(--motion-duration);
+      }
+
+      .alert-item:hover {
+        background: rgba(220, 38, 38, 0.1);
+      }
+
+      .alert-item.warning {
+        border-left-color: #f59e0b;
+        background: rgba(245, 158, 11, 0.05);
+      }
+
+      .alert-item.warning:hover {
+        background: rgba(245, 158, 11, 0.1);
+      }
+
+      .alert-text {
+        font-size: 12px;
+        color: var(--text);
+      }
+
+      .alert-icon {
+        font-size: 16px;
+      }
+
+      .right-pane {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 2);
+      }
+
+      .detail-panel {
+        background: var(--bg-card);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-card);
+        padding: calc(var(--space-unit) * 2);
+        box-shadow: var(--shadow-card);
+      }
+
+      .detail-content {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 1);
+      }
+
+      .detail-info {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--space-unit) * 1);
+      }
+
+      .detail-row {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: calc(var(--space-unit) * 1);
+        font-size: 12px;
+      }
+
+      .detail-row label {
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      .detail-row span {
+        color: var(--text);
+        word-break: break-word;
+      }
+
+      .tab-group {
+        display: flex;
+        gap: calc(var(--space-unit) * 0.5);
+        margin-bottom: calc(var(--space-unit) * 1.5);
+        border-bottom: var(--border-width) solid var(--border);
+      }
+
+      .month-tab {
+        padding: calc(var(--space-unit) * 1) calc(var(--space-unit) * 1.5);
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--text-muted);
+        border-bottom: 3px solid transparent;
+        transition: all var(--motion-duration);
+        white-space: nowrap;
+      }
+
+      .month-tab:hover {
+        color: var(--text);
+      }
+
+      .month-tab.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+      }
+
+      .search-result {
+        background: var(--bg-card);
+        border: var(--border-width) solid var(--border);
+        border-radius: var(--radius-control);
+        padding: calc(var(--space-unit) * 1);
+        font-size: 12px;
+        color: var(--text);
+        margin-top: calc(var(--space-unit) * 0.5);
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--space-unit) * 0.5);
+        margin: calc(var(--space-unit) * 0.5) 0;
+      }
+
+      .checkbox-group input[type="checkbox"] {
+        cursor: pointer;
+      }
+
+      .checkbox-label {
+        font-size: 12px;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      @media (max-width: 1400px) {
+        .main-container {
+          grid-template-columns: 1fr 1fr;
+        }
+        .right-pane {
+          grid-column: 1 / -1;
+        }
+      }
+    </style>
+
+    <div class="page-header">
+      <div class="breadcrumb">
+        <span>顧客ポータル</span>
+        <span>></span>
+        <span>ベンダー評価</span>
       </div>
+      <div class="page-title">ベンダー評価ダッシュボード</div>
     </div>
 
-    <!-- Center Pane: Metrics and Alerts -->
-    <div class="pane-center">
-      <!-- Metrics Row -->
-      <div class="metrics-row">
-        <div class="metric-card">
-          <div class="metric-label">月次納期達成率</div>
-          <div class="metric-value" id="monthlyDeliveryScore">92%</div>
-          <div class="metric-subtitle">最新月平均</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">対応スピード</div>
-          <div class="metric-value" id="responseSpeedScore">84</div>
-          <div class="metric-subtitle">平均応答時間: 2.5h</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">品質スコア</div>
-          <div class="metric-value" id="qualityScore">87</div>
-          <div class="metric-subtitle">不良率: 1.2%</div>
-        </div>
-      </div>
-
-      <!-- Graph Container -->
-      <div class="graph-container">
-        <div class="graph-title">直近3ヶ月の納期達成率トレンド</div>
-        <div class="bar-chart">
-          <div class="bar-item">
-            <div class="bar-value" style="height: 140px;">
-              <div class="bar-percentage">88%</div>
+    <div class="main-container">
+      <!-- 左ペイン: ベンダー評価スコア一覧表 -->
+      <div class="left-pane">
+        <div class="search-section">
+          <div class="search-group">
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label">ベンダー検索</label>
+              <input type="text" class="form-input" placeholder="ベンダー名で検索" id="vendorSearchInput">
             </div>
-            <div class="bar-label">9月</div>
+            <button class="button button-primary" id="searchBtn">検索</button>
           </div>
-          <div class="bar-item">
-            <div class="bar-value" style="height: 158px;">
-              <div class="bar-percentage">95%</div>
+        </div>
+
+        <div class="table-container">
+          <div class="scrollable-table">
+            <table id="vendorTable">
+              <thead>
+                <tr>
+                  <th style="width: 30px;"></th>
+                  <th>ベンダー名</th>
+                  <th>総合スコア</th>
+                  <th>納期達成率</th>
+                  <th>対応速度</th>
+                  <th>品質</th>
+                  <th>ステータス</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-vendor-id="vnd-001">
+                  <td><input type="checkbox" name="vendorCompare" value="vnd-001"></td>
+                  <td>トップ電子</td>
+                  <td>92</td>
+                  <td>95%</td>
+                  <td>8.5</td>
+                  <td>9.0</td>
+                  <td>有効</td>
+                </tr>
+                <tr data-vendor-id="vnd-004">
+                  <td><input type="checkbox" name="vendorCompare" value="vnd-004"></td>
+                  <td>フジ電機工業</td>
+                  <td>88</td>
+                  <td>92%</td>
+                  <td>9.0</td>
+                  <td>8.5</td>
+                  <td>有効</td>
+                </tr>
+                <tr data-vendor-id="vnd-002">
+                  <td><input type="checkbox" name="vendorCompare" value="vnd-002"></td>
+                  <td>東海物流センター</td>
+                  <td>85</td>
+                  <td>88%</td>
+                  <td>8.0</td>
+                  <td>8.5</td>
+                  <td>有効</td>
+                </tr>
+                <tr data-vendor-id="vnd-005">
+                  <td><input type="checkbox" name="vendorCompare" value="vnd-005"></td>
+                  <td>山田電子部品</td>
+                  <td>81</td>
+                  <td>85%</td>
+                  <td>8.8</td>
+                  <td>7.8</td>
+                  <td>有効</td>
+                </tr>
+                <tr data-vendor-id="vnd-003">
+                  <td><input type="checkbox" name="vendorCompare" value="vnd-003"></td>
+                  <td>グローバルテック関西</td>
+                  <td>78</td>
+                  <td>80%</td>
+                  <td>7.5</td>
+                  <td>8.0</td>
+                  <td>有効</td>
+                </tr>
+                <tr data-vendor-id="vnd-006">
+                  <td><input type="checkbox" name="vendorCompare" value="vnd-006"></td>
+                  <td>アジア流通パートナーズ</td>
+                  <td>72</td>
+                  <td>75%</td>
+                  <td>7.0</td>
+                  <td>7.5</td>
+                  <td>有効</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <button class="button button-secondary" id="compareBtn">比較表示</button>
+      </div>
+
+      <!-- 中央ペイン: グラフとメトリクス -->
+      <div class="middle-pane">
+        <div class="card">
+          <div class="section-title">月次納期達成率トレンド（直近3ヶ月）</div>
+          <div class="chart-container" style="height: 250px;">
+            グラフプレースホルダー（11月: 92%, 10月: 89%, 9月: 87%）
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">パフォーマンス指標</div>
+          <div class="metric-cards">
+            <div class="metric-card">
+              <div class="metric-label">平均納期達成率</div>
+              <div class="metric-value">89%</div>
+              <div class="metric-unit">直近30日</div>
             </div>
-            <div class="bar-label">10月</div>
-          </div>
-          <div class="bar-item">
-            <div class="bar-value" style="height: 154px;">
-              <div class="bar-percentage">92%</div>
+            <div class="metric-card">
+              <div class="metric-label">平均対応速度</div>
+              <div class="metric-value">8.1</div>
+              <div class="metric-unit">スコア/10</div>
             </div>
-            <div class="bar-label">11月</div>
+            <div class="metric-card">
+              <div class="metric-label">平均品質スコア</div>
+              <div class="metric-value">8.3</div>
+              <div class="metric-unit">スコア/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-section">
+          <div class="section-title">通知・アラート（最新5件）</div>
+          <div class="alert-list">
+            <div class="alert-item">
+              <span class="alert-text">🔴 アジア流通パートナーズ: 納期遅延警告（予定: 2026-11-15）</span>
+              <button class="button button-secondary" style="padding: 4px 8px; height: auto;">詳細</button>
+            </div>
+            <div class="alert-item warning">
+              <span class="alert-text">🟡 グローバルテック関西: 品質不良率上昇（2.5% → 3.1%）</span>
+              <button class="button button-secondary" style="padding: 4px 8px; height: auto;">詳細</button>
+            </div>
+            <div class="alert-item">
+              <span class="alert-text">🔴 東海物流センター: 対応遅延（平均12時間 → 16時間）</span>
+              <button class="button button-secondary" style="padding: 4px 8px; height: auto;">詳細</button>
+            </div>
+            <div class="alert-item warning">
+              <span class="alert-text">🟡 山田電子部品: 納期達成率低下（87% → 82%）</span>
+              <button class="button button-secondary" style="padding: 4px 8px; height: auto;">詳細</button>
+            </div>
+            <div class="alert-item">
+              <span class="alert-text">✅ トップ電子: 納期達成率新記録達成（95%）</span>
+              <button class="button button-secondary" style="padding: 4px 8px; height: auto;">詳細</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Alerts Container -->
-      <div class="alerts-container">
-        <div class="alerts-title">通知・アラート（最新5件）</div>
-        <div id="alertsList">
-          <div class="alert-item error">
-            <div class="alert-type">⚠ 納期遅延警告</div>
-            <div class="alert-message">Standard Distributor: 納期が2日遅延する見通し</div>
-          </div>
-          <div class="alert-item">
-            <div class="alert-type">ℹ 品質低下アラート</div>
-            <div class="alert-message">Global Parts Inc: 不良率が3.5%に上昇（閾値超過）</div>
-          </div>
-          <div class="alert-item error">
-            <div class="alert-type">⚠ 対応遅延通知</div>
-            <div class="alert-message">Standard Distributor: 平均応答時間が6.2時間（目標: 4h以下）</div>
-          </div>
-          <div class="alert-item">
-            <div class="alert-type">ℹ 良好パフォーマンス</div>
-            <div class="alert-message">Tech Supplies Ltd: 全指標で目標達成、表彰対象候補</div>
-          </div>
-          <div class="alert-item">
-            <div class="alert-type">ℹ システム更新</div>
-            <div class="alert-message">11月スコアの自動集計が完了しました</div>
+      <!-- 右ペイン: 詳細情報・検索・履歴 -->
+      <div class="right-pane">
+        <!-- 詳細情報パネル -->
+        <div class="detail-panel">
+          <div class="section-title">選択ベンダーの詳細情報</div>
+          <div class="detail-content">
+            <div class="search-result">（テーブル行をクリックして選択）</div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Right Pane: Details and History -->
-    <div class="pane-right">
-      <!-- Detail Panel -->
-      <div class="detail-panel">
-        <div class="detail-title" id="detailTitle">ベンダー詳細情報</div>
-        <div id="detailContent">
-          <div class="empty-state">一覧からベンダーを選択してください</div>
+        <!-- 代替仕入先検索 -->
+        <div class="detail-panel">
+          <div class="section-title">代替仕入先検索</div>
+          <div class="form-group" style="margin-bottom: calc(var(--space-unit) * 1);">
+            <label class="form-label">検索条件</label>
+            <input type="text" class="form-input" placeholder="商品カテゴリ・仕様で検索" style="margin-bottom: calc(var(--space-unit) * 0.5);">
+            <button class="button button-primary" style="width: 100%;">検索</button>
+          </div>
+          <div class="search-result">検索結果表示エリア</div>
         </div>
-      </div>
 
-      <!-- Search Section -->
-      <div class="search-section">
-        <div class="search-title">代替仕入先検索</div>
-        <div class="search-input-group">
-          <input type="text" class="search-input" id="searchInput" placeholder="キーワードで検索">
-          <button class="search-button" id="searchButton">検索</button>
-        </div>
-        <button class="compare-button" id="compareButton">複数ベンダー比較</button>
-      </div>
-
-      <!-- History Section -->
-      <div class="detail-panel" style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
-        <div class="detail-title">評価履歴</div>
-        <div class="history-tabs">
-          <button class="history-tab active" data-month="11">11月</button>
-          <button class="history-tab" data-month="10">10月</button>
-          <button class="history-tab" data-month="9">9月</button>
-        </div>
-        <div class="history-list" id="historyList">
-          <div class="empty-state">ベンダーを選択すると評価履歴が表示されます</div>
+        <!-- 評価履歴 -->
+        <div class="detail-panel">
+          <div class="section-title">評価履歴</div>
+          <div class="tab-group">
+            <button class="month-tab active" data-month="202611">11月</button>
+            <button class="month-tab" data-month="202610">10月</button>
+            <button class="month-tab" data-month="202609">9月</button>
+          </div>
+          <div class="table-container" style="max-height: 300px;">
+            <div class="scrollable-table">
+              <table id="evaluationHistoryTable">
+                <thead>
+                  <tr>
+                    <th>評価日</th>
+                    <th>スコア</th>
+                    <th>評価者</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-month="202611">
+                    <td>2026-11-15</td>
+                    <td>92</td>
+                    <td>営業1課</td>
+                  </tr>
+                  <tr data-month="202611">
+                    <td>2026-11-10</td>
+                    <td>90</td>
+                    <td>営業1課</td>
+                  </tr>
+                  <tr data-month="202610">
+                    <td>2026-10-28</td>
+                    <td>88</td>
+                    <td>営業2課</td>
+                  </tr>
+                  <tr data-month="202610">
+                    <td>2026-10-15</td>
+                    <td>87</td>
+                    <td>営業1課</td>
+                  </tr>
+                  <tr data-month="202609">
+                    <td>2026-09-30</td>
+                    <td>85</td>
+                    <td>営業2課</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
