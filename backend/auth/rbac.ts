@@ -95,11 +95,11 @@ export const ROLE_PERMISSIONS: Record<Role, Set<string>> = {
     'alternativeSupplier:update',
     'alternativeSupplier:delete',
     'alternativeSupplier:bulk',
-    'deliveryDateAdjustment:create',
-    'deliveryDateAdjustment:read',
-    'deliveryDateAdjustment:update',
-    'deliveryDateAdjustment:delete',
-    'deliveryDateAdjustment:bulk',
+    'deliveryAdjustment:create',
+    'deliveryAdjustment:read',
+    'deliveryAdjustment:update',
+    'deliveryAdjustment:delete',
+    'deliveryAdjustment:bulk',
     'user:create',
     'user:read',
     'user:update',
@@ -175,10 +175,10 @@ export const ROLE_PERMISSIONS: Record<Role, Set<string>> = {
     'alternativeSupplier:create',
     'alternativeSupplier:update',
     'alternativeSupplier:bulk',
-    'deliveryDateAdjustment:create',
-    'deliveryDateAdjustment:read',
-    'deliveryDateAdjustment:update',
-    'deliveryDateAdjustment:bulk',
+    'deliveryAdjustment:create',
+    'deliveryAdjustment:read',
+    'deliveryAdjustment:update',
+    'deliveryAdjustment:bulk',
     'auditLog:read',
   ]),
   viewer: new Set([
@@ -199,27 +199,25 @@ export const ROLE_PERMISSIONS: Record<Role, Set<string>> = {
     'purchaseFlowAnomaly:read',
     'anomalyNotificationLog:read',
     'alternativeSupplier:read',
-    'deliveryDateAdjustment:read',
+    'deliveryAdjustment:read',
     'auditLog:read',
   ]),
 };
 
-export function extractAuthContext(event: APIGatewayProxyEvent): AuthContext {
-  const authHeader = event.headers['Authorization'] || '';
-  const token = authHeader.replace('Bearer ', '');
+export function extractAuthContext(event: APIGatewayProxyEvent): AuthContext | null {
+  const authHeader = event.headers['Authorization'] || event.headers['authorization'];
+  if (!authHeader) return null;
+
   try {
-    const decoded = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+    const token = authHeader.replace('Bearer ', '');
+    const decoded = JSON.parse(Buffer.from(token, 'base64').toString('utf-8'));
     return {
-      userId: decoded.sub || 'unknown',
+      userId: decoded.userId || 'unknown',
       role: (decoded.role || 'viewer') as Role,
       email: decoded.email || 'unknown@example.com',
     };
   } catch {
-    return {
-      userId: 'unknown',
-      role: 'viewer',
-      email: 'unknown@example.com',
-    };
+    return null;
   }
 }
 
@@ -227,8 +225,9 @@ export function hasPermission(role: Role, permission: string): boolean {
   return ROLE_PERMISSIONS[role]?.has(permission) ?? false;
 }
 
-export function checkPermission(role: Role, permission: string): void {
+export function checkPermission(role: Role, permission: string): boolean {
   if (!hasPermission(role, permission)) {
-    throw new Error(`FORBIDDEN: ${permission}`);
+    return false;
   }
+  return true;
 }
